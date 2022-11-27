@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CodeBase.Infrastructure.States;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
@@ -9,6 +10,7 @@ namespace CodeBase.Infrastructure
         private void Awake()
         {
             _game = new Game();
+            _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
         }
