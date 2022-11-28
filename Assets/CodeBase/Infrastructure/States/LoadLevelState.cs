@@ -2,8 +2,6 @@
 {
     public class LoadLevelState : IState
     {
-        private const string Main = "Main";
-        
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
 
@@ -15,7 +13,7 @@
 
         public void Enter()
         {
-            _sceneLoader.Load(Main);
+            _sceneLoader.Load(Scenes.Main);
         }
 
         public void Exit()
