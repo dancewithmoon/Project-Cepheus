@@ -28,7 +28,7 @@ namespace CodeBase.Infrastructure.States
 
         private void EnterLoadLevel()
         {
-            
+            _stateMachine.Enter<LoadLevelState>();
         }
 
         public void Exit()
