@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagement;
-using CodeBase.Infrastructure.States;
+using CodeBase.Infrastructure.Factory;
 using CodeBase.Logic;
 
-namespace CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.States
 {
     public class GameStateMachine
     {
