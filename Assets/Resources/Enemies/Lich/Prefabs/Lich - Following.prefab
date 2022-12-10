@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 4919238913879926606}
   - component: {fileID: 1751108228526042627}
   m_Layer: 0
-  m_Name: FreeLichPBR
+  m_Name: Lich - Following
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _triggerObserver: {fileID: 3880447532696922811}
-  _follow: {fileID: 3117913047684126372}
+  _aggrable: {fileID: 3117913047684126372}
   _cooldown: 3
 --- !u!1 &1537370055453520
 GameObject:

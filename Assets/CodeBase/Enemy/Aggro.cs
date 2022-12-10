@@ -6,7 +6,7 @@ namespace CodeBase.Enemy
     public class Aggro : MonoBehaviour
     {
         [SerializeField] private TriggerObserver _triggerObserver;
-        [SerializeField] private AgentMoveToHero _follow;
+        [SerializeField] private Aggrable _aggrable;
 
         [SerializeField] private float _cooldown;
         private Coroutine _cooldownCoroutine;
@@ -42,12 +42,12 @@ namespace CodeBase.Enemy
 
         private void StartFollow()
         {
-            _follow.enabled = true;
+            _aggrable.enabled = true;
         }
 
         private void StopFollow()
         {
-            _follow.enabled = false;
+            _aggrable.enabled = false;
         }
 
         private IEnumerator StopFollowAfterCooldown()

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace CodeBase.Enemy
 {
-    public class AgentMoveToHero : MonoBehaviour
+    public class AgentMoveToHero : Aggrable
     {
         private const double MinimalDistance = 1f;
         
@@ -18,7 +18,7 @@ namespace CodeBase.Enemy
         {
             _gameFactory = AllServices.Container.Single<IGameFactory>();
             
-            if (_gameFactory.HeroGameObject != null)
+            if (IsHeroExist())
             {
                 InitializeHeroTransform();
             }
@@ -35,9 +35,9 @@ namespace CodeBase.Enemy
                 MoveToHero();
             }
         }
-
-        private bool IsHeroInitialized() => _heroTransform != null;
         
+        private bool IsHeroExist() => _gameFactory.HeroGameObject != null;
+        private bool IsHeroInitialized() => _heroTransform != null;
         private bool IsAwayFromHero() => 
             Vector3.Distance(_agent.transform.position, _heroTransform.position) >= MinimalDistance;
 
