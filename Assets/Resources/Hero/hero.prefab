@@ -1278,8 +1278,10 @@ GameObject:
   - component: {fileID: 1941000699}
   - component: {fileID: 1770012380}
   - component: {fileID: 1770012379}
+  - component: {fileID: 2849016883997960956}
+  - component: {fileID: 7580527337577683667}
   m_Layer: 12
-  m_Name: hero
+  m_Name: Hero
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1369,6 +1371,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 1770012380}
   _movementSpeed: 4
+--- !u!54 &2849016883997960956
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &7580527337577683667
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1 &178646
 GameObject:
   m_ObjectHideFlags: 0
