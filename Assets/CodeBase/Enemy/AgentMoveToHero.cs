@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.Factory;
+﻿using System;
+using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using UnityEngine;
 using UnityEngine.AI;
@@ -55,6 +56,11 @@ namespace CodeBase.Enemy
         private void InitializeHeroTransform()
         {
             _heroTransform = _gameFactory.HeroGameObject.transform;
+        }
+
+        private void OnDestroy()
+        {
+            _gameFactory.HeroCreated -= OnHeroCreated;
         }
     }
 }
