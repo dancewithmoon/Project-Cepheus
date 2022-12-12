@@ -181,40 +181,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
---- !u!1 &69525679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd,
-    type: 3}
-  m_PrefabInstance: {fileID: 69525678}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &69525680 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3211743820009197298, guid: 274c4c35ed05ea14c87492064b3cadfd,
-    type: 3}
-  m_PrefabInstance: {fileID: 69525678}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69525679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5da107bdb7546b0813028001cb2c6c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &69525681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69525679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78b4e1fc2754a2e90077771d4e53c72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackCooldown: 3
-  _cleavage: 0.5
-  _effectiveDistance: 1
-  _animator: {fileID: 69525680}
 --- !u!4 &80530885 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4705759454694578, guid: 4e0562afa3c1cd444ba78361d1f490a7,
