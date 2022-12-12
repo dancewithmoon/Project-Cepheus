@@ -212,6 +212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackCooldown: 3
+  _cleavage: 0.5
+  _effectiveDistance: 1
   _animator: {fileID: 69525680}
 --- !u!4 &80530885 stripped
 Transform:
