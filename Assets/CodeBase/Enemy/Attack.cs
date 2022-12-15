@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace CodeBase.Enemy
         [SerializeField] private float _attackCooldown = 3f;
         [SerializeField] private float _cleavage = 0.5f;
         [SerializeField] private float _effectiveDistance = 0.5f;
+        [SerializeField] private float _damage = 10f;
 
         [Header("References")]
         [SerializeField] private EnemyAnimator _animator;
@@ -86,6 +88,7 @@ namespace CodeBase.Enemy
             if (Hit(out Collider hit))
             {
                 PhysicsDebug.DrawDebug(GetAttackPoint(), _cleavage, 1);
+                hit.transform.GetComponent<HeroHealth>().ApplyDamage(_damage);
             }
         }
 
