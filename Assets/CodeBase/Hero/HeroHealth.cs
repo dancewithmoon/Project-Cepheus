@@ -32,6 +32,15 @@ namespace CodeBase.Hero
             set => _health.MaxHp = value;
         }
 
+        public void ApplyDamage(float damage)
+        {
+            if (enabled == false)
+                return;
+            
+            Current -= damage;
+            _animator.PlayHit();
+        }
+
         public void LoadProgress(PlayerProgress progress)
         {
             _health = progress.HeroHealthData.Clone();
@@ -42,15 +51,6 @@ namespace CodeBase.Hero
         {
             progress.HeroHealthData.CurrentHp = Current;
             progress.HeroHealthData.MaxHp = Max;
-        }
-
-        public void ApplyDamage(float damage)
-        {
-            if (Current <= 0)
-                return;
-            
-            Current -= damage;
-            _animator.PlayHit();
         }
     }
 }
