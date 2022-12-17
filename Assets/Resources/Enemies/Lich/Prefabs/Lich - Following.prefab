@@ -524,8 +524,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackCooldown: 3
-  _cleavage: 0.5
+  _attackPointRadius: 0.5
   _effectiveDistance: 1
+  _damage: 10
   _animator: {fileID: 3211743820009197298}
 --- !u!114 &6615073110860454101
 MonoBehaviour:
@@ -539,7 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d9fb40cf2b4cefba465a8df88c9d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attack: {fileID: 69525681}
+  _enemyAttack: {fileID: 69525681}
   _triggerObserver: {fileID: 4800765356539902656}
 --- !u!1 &1537370055453520
 GameObject:

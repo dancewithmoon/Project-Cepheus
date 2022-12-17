@@ -11,12 +11,13 @@ namespace CodeBase.Enemy
     [RequireComponent(typeof(EnemyAnimator))]
     public class EnemyAttack : MonoBehaviour
     {
+        [Header("Parameters")]
         [SerializeField] private float _attackCooldown = 3f;
-        [SerializeField] private float _cleavage = 0.5f;
+        [SerializeField] private float _attackPointRadius = 0.5f;
         [SerializeField] private float _effectiveDistance = 0.5f;
         [SerializeField] private float _damage = 10f;
 
-        [Header("References")]
+        [Header("Components")]
         [SerializeField] private EnemyAnimator _animator;
 
         private IGameFactory _gameFactory;
@@ -89,7 +90,7 @@ namespace CodeBase.Enemy
         {
             if (Hit(out Collider hit))
             {
-                PhysicsDebug.DrawDebug(GetAttackPoint(), _cleavage, 1);
+                PhysicsDebug.DrawDebug(GetAttackPoint(), _attackPointRadius, 1);
                 hit.transform.GetComponent<HeroHealth>().ApplyDamage(_damage);
             }
         }
@@ -102,7 +103,7 @@ namespace CodeBase.Enemy
 
         private bool Hit(out Collider hit)
         {
-            int hitCount = Physics.OverlapSphereNonAlloc(GetAttackPoint(), _cleavage, _hits, _layerMask);
+            int hitCount = Physics.OverlapSphereNonAlloc(GetAttackPoint(), _attackPointRadius, _hits, _layerMask);
             hit = _hits.FirstOrDefault();
             return hitCount > 0;
         }

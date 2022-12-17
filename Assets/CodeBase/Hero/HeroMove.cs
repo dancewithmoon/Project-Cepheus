@@ -9,8 +9,8 @@ namespace CodeBase.Hero
 {
     public class HeroMove : MonoBehaviour, ISavedProgress
     {
-        [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _movementSpeed = 4.0f;
+        [SerializeField] private CharacterController _characterController;
         private IInputService _inputService;
         private Camera _camera;
 

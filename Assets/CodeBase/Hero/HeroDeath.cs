@@ -5,6 +5,7 @@ namespace CodeBase.Hero
     [RequireComponent(typeof(HeroHealth), typeof(HeroMove), typeof(HeroAnimator))]
     public class HeroDeath : MonoBehaviour
     {
+        [Header("Components")]
         [SerializeField] private HeroHealth _health;
         [SerializeField] private HeroMove _move;
         [SerializeField] private HeroAttack _attack;
