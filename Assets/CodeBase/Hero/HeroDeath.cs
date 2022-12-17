@@ -7,6 +7,7 @@ namespace CodeBase.Hero
     {
         [SerializeField] private HeroHealth _health;
         [SerializeField] private HeroMove _move;
+        [SerializeField] private HeroAttack _attack;
         [SerializeField] private HeroAnimator _animator;
 
         [Header("VFX")] 
@@ -29,6 +30,7 @@ namespace CodeBase.Hero
         {
             _health.enabled = false;
             _move.enabled = false;
+            _attack.enabled = false;
             _animator.PlayDeath();
 
             Instantiate(_deathFxPrefab, transform.position, Quaternion.identity);

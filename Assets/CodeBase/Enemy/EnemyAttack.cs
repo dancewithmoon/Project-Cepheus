@@ -84,6 +84,7 @@ namespace CodeBase.Enemy
             _animator.PlayAttack();
         }
 
+        //animation event
         private void OnAttack()
         {
             if (Hit(out Collider hit))
@@ -93,6 +94,7 @@ namespace CodeBase.Enemy
             }
         }
 
+        //animation event
         private void OnAttackEnded()
         {
             _isAttacking = false;
