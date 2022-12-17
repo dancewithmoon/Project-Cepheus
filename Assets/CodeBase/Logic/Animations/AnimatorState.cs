@@ -1,4 +1,4 @@
-namespace CodeBase.Logic
+namespace CodeBase.Logic.Animations
 {
   public enum AnimatorState
   {

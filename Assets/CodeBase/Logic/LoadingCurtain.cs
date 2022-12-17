@@ -6,12 +6,7 @@ namespace CodeBase.Logic
   public class LoadingCurtain : MonoBehaviour
   {
     [SerializeField] private CanvasGroup _curtain;
-
-    private void Awake()
-    {
-      DontDestroyOnLoad(this);
-    }
-
+    
     public void Show()
     {
       gameObject.SetActive(true);
