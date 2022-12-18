@@ -1,6 +1,7 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Logic;
 using CodeBase.Services.Input;
 using CodeBase.Utils;
 using UnityEngine;
@@ -45,10 +46,16 @@ namespace CodeBase.Hero
         //animation event
         private void OnAttack()
         {
-            PhysicsDebug.DrawDebug(GetAttackPoint(), AttackPointRadius, 1);
-
             if (Hit() > 0)
             {
+                PhysicsDebug.DrawDebug(GetAttackPoint(), AttackPointRadius, 1);
+                foreach (Collider hit in _hits)
+                {
+                    if(hit == null)
+                        continue;
+                    
+                    hit.GetComponentInParent<IHealth>().ApplyDamage(Damage);
+                }
             }
         }
 

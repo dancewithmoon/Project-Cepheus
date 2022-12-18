@@ -1,4 +1,4 @@
-﻿using CodeBase.Hero;
+﻿using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.UI
@@ -6,22 +6,35 @@ namespace CodeBase.UI
     public class ActorUI : MonoBehaviour
     {
         [SerializeField] private HealthBar _healthBar;
-        private HeroHealth _heroHealth;
+        private IHealth _health;
 
-        public void Construct(HeroHealth health)
+        private void Start()
         {
-            _heroHealth = health;
-            _heroHealth.HealthChanged += OnHealthChanged;
+            var health = GetComponent<IHealth>();
+
+            if (health != null)
+            {
+                Construct(health);
+            }
+        }
+
+        public void Construct(IHealth health)
+        {
+            _health = health;
+            _health.HealthChanged += OnHealthChanged;
         }
 
         private void OnHealthChanged()
         {
-            _healthBar.SetValue(_heroHealth.Current, _heroHealth.Max);
+            _healthBar.SetValue(_health.Current, _health.Max);
         }
 
         private void OnDestroy()
         {
-            _heroHealth.HealthChanged -= OnHealthChanged;
+            if (_health != null)
+            {
+                _health.HealthChanged -= OnHealthChanged;
+            }
         }
     }
 }
