@@ -38,6 +38,15 @@ namespace CodeBase.Infrastructure.Factory
             ProgressWriters.Clear();
         }
 
+        public void Register(ISavedProgressReader progressReader)
+        {
+            if (progressReader is ISavedProgress progressWriter)
+            {
+                ProgressWriters.Add(progressWriter);
+            }
+            ProgressReaders.Add(progressReader);
+        }
+
         private GameObject InstantiateRegistered(string path, Vector3 at)
         {
             GameObject gameObject = _assets.Instantiate(path, at);
@@ -51,22 +60,13 @@ namespace CodeBase.Infrastructure.Factory
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
-        
+
         private void RegisterProgressWatchers(GameObject hero)
         {
             foreach (ISavedProgressReader progressReader in hero.GetComponentsInChildren<ISavedProgressReader>())
             {
                 Register(progressReader);
             }
-        }
-
-        private void Register(ISavedProgressReader progressReader)
-        {
-            if (progressReader is ISavedProgress progressWriter)
-            {
-                ProgressWriters.Add(progressWriter);
-            }
-            ProgressReaders.Add(progressReader);
         }
     }
 }
