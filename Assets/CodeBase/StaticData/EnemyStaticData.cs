@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeBase.StaticData
 {
@@ -6,9 +7,9 @@ namespace CodeBase.StaticData
     public class EnemyStaticData : ScriptableObject
     {
         [SerializeField] private EnemyTypeId _enemyType;
-
+        
         [Range(1, 10)]
-        [SerializeField] private float _moveSpeed = 3;
+        [SerializeField] private float _movementSpeed = 3;
 
         [Range(1, 100)]
         [SerializeField] private int _hp;
@@ -28,7 +29,7 @@ namespace CodeBase.StaticData
         [SerializeField] private GameObject _prefab;
 
         public EnemyTypeId EnemyType => _enemyType;
-        public float MoveSpeed => _moveSpeed;
+        public float MovementSpeed => _movementSpeed;
         public int Hp => _hp;
         public int Damage => _damage;
         public float AttackPointRadius => _attackPointRadius;

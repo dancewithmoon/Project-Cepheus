@@ -52,7 +52,7 @@ namespace CodeBase.Infrastructure.Factory
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
             enemy.GetComponent<AgentMoveToHero>().Construct(_hero.transform);
             
-            enemy.GetComponent<NavMeshAgent>().speed = enemyData.MoveSpeed;
+            enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
             return enemy;
         }

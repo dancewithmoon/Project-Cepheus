@@ -52,6 +52,7 @@ namespace CodeBase.Infrastructure.States
         private void RegisterStaticData()
         {
             IStaticDataService staticData = new StaticDataService();
+            staticData.LoadHero();
             staticData.LoadEnemies();
             _services.RegisterSingle<IStaticDataService>(staticData);
         }
