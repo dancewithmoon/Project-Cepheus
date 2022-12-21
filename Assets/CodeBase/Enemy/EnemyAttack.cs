@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using System.Linq;
-using CodeBase.Hero;
-using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Logic;
 using CodeBase.Utils;
 using UnityEngine;
@@ -12,53 +9,37 @@ namespace CodeBase.Enemy
     [RequireComponent(typeof(EnemyAnimator))]
     public class EnemyAttack : MonoBehaviour
     {
-        [Header("Parameters")]
-        [SerializeField] private float _attackCooldown = 3f;
-        [SerializeField] private float _attackPointRadius = 0.5f;
-        [SerializeField] private float _effectiveDistance = 0.5f;
-        [SerializeField] private float _damage = 10f;
-
-        [Header("Components")]
         [SerializeField] private EnemyAnimator _animator;
 
-        private IGameFactory _gameFactory;
+        private float _damage;
+        private float _attackPointRadius;
+        private float _effectiveDistance;
+        private float _cooldown;
         private Transform _heroTransform;
+
+        private LayerMask _layerMask;
+        
         private bool _isAttacking;
-        private int _layerMask;
         private bool _isAttackEnabled;
 
         private readonly Collider[] _hits = new Collider[1];
 
-        private void Awake()
+        public void Construct(float damage, float attackPointRadius, float effectiveDistance, float cooldown, Transform hero)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            _layerMask = 1 << LayerMask.NameToLayer("Player");
+            _damage = damage;
+            _attackPointRadius = attackPointRadius;
+            _effectiveDistance = effectiveDistance;
+            _cooldown = cooldown;
+            _heroTransform = hero;
+
+            _layerMask = LayerMask.GetMask("Player");
             
-            if (IsHeroExist())
-            {
-                StartAttackLoop();
-            }
-            else
-            {
-                _gameFactory.HeroCreated += OnHeroCreated;
-            }
-        }
-
-        private void OnHeroCreated()
-        {
-            _gameFactory.HeroCreated -= OnHeroCreated;
-            StartAttackLoop();
-        }
-
-        private void StartAttackLoop()
-        {
-            InitializeHeroTransform();
             StartCoroutine(AttackLoop());
         }
 
         private IEnumerator AttackLoop()
         {
-            var cooldown = new WaitForSeconds(_attackCooldown);
+            var cooldown = new WaitForSeconds(_cooldown);
             while (this)
             {
                 yield return new WaitUntil(IsAttackEnabled);
@@ -118,17 +99,5 @@ namespace CodeBase.Enemy
         
         private bool IsAttacking() => _isAttacking;
         private bool IsAttackEnabled() => _isAttackEnabled;
-
-        private bool IsHeroExist() => _gameFactory.HeroGameObject != null;
-        
-        private void InitializeHeroTransform()
-        {
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-        }
-
-        private void OnDestroy()
-        {
-            _gameFactory.HeroCreated -= OnHeroCreated;
-        }
     }
 }

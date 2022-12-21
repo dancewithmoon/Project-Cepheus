@@ -1,29 +1,17 @@
-﻿using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CodeBase.Enemy
 {
     public class RotateToHero : Aggrable
     {
         [SerializeField] private float _speed;
-
-        private IGameFactory _gameFactory;
+        
         private Transform _heroTransform;
         private Vector3 _positionToLook;
         
-        private void Awake()
+        public void Construct(Transform hero)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            
-            if (IsHeroExist())
-            {
-                InitializeHeroTransform();
-            }
-            else
-            {
-                _gameFactory.HeroCreated += OnHeroCreated;
-            }
+            _heroTransform = hero;
         }
 
         private void Update()
@@ -53,24 +41,8 @@ namespace CodeBase.Enemy
         private Quaternion GetTargetRotation(Vector3 positionToLook) => Quaternion.LookRotation(positionToLook);
         
         private float GetSpeedFactor() => _speed * Time.deltaTime;
-
-        private bool IsHeroExist() => _gameFactory.HeroGameObject != null;
+        
         private bool IsHeroInitialized() => _heroTransform != null;
 
-        private void OnHeroCreated()
-        {
-            InitializeHeroTransform();
-            _gameFactory.HeroCreated -= OnHeroCreated;
-        }
-        
-        private void InitializeHeroTransform()
-        {
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-        }
-
-        private void OnDestroy()
-        {
-            _gameFactory.HeroCreated -= OnHeroCreated;
-        }
     }
 }

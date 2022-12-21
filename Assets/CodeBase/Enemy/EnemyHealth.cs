@@ -6,21 +6,22 @@ namespace CodeBase.Enemy
 {
     public class EnemyHealth : MonoBehaviour, IHealth
     {
-        [Header("Parameters")]
-        [SerializeField] private float _current;
-        [SerializeField] private float _max;
-        
-        [Header("Components")]
         [SerializeField] private EnemyAnimator _animator;
-
-        public float Current => _current;
-        public float Max => _max;
 
         public event Action HealthChanged;
 
+        public float Current { get; set; }
+        public float Max { get; set; }
+
+        public void Construct(float current, float max)
+        {
+            Current = current;
+            Max = max;
+        }
+
         public void ApplyDamage(float damage)
         {
-            _current -= damage;
+            Current -= damage;
             _animator.PlayHit();
             HealthChanged?.Invoke();
         }

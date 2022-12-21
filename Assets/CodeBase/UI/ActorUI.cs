@@ -8,16 +8,6 @@ namespace CodeBase.UI
         [SerializeField] private HealthBar _healthBar;
         private IHealth _health;
 
-        private void Start()
-        {
-            var health = GetComponent<IHealth>();
-
-            if (health != null)
-            {
-                Construct(health);
-            }
-        }
-
         public void Construct(IHealth health)
         {
             _health = health;
