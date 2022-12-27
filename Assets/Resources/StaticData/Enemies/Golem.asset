@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   _enemyType: 10
-  _moveSpeed: 3
+  _movementSpeed: 3
   _hp: 25
   _damage: 20
   _attackPointRadius: 0.5
   _effectiveDistance: 1
   _attackCooldown: 4
+  _minLoot: 1
+  _maxLoot: 5
   _prefab: {fileID: 5261016488348296696, guid: fef8ee76ba818f84b81b11da6bda5ddf, type: 3}

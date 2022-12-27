@@ -2,7 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Logic;
+using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
 using CodeBase.UI;
@@ -16,15 +16,18 @@ namespace CodeBase.Infrastructure.Factory
     {
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
+        private readonly IRandomService _randomService;
+
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
-        
+
         private GameObject _hero;
 
-        public GameFactory(IAssets assets, IStaticDataService staticData)
+        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService)
         {
             _assets = assets;
             _staticData = staticData;
+            _randomService = randomService;
         }
 
         public GameObject CreateHero(GameObject initialPoint)
@@ -32,6 +35,8 @@ namespace CodeBase.Infrastructure.Factory
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
             return _hero;
         }
+
+        public GameObject CreateHud() => InstantiateRegistered(AssetPath.HudPath);
 
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
@@ -54,13 +59,13 @@ namespace CodeBase.Infrastructure.Factory
             
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
+            enemy.GetComponentInChildren<LootSpawner>().Construct(this, _randomService, enemyData.MinLoot, enemyData.MaxLoot);
+
             return enemy;
         }
 
-        public GameObject CreateHud()
-        {
-            return InstantiateRegistered(AssetPath.HudPath);
-        }
+        public LootPiece CreateLoot() => InstantiateRegistered(AssetPath.Loot)
+            .GetComponent<LootPiece>();
 
         public void Cleanup()
         {

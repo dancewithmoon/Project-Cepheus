@@ -26,6 +26,9 @@ namespace CodeBase.StaticData
         [Range(0.1f, 10f)]
         [SerializeField] private float _attackCooldown = 2f;
 
+        [SerializeField] private int _minLoot;
+        [SerializeField] private int _maxLoot;
+        
         [SerializeField] private GameObject _prefab;
 
         public EnemyTypeId EnemyType => _enemyType;
@@ -35,6 +38,9 @@ namespace CodeBase.StaticData
         public float AttackPointRadius => _attackPointRadius;
         public float EffectiveDistance => _effectiveDistance;
         public float AttackCooldown => _attackCooldown;
+        public int MinLoot => _minLoot;
+
+        public int MaxLoot => _maxLoot;
 
         public GameObject Prefab => _prefab;
     }

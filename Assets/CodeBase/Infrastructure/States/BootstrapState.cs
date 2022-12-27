@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Services.Input;
+using CodeBase.Services.Randomizer;
 using CodeBase.StaticData.Service;
 using UnityEngine;
 
@@ -37,16 +38,22 @@ namespace CodeBase.Infrastructure.States
         private void RegisterServices()
         {
             _services.RegisterSingle<IInputService>(GetInputService());
+            _services.RegisterSingle<IRandomService>(new UnityRandomService());
             _services.RegisterSingle<IAssets>(new AssetProvider());
             RegisterStaticData();
             
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 
             _services.RegisterSingle<IGameFactory>(
-                new GameFactory(_services.Single<IAssets>(), _services.Single<IStaticDataService>()));
+                new GameFactory(
+                    _services.Single<IAssets>(),
+                    _services.Single<IStaticDataService>(),
+                    _services.Single<IRandomService>()));
 
             _services.RegisterSingle<ISaveLoadService>(
-                new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+                new SaveLoadService(
+                    _services.Single<IPersistentProgressService>(), 
+                    _services.Single<IGameFactory>()));
         }
 
         private void RegisterStaticData()

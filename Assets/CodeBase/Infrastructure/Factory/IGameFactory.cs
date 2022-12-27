@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Enemy;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData;
@@ -11,6 +12,7 @@ namespace CodeBase.Infrastructure.Factory
         GameObject CreateHero(GameObject initialPoint);
         GameObject CreateHud();
         GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent);
+        LootPiece CreateLoot();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
         void Cleanup();

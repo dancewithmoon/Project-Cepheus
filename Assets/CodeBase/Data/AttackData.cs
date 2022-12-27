@@ -8,13 +8,11 @@ namespace CodeBase.Data
         public float AttackPointRadius;
         public float Damage;
 
-        public AttackData Clone()
-        {
-            return new AttackData
+        public AttackData Clone() =>
+            new AttackData
             {
                 AttackPointRadius = AttackPointRadius,
                 Damage = Damage
             };
-        }
     }
 }
