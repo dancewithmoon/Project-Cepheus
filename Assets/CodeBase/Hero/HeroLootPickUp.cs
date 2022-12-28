@@ -6,21 +6,21 @@ namespace CodeBase.Hero
 {
     public class HeroLootPickUp : MonoBehaviour, ISavedProgress
     {
-        private LootData _lootData;
+        public LootData LootData { get; } = new LootData();
         
         public void PickUp(Loot loot)
         {
-            _lootData.Collect(loot);
+            LootData.Collect(loot);
         }
 
         public void LoadProgress(PlayerProgress progress)
         {
-            _lootData = progress.LootData.Clone();
+            LootData.Count = progress.LootData.Count;
         }
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            progress.LootData.Collected = _lootData.Collected;
+            progress.LootData.Count = LootData.Count;
         }
     }
 }

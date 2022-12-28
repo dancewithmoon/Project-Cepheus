@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace CodeBase.UI
 {
-    public class HealthBar : MonoBehaviour
+    public class HealthBarView : MonoBehaviour
     {
         [SerializeField] private Image _currentHp;
 

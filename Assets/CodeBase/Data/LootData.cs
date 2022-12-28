@@ -5,17 +5,14 @@ namespace CodeBase.Data
     [Serializable]
     public class LootData
     {
-        public int Collected;
+        public int Count;
+        
+        public event Action Changed;
 
         public void Collect(Loot loot)
         {
-            Collected += loot.Value;
+            Count += loot.Value;
+            Changed?.Invoke();
         }
-
-        public LootData Clone() =>
-            new LootData
-            {
-                Collected = Collected
-            };
     }
 }

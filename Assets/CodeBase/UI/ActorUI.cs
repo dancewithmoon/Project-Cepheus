@@ -5,7 +5,7 @@ namespace CodeBase.UI
 {
     public class ActorUI : MonoBehaviour
     {
-        [SerializeField] private HealthBar _healthBar;
+        [SerializeField] private HealthBarView _healthBar;
         private IHealth _health;
 
         public void Construct(IHealth health)
@@ -19,7 +19,7 @@ namespace CodeBase.UI
             _healthBar.SetValue(_health.Current, _health.Max);
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (_health != null)
             {
