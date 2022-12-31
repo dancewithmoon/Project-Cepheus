@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using CodeBase.Data;
 using CodeBase.Hero;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Logic;
 using TMPro;
 using UnityEngine;
 
 namespace CodeBase.Enemy
 {
-    public class LootPiece : MonoBehaviour
+    [RequireComponent(typeof(UniqueId))]
+    public class LootPiece : MonoBehaviour, ISavedProgress
     {
         private const float DelayToDestroyAfterPickup = 1.5f;
         
@@ -15,14 +18,44 @@ namespace CodeBase.Enemy
         [SerializeField] private TextMeshPro _lootText;
         [SerializeField] private GameObject _pickUpPopup;
 
+        [Header("UniqueId")] 
+        [SerializeField] private UniqueId _uniqueId;
+        
         private int _targetLayer;
         private Loot _loot;
         private bool _picked;
 
+        private LootOnLevel _lootOnLevel;
+        
         public void Initialize(Loot loot)
         {
             _loot = loot;
             _targetLayer = LayerMask.NameToLayer("Player");
+        }
+        
+        public void LoadProgress(PlayerProgress progress)
+        {
+            _lootOnLevel = progress.WorldData.LootOnLevel;
+            LootPieceData lootPieceData = _lootOnLevel.Loots[_uniqueId.Id];
+            transform.position = lootPieceData.PositionOnLevel.Position.AsUnityVector();
+            Initialize(lootPieceData.Loot);
+        }
+
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            if(_picked)
+                return;
+            
+            if (progress.WorldData.LootOnLevel.Loots.ContainsKey(_uniqueId.Id))
+            {
+                progress.WorldData.LootOnLevel.Loots.Remove(_uniqueId.Id);
+            }
+            
+            progress.WorldData.LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData()
+            {
+                Loot = _loot,
+                PositionOnLevel = new PositionOnLevel(gameObject.scene.name, transform.position.AsVectorData())
+            });
         }
 
         private void OnTriggerEnter(Collider other)
@@ -48,8 +81,14 @@ namespace CodeBase.Enemy
             HideSkull();
             PlayPickUpFx();
             ShowText();
+            RemoveFromLootOnLevel();
 
             StartCoroutine(DestroyWithDelay());
+        }
+
+        private void RemoveFromLootOnLevel()
+        {
+            _lootOnLevel.Loots.Remove(_uniqueId.Id);
         }
 
         private void HideSkull()

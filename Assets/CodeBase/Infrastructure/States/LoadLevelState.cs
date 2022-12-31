@@ -1,4 +1,7 @@
-﻿using CodeBase.CameraLogic;
+﻿using System.Collections.Generic;
+using CodeBase.CameraLogic;
+using CodeBase.Data;
+using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
@@ -19,6 +22,8 @@ namespace CodeBase.Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progressService;
 
+        private string _sceneName;
+        
         public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService)
         {
             _stateMachine = stateMachine;
@@ -30,6 +35,8 @@ namespace CodeBase.Infrastructure.States
 
         public void Enter(string sceneName)
         {
+            _sceneName = sceneName;
+            
             _loadingCurtain.Show();
             _gameFactory.Cleanup();
             _sceneLoader.Load(sceneName, OnLoaded);
@@ -56,6 +63,7 @@ namespace CodeBase.Infrastructure.States
         private void InitGameWorld()
         {
             InitSpawners();
+            InitLoot();
             GameObject hero = InitHero();
             InitHud(hero);
             CameraFollow(hero);
@@ -67,6 +75,18 @@ namespace CodeBase.Infrastructure.States
             {
                 var spawner = spawnerObject.GetComponent<EnemySpawner>();
                 _gameFactory.Register(spawner);
+            }
+        }
+
+        private void InitLoot()
+        {
+            foreach (KeyValuePair<string,LootPieceData> loot in _progressService.Progress.WorldData.LootOnLevel.Loots)
+            {
+                if(loot.Value.PositionOnLevel.Level != _sceneName)
+                    continue;
+
+                LootPiece lootPiece = _gameFactory.CreateLoot();
+                lootPiece.GetComponent<UniqueId>().Id = loot.Key;
             }
         }
 

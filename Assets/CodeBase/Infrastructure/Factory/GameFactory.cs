@@ -64,8 +64,11 @@ namespace CodeBase.Infrastructure.Factory
             return enemy;
         }
 
-        public LootPiece CreateLoot() => InstantiateRegistered(AssetPath.Loot)
-            .GetComponent<LootPiece>();
+        public LootPiece CreateLoot()
+        {
+            return InstantiateRegistered(AssetPath.Loot)
+                .GetComponent<LootPiece>();
+        }
 
         public void Cleanup()
         {

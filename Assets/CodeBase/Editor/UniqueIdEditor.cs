@@ -33,8 +33,8 @@ namespace Editor
 
             Scene currentScene = uniqueId.gameObject.scene;
             
-            uniqueId.Id = $"{currentScene.name}_{Guid.NewGuid().ToString()}";
-            
+            uniqueId.Generate();
+
             EditorUtility.SetDirty(uniqueId);
             EditorSceneManager.MarkSceneDirty(currentScene);
         }
