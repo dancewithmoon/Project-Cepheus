@@ -6,6 +6,8 @@ using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
+using CodeBase.StaticData;
+using CodeBase.StaticData.Service;
 using CodeBase.UI;
 using UnityEngine;
 
@@ -20,17 +22,19 @@ namespace CodeBase.Infrastructure.States
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
         private readonly IGameFactory _gameFactory;
-        private readonly IPersistentProgressService _progressService;
+        private readonly IPersistentProgressService _progress;
+        private readonly IStaticDataService _staticData;
 
         private string _sceneName;
-        
-        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService)
+
+        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progress, IStaticDataService staticData)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
             _loadingCurtain = loadingCurtain;
             _gameFactory = gameFactory;
-            _progressService = progressService;
+            _progress = progress;
+            _staticData = staticData;
         }
 
         public void Enter(string sceneName)
@@ -57,7 +61,7 @@ namespace CodeBase.Infrastructure.States
 
         private void InformProgressReaders()
         {
-            _gameFactory.ProgressReaders.ForEach(progressReader => progressReader.LoadProgress(_progressService.Progress));
+            _gameFactory.ProgressReaders.ForEach(progressReader => progressReader.LoadProgress(_progress.Progress));
         }
 
         private void InitGameWorld()
@@ -71,16 +75,16 @@ namespace CodeBase.Infrastructure.States
 
         private void InitSpawners()
         {
-            foreach (GameObject spawnerObject in GameObject.FindGameObjectsWithTag(EnemySpawnerTag))
+            LevelStaticData levelData = _staticData.GetLevel(_sceneName);
+            foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
             {
-                var spawner = spawnerObject.GetComponent<EnemySpawner>();
-                _gameFactory.Register(spawner);
+                _gameFactory.CreateEnemySpawner(spawnerData.Position, spawnerData.Id, spawnerData.EnemyTypeId);
             }
         }
 
         private void InitLoot()
         {
-            foreach (KeyValuePair<string,LootPieceData> loot in _progressService.Progress.WorldData.LootOnLevel.Loots)
+            foreach (KeyValuePair<string,LootPieceData> loot in _progress.Progress.WorldData.LootOnLevel.Loots)
             {
                 if(loot.Value.PositionOnLevel.Level != _sceneName)
                     continue;

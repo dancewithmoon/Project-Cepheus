@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a8c68f80f94a0e8c8519eeed4f7727, type: 3}
+  m_Name: GraveYard
+  m_EditorClassIdentifier: 
+  _levelKey: Main
+  _enemySpawners:
+  - Id: Main_8edb6894-ef27-4db8-9439-c0b2365b1442
+    EnemyTypeId: 0
+    Position: {x: 4.86, y: 0, z: -6.81}
+  - Id: Main_dce0a194-c156-4238-a9b9-75b3bc0fd3ff
+    EnemyTypeId: 0
+    Position: {x: -8.22, y: 0, z: -7.16}
+  - Id: Main_41347a1a-24d7-4df6-af50-e4e78e77b449
+    EnemyTypeId: 10
+    Position: {x: -0.89, y: 0, z: -7.16}

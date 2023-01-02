@@ -26,16 +26,20 @@ namespace CodeBase.Enemy
         private bool _picked;
 
         private LootOnLevel _lootOnLevel;
-        
+
+        public void Construct(LootOnLevel lootOnLevel)
+        {
+            _lootOnLevel = lootOnLevel;
+        }
+
         public void Initialize(Loot loot)
         {
             _loot = loot;
             _targetLayer = LayerMask.NameToLayer("Player");
         }
-        
+
         public void LoadProgress(PlayerProgress progress)
         {
-            _lootOnLevel = progress.WorldData.LootOnLevel;
             LootPieceData lootPieceData = _lootOnLevel.Loots[_uniqueId.Id];
             transform.position = lootPieceData.PositionOnLevel.Position.AsUnityVector();
             Initialize(lootPieceData.Loot);

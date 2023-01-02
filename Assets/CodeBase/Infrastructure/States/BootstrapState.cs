@@ -48,7 +48,8 @@ namespace CodeBase.Infrastructure.States
                 new GameFactory(
                     _services.Single<IAssets>(),
                     _services.Single<IStaticDataService>(),
-                    _services.Single<IRandomService>()));
+                    _services.Single<IRandomService>(),
+                    _services.Single<IPersistentProgressService>()));
 
             _services.RegisterSingle<ISaveLoadService>(
                 new SaveLoadService(
@@ -59,8 +60,7 @@ namespace CodeBase.Infrastructure.States
         private void RegisterStaticData()
         {
             IStaticDataService staticData = new StaticDataService();
-            staticData.LoadHero();
-            staticData.LoadEnemies();
+            staticData.Load();
             _services.RegisterSingle<IStaticDataService>(staticData);
         }
 

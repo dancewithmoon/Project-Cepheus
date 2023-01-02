@@ -21,7 +21,8 @@ namespace CodeBase.Infrastructure
 
             _instance = this;
             DontDestroyOnLoad(this);
-            
+
+            Application.targetFrameRate = 60;
             InitGame();
         }
 

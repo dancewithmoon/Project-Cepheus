@@ -1,29 +1,29 @@
 ﻿using CodeBase.Data;
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData;
 using UnityEngine;
 
-namespace CodeBase.Logic
+namespace CodeBase.Logic.Spawner
 {
-    [RequireComponent(typeof(UniqueId))]
     public class EnemySpawner : MonoBehaviour, ISavedProgress
     {
-        [SerializeField] private EnemyTypeId _enemyTypeId;
         [SerializeField] public bool _slain;
-        
+
         private string _id;
+        private EnemyTypeId _enemyTypeId;
+        
         private IGameFactory _gameFactory;
         private EnemyDeath _enemyDeath;
-        
-        private void Awake()
-        {
-            _id = GetComponent<UniqueId>().Id;
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-        }
 
+        public void Construct(GameFactory gameFactory, string id, EnemyTypeId enemyType)
+        {
+            _gameFactory = gameFactory;
+            _id = id;
+            _enemyTypeId = enemyType;
+        }
+        
         private void Spawn()
         {
             GameObject enemy = _gameFactory.CreateEnemy(_enemyTypeId, transform);

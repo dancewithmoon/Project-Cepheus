@@ -2,6 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Logic.Spawner;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
@@ -17,17 +18,18 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
         private readonly IRandomService _randomService;
-
+        private readonly IPersistentProgressService _progressService;
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
 
-        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService)
+        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService)
         {
             _assets = assets;
             _staticData = staticData;
             _randomService = randomService;
+            _progressService = progressService;
         }
 
         public GameObject CreateHero(GameObject initialPoint)
@@ -37,6 +39,13 @@ namespace CodeBase.Infrastructure.Factory
         }
 
         public GameObject CreateHud() => InstantiateRegistered(AssetPath.HudPath);
+
+        public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
+        {
+            var spawner = InstantiateRegistered(AssetPath.SpawnerPath, at).GetComponent<EnemySpawner>();
+            spawner.Construct(this, spawnerId, enemyTypeId);
+            return spawner.gameObject;
+        }
 
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
@@ -66,8 +75,9 @@ namespace CodeBase.Infrastructure.Factory
 
         public LootPiece CreateLoot()
         {
-            return InstantiateRegistered(AssetPath.Loot)
-                .GetComponent<LootPiece>();
+            var lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            lootPiece.Construct(_progressService.Progress.WorldData.LootOnLevel);
+            return lootPiece;
         }
 
         public void Cleanup()
@@ -76,7 +86,7 @@ namespace CodeBase.Infrastructure.Factory
             ProgressWriters.Clear();
         }
 
-        public void Register(ISavedProgressReader progressReader)
+        private void Register(ISavedProgressReader progressReader)
         {
             if (progressReader is ISavedProgress progressWriter)
             {

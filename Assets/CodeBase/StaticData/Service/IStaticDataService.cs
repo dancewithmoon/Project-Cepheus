@@ -4,9 +4,9 @@ namespace CodeBase.StaticData.Service
 {
     public interface IStaticDataService : IService
     {
-        void LoadHero();
-        void LoadEnemies();
+        void Load();
         HeroDefaultStaticData GetHero();
         EnemyStaticData GetEnemy(EnemyTypeId typeId);
+        LevelStaticData GetLevel(string levelKey);
     }
 }

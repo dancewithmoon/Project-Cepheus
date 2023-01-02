@@ -26,7 +26,7 @@ namespace CodeBase.Infrastructure.States
                     services.Single<IStaticDataService>()),
                 
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, 
-                    services.Single<IGameFactory>(), services.Single<IPersistentProgressService>()),
+                    services.Single<IGameFactory>(), services.Single<IPersistentProgressService>(), services.Single<IStaticDataService>()),
                 
                 [typeof(GameLoopState)] = new GameLoopState(this)
             };
