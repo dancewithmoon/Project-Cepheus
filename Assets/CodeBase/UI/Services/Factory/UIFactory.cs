@@ -1,4 +1,5 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Screens;
 using CodeBase.UI.Services.Screens;
@@ -10,12 +11,14 @@ namespace CodeBase.UI.Services.Factory
     {
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
+        private readonly IPersistentProgressService _progressService;
         private Transform _uiRoot;
-        
-        public UIFactory(IAssets assets, IStaticDataService staticData)
+
+        public UIFactory(IAssets assets, IStaticDataService staticData, IPersistentProgressService progressService)
         {
             _assets = assets;
             _staticData = staticData;
+            _progressService = progressService;
         }
 
         public void CreateUIRoot()
@@ -25,8 +28,9 @@ namespace CodeBase.UI.Services.Factory
         
         public void CreateShop()
         {
-            BaseScreen screen = _staticData.GetScreen(ScreenId.Shop);
-            Object.Instantiate(screen, _uiRoot);
+            BaseScreen prefab = _staticData.GetScreen(ScreenId.Shop);
+            BaseScreen screen = Object.Instantiate(prefab, _uiRoot);
+            screen.Construct(_progressService);
         }
     }
 }

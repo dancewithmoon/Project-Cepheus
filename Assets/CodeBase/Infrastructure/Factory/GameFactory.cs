@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Enemy;
+using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
-using CodeBase.UI;
 using CodeBase.UI.Elements;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
@@ -40,6 +40,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
+            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService.Progress.LootData);
             return _hero;
         }
 

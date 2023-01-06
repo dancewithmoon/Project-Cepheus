@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 6106303381462517263}
   - component: {fileID: 6199766596280857152}
   m_Layer: 0
-  m_Name: Text - Collected
+  m_Name: Text - Price
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

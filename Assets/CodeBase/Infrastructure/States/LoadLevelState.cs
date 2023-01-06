@@ -8,10 +8,8 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
-using CodeBase.UI;
 using CodeBase.UI.Elements;
 using CodeBase.UI.Services.Factory;
-using CodeBase.UI.Services.Screens;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States

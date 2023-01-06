@@ -1316,6 +1316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _closeButton: {fileID: 2059953486057569602}
+  _lootCount: {fileID: 6600659688845733131}
 --- !u!1 &2059953487500466607
 GameObject:
   m_ObjectHideFlags: 0

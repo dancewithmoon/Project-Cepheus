@@ -6,7 +6,12 @@ namespace CodeBase.Hero
 {
     public class HeroLootPickUp : MonoBehaviour, ISavedProgress
     {
-        public LootData LootData { get; } = new LootData();
+        public LootData LootData { get; private set; }
+
+        public void Construct(LootData lootData)
+        {
+            LootData = lootData;
+        }
         
         public void PickUp(Loot loot)
         {
