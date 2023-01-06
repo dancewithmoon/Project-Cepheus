@@ -14,9 +14,9 @@ namespace CodeBase.Hero
         private IInputService _inputService;
         private Camera _camera;
 
-        private void Awake()
+        public void Construct(IInputService inputService)
         {
-            _inputService = AllServices.Container.Single<IInputService>();
+            _inputService = inputService;
         }
 
         private void Start()

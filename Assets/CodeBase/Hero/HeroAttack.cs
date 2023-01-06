@@ -20,24 +20,24 @@ namespace CodeBase.Hero
 
         private AttackData _attackData;
 
-        private IInputService _input;
+        private IInputService _inputService;
 
         private static int _layerMask;
         private readonly Collider[] _hits = new Collider[MaxCountOfTargets];
 
         public float Damage => _attackData.Damage;
         public float AttackPointRadius => _attackData.AttackPointRadius;
-
-        private void Awake()
+        
+        public void Construct(IInputService inputService)
         {
-            _input = AllServices.Container.Single<IInputService>();
-
+            _inputService = inputService;
+            
             _layerMask = 1 << LayerMask.NameToLayer("Hittable");
         }
 
         private void Update()
         {
-            if (_input.IsAttackButtonUp() && _animator.IsAttacking == false)
+            if (_inputService.IsAttackButtonUp() && _animator.IsAttacking == false)
             {
                 _animator.PlayAttack();
             }

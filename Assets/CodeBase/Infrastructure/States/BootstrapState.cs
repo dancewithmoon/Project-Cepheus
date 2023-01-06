@@ -60,7 +60,8 @@ namespace CodeBase.Infrastructure.States
                     _services.Single<IStaticDataService>(),
                     _services.Single<IRandomService>(),
                     _services.Single<IPersistentProgressService>(), 
-                    _services.Single<IScreenService>()));
+                    _services.Single<IScreenService>(),
+                    _services.Single<IInputService>()));
 
             _services.RegisterSingle<ISaveLoadService>(
                 new SaveLoadService(

@@ -4,6 +4,7 @@ using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
+using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
@@ -22,25 +23,29 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
         private readonly IScreenService _screenService;
+        private readonly IInputService _inputService;
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
 
         public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
-            IPersistentProgressService progressService, IScreenService screenService)
+            IPersistentProgressService progressService, IScreenService screenService, IInputService inputService)
         {
             _assets = assets;
             _staticData = staticData;
             _randomService = randomService;
             _progressService = progressService;
             _screenService = screenService;
+            _inputService = inputService;
         }
 
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
             _hero.GetComponent<HeroLootPickUp>().Construct(_progressService.Progress.LootData);
+            _hero.GetComponent<HeroMove>().Construct(_inputService);
+            _hero.GetComponent<HeroAttack>().Construct(_inputService);
             return _hero;
         }
 
