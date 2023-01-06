@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CodeBase.UI.Screens;
+using CodeBase.UI.Services.Screens;
 using UnityEngine;
 
 namespace CodeBase.StaticData.Service
@@ -9,10 +11,12 @@ namespace CodeBase.StaticData.Service
         private const string HeroPath = "StaticData/HeroData";
         private const string EnemiesPath = "StaticData/Enemies";
         private const string LevelsPath = "StaticData/Levels";
+        private const string ScreensPath = "StaticData/Screens";
 
         private HeroDefaultStaticData _hero;
-        private Dictionary<EnemyTypeId,EnemyStaticData> _enemies;
-        private Dictionary<string,LevelStaticData> _levels;
+        private Dictionary<EnemyTypeId, EnemyStaticData> _enemies;
+        private Dictionary<string, LevelStaticData> _levels;
+        private Dictionary<ScreenId, BaseScreen> _screens;
 
         public void Load()
         {
@@ -23,6 +27,8 @@ namespace CodeBase.StaticData.Service
             
             _levels = Resources.LoadAll<LevelStaticData>(LevelsPath)
                 .ToDictionary(x => x.LevelKey, x => x);
+            
+            _screens = new Dictionary<ScreenId, BaseScreen>(Resources.Load<ScreenStaticData>(ScreensPath).Screens);
         }
 
         public HeroDefaultStaticData GetHero() => _hero;
@@ -36,5 +42,12 @@ namespace CodeBase.StaticData.Service
             _levels.TryGetValue(levelKey, out LevelStaticData levelData) 
                 ? levelData 
                 : null;
+
+        public BaseScreen GetScreen(ScreenId screenId)
+        {
+            return _screens.TryGetValue(screenId, out BaseScreen screen) 
+                ? screen
+                : null;
+        }
     }
 }

@@ -6,5 +6,6 @@
         public const string HudPath = "Hud/Hud";
         public const string Loot = "Loot/Loot";
         public const string SpawnerPath = "Enemies/EnemySpawner";
+        public const string UIRootPath = "UI/UIRoot";
     }
 }
