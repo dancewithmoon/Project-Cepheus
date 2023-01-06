@@ -17,9 +17,13 @@ namespace CodeBase.Logic.Spawner
         private IGameFactory _gameFactory;
         private EnemyDeath _enemyDeath;
 
-        public void Construct(GameFactory gameFactory, string id, EnemyTypeId enemyType)
+        public void Construct(GameFactory gameFactory)
         {
             _gameFactory = gameFactory;
+        }
+
+        public void Initialize(string id, EnemyTypeId enemyType)
+        {
             _id = id;
             _enemyTypeId = enemyType;
         }

@@ -13,7 +13,7 @@ namespace CodeBase.Enemy
         public float Current { get; set; }
         public float Max { get; set; }
 
-        public void Construct(float current, float max)
+        public void Initialize(float current, float max)
         {
             Current = current;
             Max = max;

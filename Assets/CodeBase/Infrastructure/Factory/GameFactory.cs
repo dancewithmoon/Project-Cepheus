@@ -62,8 +62,9 @@ namespace CodeBase.Infrastructure.Factory
 
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {
-            var spawner = InstantiateRegistered(AssetPath.SpawnerPath, at).GetComponent<EnemySpawner>();
-            spawner.Construct(this, spawnerId, enemyTypeId);
+            EnemySpawner spawner = InstantiateRegistered(AssetPath.SpawnerPath, at).GetComponent<EnemySpawner>();
+            spawner.Construct(this);
+            spawner.Initialize(spawnerId, enemyTypeId);
             return spawner.gameObject;
         }
 
@@ -72,30 +73,28 @@ namespace CodeBase.Infrastructure.Factory
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
             GameObject enemy = Object.Instantiate(enemyData.Prefab, parent.position, Quaternion.identity, parent);
             
-            var enemyHealth = enemy.GetComponent<EnemyHealth>();
-            enemyHealth.Construct(enemyData.Hp, enemyData.Hp);
+            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+            enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
-            var enemyAttack = enemy.GetComponent<EnemyAttack>();
-            enemyAttack.Construct(
-                enemyData.Damage,
-                enemyData.AttackPointRadius,
-                enemyData.EffectiveDistance,
-                enemyData.AttackCooldown, 
-                _hero.transform);
-
+            EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
+            enemyAttack.Construct(_hero.transform);
+            enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
+            
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
             enemy.GetComponent<AgentMoveToHero>().Construct(_hero.transform);
             
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
-            enemy.GetComponentInChildren<LootSpawner>().Construct(this, _randomService, enemyData.MinLoot, enemyData.MaxLoot);
+            LootSpawner lootSpawner = enemy.GetComponentInChildren<LootSpawner>();
+            lootSpawner.Construct(this, _randomService);
+            lootSpawner.Initialize(enemyData.MinLoot, enemyData.MaxLoot);
 
             return enemy;
         }
 
         public LootPiece CreateLoot()
         {
-            var lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
             lootPiece.Construct(_progressService.Progress.WorldData.LootOnLevel);
             return lootPiece;
         }

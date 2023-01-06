@@ -14,10 +14,14 @@ namespace CodeBase.Enemy
         private int _lootMin;
         private int _lootMax;
 
-        public void Construct(IGameFactory factory, IRandomService randomService, int min, int max)
+        public void Construct(IGameFactory factory, IRandomService randomService)
         {
             _factory = factory;
             _random = randomService;
+        }
+
+        public void Initialize(int min, int max)
+        {
             _lootMin = min;
             _lootMax = max;
         }

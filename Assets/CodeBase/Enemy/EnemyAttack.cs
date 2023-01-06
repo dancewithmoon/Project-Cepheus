@@ -24,19 +24,23 @@ namespace CodeBase.Enemy
 
         private readonly Collider[] _hits = new Collider[1];
 
-        public void Construct(float damage, float attackPointRadius, float effectiveDistance, float cooldown, Transform hero)
+        public void Construct(Transform hero)
+        {
+            _heroTransform = hero;
+
+            _layerMask = LayerMask.GetMask("Player");
+        }
+
+        public void Initialize(float damage, float attackPointRadius, float effectiveDistance, float cooldown)
         {
             _damage = damage;
             _attackPointRadius = attackPointRadius;
             _effectiveDistance = effectiveDistance;
             _cooldown = cooldown;
-            _heroTransform = hero;
-
-            _layerMask = LayerMask.GetMask("Player");
             
             StartCoroutine(AttackLoop());
         }
-
+        
         private IEnumerator AttackLoop()
         {
             var cooldown = new WaitForSeconds(_cooldown);
