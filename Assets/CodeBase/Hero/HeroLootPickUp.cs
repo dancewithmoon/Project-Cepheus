@@ -1,31 +1,33 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Hero
 {
     public class HeroLootPickUp : MonoBehaviour, ISavedProgress
     {
-        public LootData LootData { get; private set; }
+        private LootData _lootData;
 
-        public void Construct(LootData lootData)
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
         {
-            LootData = lootData;
+            _lootData = progressService.Progress.LootData;
         }
         
         public void PickUp(Loot loot)
         {
-            LootData.Collect(loot);
+            _lootData.Collect(loot);
         }
 
         public void LoadProgress(PlayerProgress progress)
         {
-            LootData.Count = progress.LootData.Count;
+            _lootData.Count = progress.LootData.Count;
         }
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            progress.LootData.Count = LootData.Count;
+            progress.LootData.Count = _lootData.Count;
         }
     }
 }

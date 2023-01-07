@@ -43,7 +43,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
-            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService.Progress.LootData);
+            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService);
             _hero.GetComponent<HeroMove>().Construct(_inputService);
             _hero.GetComponent<HeroAttack>().Construct(_inputService);
             return _hero;

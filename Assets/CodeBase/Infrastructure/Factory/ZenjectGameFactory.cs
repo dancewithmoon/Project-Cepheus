@@ -32,22 +32,21 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject _hero;
 
-        public ZenjectGameFactory(IInputService inputService, IAssets assets, DiContainer container)
+        public ZenjectGameFactory(IInputService inputService, IAssets assets, IPersistentProgressService progressService, DiContainer container)
         {
             _inputService = inputService;
             _assets = assets;
+            _progressService = progressService;
             _container = container;
-            
+
             _staticData = AllServices.Container.Single<IStaticDataService>();
             _randomService = AllServices.Container.Single<IRandomService>();
-            _progressService = AllServices.Container.Single<IPersistentProgressService>();
             _screenService = AllServices.Container.Single<IScreenService>();
         }
 
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
-            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService.Progress.LootData);
             return _hero;
         }
 

@@ -25,12 +25,12 @@ namespace CodeBase.Infrastructure.States
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, container),
                 
                 [typeof(LoadProgressState)] = new LoadProgressState(this, 
-                    services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>(), 
+                    container.Resolve<IPersistentProgressService>(), services.Single<ISaveLoadService>(), 
                     services.Single<IStaticDataService>()),
                 
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, 
                     container.Resolve<IGameFactory>(), 
-                    services.Single<IPersistentProgressService>(), 
+                    container.Resolve<IPersistentProgressService>(), 
                     services.Single<IStaticDataService>(),
                     services.Single<IUIFactory>()),
                 
