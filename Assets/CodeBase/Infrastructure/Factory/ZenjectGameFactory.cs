@@ -4,7 +4,6 @@ using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Logic;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
@@ -42,6 +41,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
+            _container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
             return _hero;
         }
 
@@ -68,12 +68,9 @@ namespace CodeBase.Infrastructure.Factory
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
-            enemyAttack.Construct(_hero.transform);
             enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
-            _container.Bind<IHealth>().FromInstance(enemyHealth).WhenInjectedIntoInstance(enemy);
-            enemy.GetComponent<ActorUI>().Construct(enemyHealth);
-            enemy.GetComponent<AgentMoveToHero>().Construct(_hero.transform);
             
+            enemy.GetComponent<ActorUI>().Construct(enemyHealth);
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
             LootSpawner lootSpawner = enemy.GetComponentInChildren<LootSpawner>();

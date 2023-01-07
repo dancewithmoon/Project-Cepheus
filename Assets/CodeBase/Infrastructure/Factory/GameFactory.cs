@@ -78,11 +78,11 @@ namespace CodeBase.Infrastructure.Factory
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
-            enemyAttack.Construct(_hero.transform);
+            enemyAttack.HeroTransform = _hero.transform;
             enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
             
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
-            enemy.GetComponent<AgentMoveToHero>().Construct(_hero.transform);
+            enemy.GetComponent<AgentMoveToHero>().HeroTransform = _hero.transform;
             
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
