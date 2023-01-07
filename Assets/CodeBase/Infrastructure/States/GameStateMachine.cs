@@ -32,7 +32,7 @@ namespace CodeBase.Infrastructure.States
                     container.Resolve<IGameFactory>(), 
                     container.Resolve<IPersistentProgressService>(), 
                     services.Single<IStaticDataService>(),
-                    services.Single<IUIFactory>()),
+                    container.Resolve<IUIFactory>()),
                 
                 [typeof(GameLoopState)] = new GameLoopState(this)
             };

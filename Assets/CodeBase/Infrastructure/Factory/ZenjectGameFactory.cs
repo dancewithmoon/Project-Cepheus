@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Enemy;
-using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
-using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Elements;
-using CodeBase.UI.Services.Screens;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -23,8 +20,6 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IStaticDataService _staticData;
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
-        private readonly IScreenService _screenService;
-        private readonly IInputService _inputService;
         private readonly DiContainer _container;
         
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
@@ -32,16 +27,14 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject _hero;
 
-        public ZenjectGameFactory(IInputService inputService, IAssets assets, IPersistentProgressService progressService, DiContainer container)
+        public ZenjectGameFactory(IAssets assets, IPersistentProgressService progressService, DiContainer container)
         {
-            _inputService = inputService;
             _assets = assets;
             _progressService = progressService;
             _container = container;
 
             _staticData = AllServices.Container.Single<IStaticDataService>();
             _randomService = AllServices.Container.Single<IRandomService>();
-            _screenService = AllServices.Container.Single<IScreenService>();
         }
 
         public GameObject CreateHero(GameObject initialPoint)
@@ -50,15 +43,8 @@ namespace CodeBase.Infrastructure.Factory
             return _hero;
         }
 
-        public GameObject CreateHud()
-        {
-            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
-            foreach (OpenScreenButton button in hud.GetComponentsInChildren<OpenScreenButton>())
-            {
-                button.Construct(_screenService);
-            }
-            return hud;
-        }
+        public GameObject CreateHud() => 
+            InstantiateRegistered(AssetPath.HudPath);
 
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {

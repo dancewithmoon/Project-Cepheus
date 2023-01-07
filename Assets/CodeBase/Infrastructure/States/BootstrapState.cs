@@ -50,13 +50,8 @@ namespace CodeBase.Infrastructure.States
             _services.RegisterSingle<IRandomService>(new UnityRandomService());
             RegisterStaticData();
 
-            _services.RegisterSingle<IUIFactory>(
-                new UIFactory(
-                    _container.Resolve<IAssets>(),
-                    _services.Single<IStaticDataService>(),
-                    _container.Resolve<IPersistentProgressService>()));
-            
-            _services.RegisterSingle<IScreenService>(new ScreenService(_services.Single<IUIFactory>()));
+            _container.Bind<IUIFactory>().To<UIFactory>().AsSingle();
+            _container.Bind<IScreenService>().To<ScreenService>().AsSingle();
 
             _container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
 

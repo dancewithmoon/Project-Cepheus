@@ -1,4 +1,5 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Screens;
@@ -14,11 +15,11 @@ namespace CodeBase.UI.Services.Factory
         private readonly IPersistentProgressService _progressService;
         private Transform _uiRoot;
 
-        public UIFactory(IAssets assets, IStaticDataService staticData, IPersistentProgressService progressService)
+        public UIFactory(IAssets assets, IPersistentProgressService progressService)
         {
             _assets = assets;
-            _staticData = staticData;
             _progressService = progressService;
+            _staticData = AllServices.Container.Single<IStaticDataService>();
         }
 
         public void CreateUIRoot()
