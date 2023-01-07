@@ -1,5 +1,4 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
-using CodeBase.Infrastructure.Services;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
@@ -14,11 +13,11 @@ namespace CodeBase.UI.Services.Factory
         private readonly IStaticDataService _staticData;
         private Transform _uiRoot;
 
-        public ZenjectUIFactory(IAssets assets, DiContainer container)
+        public ZenjectUIFactory(IAssets assets, IStaticDataService staticData, DiContainer container)
         {
             _assets = assets;
+            _staticData = staticData;
             _container = container;
-            _staticData = AllServices.Container.Single<IStaticDataService>();
         }
 
         public void CreateUIRoot()

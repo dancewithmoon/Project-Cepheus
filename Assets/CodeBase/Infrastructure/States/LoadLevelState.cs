@@ -2,13 +2,11 @@
 using CodeBase.CameraLogic;
 using CodeBase.Data;
 using CodeBase.Enemy;
-using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
-using CodeBase.UI.Elements;
 using CodeBase.UI.Services.Factory;
 using UnityEngine;
 

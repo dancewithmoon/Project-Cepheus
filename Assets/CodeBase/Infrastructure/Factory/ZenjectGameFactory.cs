@@ -2,10 +2,8 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
-using CodeBase.Services.Randomizer;
 using CodeBase.StaticData;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Elements;
@@ -19,8 +17,6 @@ namespace CodeBase.Infrastructure.Factory
     {
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
-        private readonly IRandomService _randomService;
-        private readonly IPersistentProgressService _progressService;
         private readonly DiContainer _container;
         
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
@@ -28,14 +24,11 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject _hero;
 
-        public ZenjectGameFactory(IAssets assets, IPersistentProgressService progressService, IRandomService randomService, DiContainer container)
+        public ZenjectGameFactory(IAssets assets, IStaticDataService staticData, DiContainer container)
         {
             _assets = assets;
-            _progressService = progressService;
-            _randomService = randomService;
+            _staticData = staticData;
             _container = container;
-
-            _staticData = AllServices.Container.Single<IStaticDataService>();
         }
 
         public GameObject CreateHero(GameObject initialPoint)

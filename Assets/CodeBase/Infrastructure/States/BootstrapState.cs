@@ -1,7 +1,5 @@
-﻿using System;
-using CodeBase.Infrastructure.AssetManagement;
+﻿using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Services.Input;
@@ -19,20 +17,19 @@ namespace CodeBase.Infrastructure.States
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly DiContainer _container;
-        private readonly AllServices _services;
 
         public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, DiContainer container)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
             _container = container;
-            _services = AllServices.Container;
-            
+
             RegisterServices();
         }
 
         public void Enter()
         {
+            _container.Resolve<IStaticDataService>().Load();
             _sceneLoader.Load(Scenes.Initial, EnterLoadLevel);
         }
 
@@ -47,34 +44,21 @@ namespace CodeBase.Infrastructure.States
             _container.Bind<IAssets>().To<ZenjectAssetProvider>().AsSingle();
             _container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
             _container.Bind<IRandomService>().To<UnityRandomService>().AsSingle();
-
-            RegisterStaticData();
-
+            _container.Bind<IStaticDataService>().To<StaticDataService>().AsSingle();
             _container.Bind<IUIFactory>().To<ZenjectUIFactory>().AsSingle();
             _container.Bind<IScreenService>().To<ScreenService>().AsSingle();
             _container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
             _container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
         }
 
-        private void RegisterStaticData()
-        {
-            IStaticDataService staticData = new StaticDataService();
-            staticData.Load();
-            _services.RegisterSingle<IStaticDataService>(staticData);
-        }
-
         public void Exit()
         {
         }
 
-        private static IInputService GetInputService()
-        {
-            if (Application.isEditor)
-            {
-                return new StandaloneInputService();
-            }
-
-            return new MobileInputService();
-        }
+        private static IInputService GetInputService() =>
+            Application.isEditor 
+                ? (IInputService)new StandaloneInputService() 
+                : new MobileInputService();
+        
     }
 }

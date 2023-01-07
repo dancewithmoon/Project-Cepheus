@@ -40,7 +40,7 @@ namespace CodeBase.Infrastructure.States
 
         private PlayerProgress InitNewProgress()
         {
-            var progress = new PlayerProgress("Main");
+            PlayerProgress progress = new PlayerProgress("Main");
 
             HeroDefaultStaticData heroDefaultData = _staticDataService.GetHero();
             
