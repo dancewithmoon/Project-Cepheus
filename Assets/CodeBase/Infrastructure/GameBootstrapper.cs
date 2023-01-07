@@ -1,35 +1,42 @@
-﻿using CodeBase.Infrastructure.States;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Infrastructure
 {
-    public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
+    public class GameBootstrapper : MonoInstaller, ICoroutineRunner
     {
-        private static GameBootstrapper _instance;
-        
         [SerializeField] private LoadingCurtain _loadingCurtain;
         private Game _game;
 
-        private void Awake()
+        public override void InstallBindings()
         {
-            if (_instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            _instance = this;
-            DontDestroyOnLoad(this);
-
             Application.targetFrameRate = 60;
             InitGame();
         }
 
         private void InitGame()
         {
-            _game = new Game(this, _loadingCurtain);
+            Container.Bind<ICoroutineRunner>().FromMethod(CreateCoroutineRunner).AsSingle();
+            Container.Bind<LoadingCurtain>().FromInstance(_loadingCurtain).AsSingle();
+            Container.Bind<SceneLoader>().AsSingle();
+            
+            Container.Bind<Game>().AsSingle();
+        }
+
+        public override void Start()
+        {
+            _game = Container.Resolve<Game>();
             _game.StateMachine.Enter<BootstrapState>();
+        }
+
+        private static ICoroutineRunner CreateCoroutineRunner()
+        {
+            CoroutineRunner coroutineRunner = new GameObject("CoroutineRunner").AddComponent<CoroutineRunner>();
+            DontDestroyOnLoad(coroutineRunner);
+            return coroutineRunner;
         }
     }
 }
