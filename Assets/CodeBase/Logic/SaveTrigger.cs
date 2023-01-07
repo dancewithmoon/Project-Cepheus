@@ -20,6 +20,7 @@ namespace CodeBase.Logic
         
         public void Start()
         {
+            //TODO: create SaveTrigger via Game Factory, inject SaveLoadService correctly
             _saveLoadService = ProjectContext.Instance.Container.Resolve<ISaveLoadService>();
         }
         
