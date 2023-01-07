@@ -46,8 +46,8 @@ namespace CodeBase.Infrastructure.States
             _container.Bind<IInputService>().FromMethod(GetInputService);
             _container.Bind<IAssets>().To<ZenjectAssetProvider>().AsSingle();
             _container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
-            
-            _services.RegisterSingle<IRandomService>(new UnityRandomService());
+            _container.Bind<IRandomService>().To<UnityRandomService>().AsSingle();
+
             RegisterStaticData();
 
             _container.Bind<IUIFactory>().To<UIFactory>().AsSingle();

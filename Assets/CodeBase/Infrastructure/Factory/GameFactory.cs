@@ -52,6 +52,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHud()
         {
             GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            hud.GetComponentInChildren<ActorUI>().Construct(_hero.GetComponent<HeroHealth>());
             hud.GetComponentInChildren<LootCountView>().Construct(_progressService);
             foreach (OpenScreenButton button in hud.GetComponentsInChildren<OpenScreenButton>())
             {
@@ -95,7 +96,7 @@ namespace CodeBase.Infrastructure.Factory
         public LootPiece CreateLoot()
         {
             LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
-            lootPiece.Construct(_progressService.Progress.WorldData.LootOnLevel);
+            lootPiece.Construct(_progressService);
             return lootPiece;
         }
 

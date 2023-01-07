@@ -77,7 +77,7 @@ namespace CodeBase.Infrastructure.States
             InitSpawners();
             InitLoot();
             GameObject hero = InitHero();
-            InitHud(hero);
+            InitHud();
             CameraFollow(hero);
         }
 
@@ -105,12 +105,8 @@ namespace CodeBase.Infrastructure.States
         private GameObject InitHero() => 
             _gameFactory.CreateHero(GameObject.FindWithTag(InitialPointTag));
 
-        private void InitHud(GameObject hero)
-        {
-            GameObject hud = _gameFactory.CreateHud();
-            
-            hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
-        }
+        private void InitHud() => 
+            _gameFactory.CreateHud();
 
         private static void CameraFollow(GameObject hero)
         {

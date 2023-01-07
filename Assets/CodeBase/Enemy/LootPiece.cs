@@ -5,6 +5,8 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CodeBase.Enemy
 {
@@ -27,9 +29,10 @@ namespace CodeBase.Enemy
 
         private LootOnLevel _lootOnLevel;
 
-        public void Construct(LootOnLevel lootOnLevel)
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
         {
-            _lootOnLevel = lootOnLevel;
+            _lootOnLevel = progressService.Progress.WorldData.LootOnLevel;
         }
 
         public void Initialize(Loot loot)
@@ -54,11 +57,11 @@ namespace CodeBase.Enemy
             {
                 progress.WorldData.LootOnLevel.Loots.Remove(_uniqueId.Id);
             }
-            
+ 
             progress.WorldData.LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData()
             {
                 Loot = _loot,
-                PositionOnLevel = new PositionOnLevel(gameObject.scene.name, transform.position.AsVectorData())
+                PositionOnLevel = new PositionOnLevel(SceneManager.GetActiveScene().name, transform.position.AsVectorData())
             });
         }
 
