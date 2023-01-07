@@ -12,8 +12,9 @@ namespace CodeBase.Infrastructure.States
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadService;
         private readonly IStaticDataService _staticDataService;
-        
-        public LoadProgressState(GameStateMachine stateMachine, IPersistentProgressService progressService, ISaveLoadService saveLoadService, IStaticDataService staticDataService)
+
+        public LoadProgressState(GameStateMachine stateMachine, IPersistentProgressService progressService,
+            ISaveLoadService saveLoadService, IStaticDataService staticDataService)
         {
             _stateMachine = stateMachine;
             _progressService = progressService;
@@ -24,13 +25,12 @@ namespace CodeBase.Infrastructure.States
         public void Enter()
         {
             LoadProgressOrInitNew();
-            
+
             _stateMachine.Enter<LoadLevelState, string>(_progressService.Progress.WorldData.PositionOnLevel.Level);
         }
 
         public void Exit()
         {
-            
         }
 
         private void LoadProgressOrInitNew()
@@ -43,7 +43,7 @@ namespace CodeBase.Infrastructure.States
             PlayerProgress progress = new PlayerProgress("Main");
 
             HeroDefaultStaticData heroDefaultData = _staticDataService.GetHero();
-            
+
             progress.AttackData.Damage = heroDefaultData.Damage;
             progress.AttackData.AttackPointRadius = heroDefaultData.AttackPointRadius;
 

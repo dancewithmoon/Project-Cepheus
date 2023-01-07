@@ -6,7 +6,7 @@ namespace CodeBase.Data
     public class LootData
     {
         public int Count;
-        
+
         public event Action Changed;
 
         public void Collect(Loot loot)

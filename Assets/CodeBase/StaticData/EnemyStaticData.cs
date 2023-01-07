@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.StaticData
 {
@@ -7,28 +6,28 @@ namespace CodeBase.StaticData
     public class EnemyStaticData : ScriptableObject
     {
         [SerializeField] private EnemyTypeId _enemyType;
-        
-        [Range(1, 10)]
+
+        [Range(1, 10)] 
         [SerializeField] private float _movementSpeed = 3;
 
-        [Range(1, 100)]
+        [Range(1, 100)] 
         [SerializeField] private int _hp;
 
-        [Range(1, 30)]
+        [Range(1, 30)] 
         [SerializeField] private int _damage;
 
-        [Range(0.5f, 1)]
+        [Range(0.5f, 1)] 
         [SerializeField] private float _attackPointRadius = 0.5f;
 
-        [Range(0.5f, 1)]
+        [Range(0.5f, 1)] 
         [SerializeField] private float _effectiveDistance = 0.5f;
 
-        [Range(0.1f, 10f)]
+        [Range(0.1f, 10f)] 
         [SerializeField] private float _attackCooldown = 2f;
 
         [SerializeField] private int _minLoot;
         [SerializeField] private int _maxLoot;
-        
+
         [SerializeField] private GameObject _prefab;
 
         public EnemyTypeId EnemyType => _enemyType;

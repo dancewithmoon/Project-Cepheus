@@ -14,9 +14,9 @@ namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
-        private readonly GameStateMachine _stateMachine;
-        private readonly SceneLoader _sceneLoader;
         private readonly DiContainer _container;
+        private readonly SceneLoader _sceneLoader;
+        private readonly GameStateMachine _stateMachine;
 
         public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, DiContainer container)
         {
@@ -31,6 +31,10 @@ namespace CodeBase.Infrastructure.States
         {
             _container.Resolve<IStaticDataService>().Load();
             _sceneLoader.Load(Scenes.Initial, EnterLoadLevel);
+        }
+
+        public void Exit()
+        {
         }
 
         private void EnterLoadLevel()
@@ -51,14 +55,11 @@ namespace CodeBase.Infrastructure.States
             _container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
         }
 
-        public void Exit()
+        private static IInputService GetInputService()
         {
-        }
-
-        private static IInputService GetInputService() =>
-            Application.isEditor 
-                ? (IInputService)new StandaloneInputService() 
+            return Application.isEditor
+                ? (IInputService)new StandaloneInputService()
                 : new MobileInputService();
-        
+        }
     }
 }

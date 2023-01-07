@@ -13,7 +13,7 @@ namespace CodeBase.Hero
         private HealthData _health;
 
         public event Action HealthChanged;
-        
+
         public float Current
         {
             get => _health.CurrentHp;
@@ -37,7 +37,7 @@ namespace CodeBase.Hero
         {
             if (enabled == false)
                 return;
-            
+
             Current -= damage;
             _animator.PlayHit();
         }

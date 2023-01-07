@@ -755,28 +755,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 898627494}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &898391059 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1269585577436207702, guid: fe691d08050018a4b9669e93dfc6295a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1269585577600430104}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &898391063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898391059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f704bebdb074af49e32a81004db7820, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotationAngleX: 55
-  Distance: 10
-  OffsetY: 0.5
-  _following: {fileID: 0}
 --- !u!1001 &898627494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1708,11 +1686,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1269585577436207690, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
-    - {fileID: 1269585577436207691, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
-    - {fileID: 1269585577436207692, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
-    - {fileID: 1269585577436207693, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
 --- !u!1001 &5291098251876116185
 PrefabInstance:

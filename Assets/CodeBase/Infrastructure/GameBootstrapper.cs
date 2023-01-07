@@ -1,5 +1,4 @@
-﻿using CodeBase.Hero;
-using CodeBase.Infrastructure.Services;
+﻿using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;

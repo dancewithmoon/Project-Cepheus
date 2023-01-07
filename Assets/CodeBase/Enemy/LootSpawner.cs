@@ -12,10 +12,10 @@ namespace CodeBase.Enemy
         [SerializeField] private EnemyDeath _death;
         private IGameFactory _factory;
         private IRandomService _random;
+
         private int _lootMin;
         private int _lootMax;
 
-        
         [Inject]
         public void Construct(IGameFactory factory, IRandomService randomService)
         {
@@ -28,16 +28,18 @@ namespace CodeBase.Enemy
             _lootMin = min;
             _lootMax = max;
         }
-        
+
         private void Start()
         {
             _death.Happened += OnDeathHappened;
         }
 
-        private void OnDeathHappened()
+        private void OnDestroy()
         {
-            SpawnLoot();
+            _death.Happened -= OnDeathHappened;
         }
+        
+        private void OnDeathHappened() => SpawnLoot();
 
         private void SpawnLoot()
         {
@@ -48,11 +50,7 @@ namespace CodeBase.Enemy
             lootPiece.Initialize(GenerateLoot());
         }
 
-        private Loot GenerateLoot() => new Loot(value: _random.Next(_lootMin, _lootMax));
-
-        private void OnDestroy()
-        {
-            _death.Happened -= OnDeathHappened;
-        }
+        private Loot GenerateLoot() => 
+            new Loot(_random.Next(_lootMin, _lootMax));
     }
 }

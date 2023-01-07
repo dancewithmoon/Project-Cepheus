@@ -15,9 +15,14 @@ namespace CodeBase.UI.Elements
         public void Construct(IPersistentProgressService progressService)
         {
             _lootData = progressService.Progress.LootData;
-            
+
             _lootData.Changed += OnLootDataChanged;
             UpdateCounter();
+        }
+
+        private void OnDestroy()
+        {
+            _lootData.Changed -= OnLootDataChanged;
         }
 
         private void OnLootDataChanged() => UpdateCounter();
@@ -25,11 +30,6 @@ namespace CodeBase.UI.Elements
         private void UpdateCounter()
         {
             _count.text = _lootData.Count.ToString();
-        }
-
-        private void OnDestroy()
-        {
-            _lootData.Changed -= OnLootDataChanged;
         }
     }
 }

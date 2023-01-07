@@ -20,18 +20,18 @@ namespace CodeBase.Infrastructure.States
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, container),
-                
-                [typeof(LoadProgressState)] = new LoadProgressState(this, 
-                    container.Resolve<IPersistentProgressService>(), 
-                    container.Resolve<ISaveLoadService>(), 
+
+                [typeof(LoadProgressState)] = new LoadProgressState(this,
+                    container.Resolve<IPersistentProgressService>(),
+                    container.Resolve<ISaveLoadService>(),
                     container.Resolve<IStaticDataService>()),
-                
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, 
-                    container.Resolve<IGameFactory>(), 
-                    container.Resolve<IPersistentProgressService>(), 
+
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain,
+                    container.Resolve<IGameFactory>(),
+                    container.Resolve<IPersistentProgressService>(),
                     container.Resolve<IStaticDataService>(),
                     container.Resolve<IUIFactory>()),
-                
+
                 [typeof(GameLoopState)] = new GameLoopState(this)
             };
         }

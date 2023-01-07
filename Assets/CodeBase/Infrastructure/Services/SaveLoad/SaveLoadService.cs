@@ -20,14 +20,13 @@ namespace CodeBase.Infrastructure.Services.SaveLoad
 
         public void SaveProgress()
         {
-            _gameFactory.ProgressWriters.ForEach(progressWriter => progressWriter.UpdateProgress(_progressService.Progress));
-            
+            _gameFactory.ProgressWriters.ForEach(progressWriter =>
+                progressWriter.UpdateProgress(_progressService.Progress));
+
             PlayerPrefs.SetString(ProgressKey, _progressService.Progress.ToJson());
         }
 
-        public PlayerProgress LoadProgress()
-        {
-            return PlayerPrefs.GetString(ProgressKey)?.ToDeserialized<PlayerProgress>();
-        }
+        public PlayerProgress LoadProgress() => 
+            PlayerPrefs.GetString(ProgressKey)?.ToDeserialized<PlayerProgress>();
     }
 }

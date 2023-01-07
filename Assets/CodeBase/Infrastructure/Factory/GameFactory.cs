@@ -12,7 +12,6 @@ using CodeBase.UI.Elements;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
 using UnityEngine.AI;
-using Object = UnityEngine.Object;
 
 namespace CodeBase.Infrastructure.Factory
 {

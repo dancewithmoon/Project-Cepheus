@@ -11,11 +11,11 @@ namespace CodeBase.Logic.Spawner
     public class EnemySpawner : MonoBehaviour, ISavedProgress
     {
         [SerializeField] public bool _slain;
-
+        private IGameFactory _gameFactory;
+        
         private string _id;
         private EnemyTypeId _enemyTypeId;
-        
-        private IGameFactory _gameFactory;
+
         private EnemyDeath _enemyDeath;
 
         [Inject]
@@ -47,6 +47,14 @@ namespace CodeBase.Logic.Spawner
             _slain = true;
         }
 
+        private void OnDestroy()
+        {
+            if (_enemyDeath != null)
+            {
+                _enemyDeath.Happened -= OnEnemyDeathHappened;
+            }
+        }
+
         public void LoadProgress(PlayerProgress progress)
         {
             if (progress.EnemiesData.KilledEnemies.Contains(_id))
@@ -63,14 +71,6 @@ namespace CodeBase.Logic.Spawner
             if (_slain)
             {
                 progress.EnemiesData.KilledEnemies.Add(_id);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (_enemyDeath != null)
-            {
-                _enemyDeath.Happened -= OnEnemyDeathHappened;
             }
         }
     }

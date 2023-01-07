@@ -12,15 +12,16 @@ namespace CodeBase.Enemy
     {
         [SerializeField] private EnemyAnimator _animator;
 
-        private float _damage;
         private float _attackPointRadius;
-        private float _effectiveDistance;
         private float _cooldown;
 
-        private LayerMask _layerMask;
-
-        private bool _isAttacking;
+        private float _damage;
+        private float _effectiveDistance;
+        
         private bool _isAttackEnabled;
+        private bool _isAttacking;
+
+        private LayerMask _layerMask;
 
         private readonly Collider[] _hits = new Collider[1];
         
@@ -37,10 +38,10 @@ namespace CodeBase.Enemy
 
             StartCoroutine(AttackLoop());
         }
-        
+
         private IEnumerator AttackLoop()
         {
-            var cooldown = new WaitForSeconds(_cooldown);
+            WaitForSeconds cooldown = new WaitForSeconds(_cooldown);
             while (this)
             {
                 yield return new WaitUntil(IsAttackEnabled);
@@ -63,7 +64,7 @@ namespace CodeBase.Enemy
         private void StartAttack()
         {
             _isAttacking = true;
-            
+
             transform.LookAt(HeroTransform);
             _animator.PlayAttack();
         }

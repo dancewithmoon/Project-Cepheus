@@ -11,25 +11,25 @@ namespace CodeBase.Logic
 
         private void OnDrawGizmos()
         {
-            if(_collider == null)
+            if (_collider == null)
                 return;
-            
+
             Gizmos.color = new Color32(30, 200, 30, 130);
             Gizmos.DrawCube(transform.position + _collider.center, _collider.size);
         }
-        
-        public void Start()
+
+        private void Start()
         {
             //TODO: create SaveTrigger via Game Factory, inject SaveLoadService correctly
             _saveLoadService = ProjectContext.Instance.Container.Resolve<ISaveLoadService>();
         }
-        
+
         private void OnTriggerEnter(Collider other)
         {
             _saveLoadService.SaveProgress();
-            
+
             Debug.Log("PROGRESS SAVED");
-            
+
             gameObject.SetActive(false);
         }
     }

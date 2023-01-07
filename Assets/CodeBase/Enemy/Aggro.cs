@@ -11,9 +11,9 @@ namespace CodeBase.Enemy
 
         [SerializeField] private float _cooldown;
         private Coroutine _cooldownCoroutine;
-        
+
         private bool _hasTarget; //flag is needed to avoid multiple trigger events
-        
+
         private void Start()
         {
             _triggerObserver.TriggerEnter += TriggerEnter;
@@ -22,9 +22,15 @@ namespace CodeBase.Enemy
             StopFollow();
         }
 
+        private void OnDestroy()
+        {
+            _triggerObserver.TriggerEnter -= TriggerEnter;
+            _triggerObserver.TriggerExit -= TriggerExit;
+        }
+
         private void TriggerEnter(Collider obj)
         {
-            if(_hasTarget)
+            if (_hasTarget)
                 return;
 
             _hasTarget = true;
@@ -34,9 +40,9 @@ namespace CodeBase.Enemy
 
         private void TriggerExit(Collider obj)
         {
-            if(_hasTarget == false)
+            if (_hasTarget == false)
                 return;
-            
+
             _hasTarget = false;
             _cooldownCoroutine = StartCoroutine(StopFollowAfterCooldown());
         }
@@ -64,12 +70,6 @@ namespace CodeBase.Enemy
                 StopCoroutine(_cooldownCoroutine);
                 _cooldownCoroutine = null;
             }
-        }
-
-        private void OnDestroy()
-        {
-            _triggerObserver.TriggerEnter -= TriggerEnter;
-            _triggerObserver.TriggerExit -= TriggerExit;
         }
     }
 }

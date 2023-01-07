@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CodeBase.Logic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -13,26 +12,24 @@ namespace Editor
     {
         private void OnEnable()
         {
-            var uniqueId = (UniqueId)target;
+            UniqueId uniqueId = (UniqueId)target;
             if (string.IsNullOrEmpty(uniqueId.Id))
             {
                 Generate(uniqueId);
                 return;
             }
-            
+
             if (IsAnyObjectWithSameId(uniqueId))
-            {
                 Generate(uniqueId);
-            }
         }
 
         private static void Generate(UniqueId uniqueId)
         {
-            if (Application.isPlaying) 
+            if (Application.isPlaying)
                 return;
 
             Scene currentScene = uniqueId.gameObject.scene;
-            
+
             uniqueId.Generate();
 
             EditorUtility.SetDirty(uniqueId);

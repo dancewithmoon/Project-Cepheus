@@ -1,5 +1,4 @@
 ﻿using CodeBase.Data;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.Services.Input;
@@ -13,39 +12,35 @@ namespace CodeBase.Hero
     public class HeroAttack : MonoBehaviour, ISavedProgressReader
     {
         private const int MaxCountOfTargets = 3;
-
-        [SerializeField] private Transform _attackPoint;
         
-        [Header("Components")]
+        [SerializeField] private Transform _attackPoint;
+
+        [Header("Components")] 
         [SerializeField] private HeroAnimator _animator;
-
+        
         private AttackData _attackData;
-
         private IInputService _inputService;
-
+        
         private static int _layerMask;
         private readonly Collider[] _hits = new Collider[MaxCountOfTargets];
 
         public float Damage => _attackData.Damage;
         public float AttackPointRadius => _attackData.AttackPointRadius;
-        
+
         [Inject]
         public void Construct(IInputService inputService)
         {
             _inputService = inputService;
-            
+
             _layerMask = 1 << LayerMask.NameToLayer("Hittable");
         }
 
         private void Update()
         {
-            if (_inputService.IsAttackButtonUp() && _animator.IsAttacking == false)
-            {
+            if (_inputService.IsAttackButtonUp() && _animator.IsAttacking == false) 
                 _animator.PlayAttack();
-            }
         }
-
-        //animation event
+        
         private void OnAttack()
         {
             if (Hit() > 0)
@@ -53,22 +48,23 @@ namespace CodeBase.Hero
                 PhysicsDebug.DrawDebug(GetAttackPoint(), AttackPointRadius, 1);
                 foreach (Collider hit in _hits)
                 {
-                    if(hit == null)
+                    if (hit == null)
                         continue;
-                    
+
                     hit.GetComponentInParent<IHealth>().ApplyDamage(Damage);
                 }
             }
+        }
+        
+        //animation event
+        public void LoadProgress(PlayerProgress progress)
+        {
+            _attackData = progress.AttackData.Clone();
         }
 
         private int Hit() => 
             Physics.OverlapSphereNonAlloc(GetAttackPoint(), AttackPointRadius, _hits, _layerMask);
 
         private Vector3 GetAttackPoint() => _attackPoint.position;
-
-        public void LoadProgress(PlayerProgress progress)
-        {
-            _attackData = progress.AttackData.Clone();
-        }
     }
 }

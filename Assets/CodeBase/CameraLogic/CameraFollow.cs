@@ -4,21 +4,19 @@ namespace CodeBase.CameraLogic
 {
     public class CameraFollow : MonoBehaviour
     {
-        public float RotationAngleX;
-        public int Distance;
-        public float OffsetY;
+        [SerializeField] private float _rotationAngleX;
+        [SerializeField] private int _distance;
+        [SerializeField] private float _offsetY;
 
-
-        [SerializeField]
         private Transform _following;
 
         private void LateUpdate()
         {
-            if(_following == null)
+            if (_following == null)
                 return;
-            
-            Quaternion rotation = Quaternion.Euler(RotationAngleX, 0, 0);
-            Vector3 position = rotation * new Vector3(0, 0, -Distance) + FollowingPointPosition();
+
+            Quaternion rotation = Quaternion.Euler(_rotationAngleX, 0, 0);
+            Vector3 position = rotation * new Vector3(0, 0, -_distance) + FollowingPointPosition();
             transform.rotation = rotation;
             transform.position = position;
         }
@@ -27,11 +25,11 @@ namespace CodeBase.CameraLogic
         {
             _following = following.transform;
         }
-        
+
         private Vector3 FollowingPointPosition()
         {
             Vector3 followingPosition = _following.position;
-            followingPosition.y += OffsetY;
+            followingPosition.y += _offsetY;
             return followingPosition;
         }
     }
