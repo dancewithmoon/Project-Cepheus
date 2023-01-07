@@ -25,7 +25,8 @@ namespace CodeBase.Infrastructure.States
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, container),
                 
                 [typeof(LoadProgressState)] = new LoadProgressState(this, 
-                    container.Resolve<IPersistentProgressService>(), services.Single<ISaveLoadService>(), 
+                    container.Resolve<IPersistentProgressService>(), 
+                    container.Resolve<ISaveLoadService>(), 
                     services.Single<IStaticDataService>()),
                 
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, 

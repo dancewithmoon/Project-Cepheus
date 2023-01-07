@@ -1,7 +1,6 @@
-﻿using System;
-using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.SaveLoad;
+﻿using CodeBase.Infrastructure.Services.SaveLoad;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic
 {
@@ -18,12 +17,12 @@ namespace CodeBase.Logic
             Gizmos.color = new Color32(30, 200, 30, 130);
             Gizmos.DrawCube(transform.position + _collider.center, _collider.size);
         }
-
-        private void Awake()
+        
+        public void Start()
         {
-            _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
+            _saveLoadService = ProjectContext.Instance.Container.Resolve<ISaveLoadService>();
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             _saveLoadService.SaveProgress();

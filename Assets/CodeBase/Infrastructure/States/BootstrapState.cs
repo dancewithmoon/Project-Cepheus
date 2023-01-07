@@ -52,13 +52,8 @@ namespace CodeBase.Infrastructure.States
 
             _container.Bind<IUIFactory>().To<UIFactory>().AsSingle();
             _container.Bind<IScreenService>().To<ScreenService>().AsSingle();
-
             _container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
-
-            _services.RegisterSingle<ISaveLoadService>(
-                new SaveLoadService(
-                    _container.Resolve<IPersistentProgressService>(), 
-                    _container.Resolve<IGameFactory>()));
+            _container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
         }
 
         private void RegisterStaticData()
