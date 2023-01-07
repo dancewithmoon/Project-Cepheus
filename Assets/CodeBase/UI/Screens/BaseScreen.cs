@@ -2,6 +2,7 @@
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CodeBase.UI.Screens
 {
@@ -12,6 +13,7 @@ namespace CodeBase.UI.Screens
         protected IPersistentProgressService ProgressService;
         protected PlayerProgress Progress => ProgressService.Progress;
         
+        [Inject]
         public void Construct(IPersistentProgressService progressService)
         {
             ProgressService = progressService;

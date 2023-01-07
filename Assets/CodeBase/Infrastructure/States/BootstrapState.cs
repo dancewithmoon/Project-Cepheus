@@ -50,7 +50,7 @@ namespace CodeBase.Infrastructure.States
 
             RegisterStaticData();
 
-            _container.Bind<IUIFactory>().To<UIFactory>().AsSingle();
+            _container.Bind<IUIFactory>().To<ZenjectUIFactory>().AsSingle();
             _container.Bind<IScreenService>().To<ScreenService>().AsSingle();
             _container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
             _container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
