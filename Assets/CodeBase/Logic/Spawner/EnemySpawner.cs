@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic.Spawner
 {
@@ -17,6 +18,7 @@ namespace CodeBase.Logic.Spawner
         private IGameFactory _gameFactory;
         private EnemyDeath _enemyDeath;
 
+        [Inject]
         public void Construct(IGameFactory gameFactory)
         {
             _gameFactory = gameFactory;

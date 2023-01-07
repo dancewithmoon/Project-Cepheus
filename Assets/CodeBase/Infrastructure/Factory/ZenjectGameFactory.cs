@@ -49,7 +49,6 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {
             EnemySpawner spawner = InstantiateRegistered(AssetPath.SpawnerPath, at).GetComponent<EnemySpawner>();
-            spawner.Construct(this);
             spawner.Initialize(spawnerId, enemyTypeId);
             return spawner.gameObject;
         }
