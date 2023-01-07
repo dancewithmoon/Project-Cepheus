@@ -53,7 +53,6 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHud()
         {
             GameObject hud = InstantiateRegistered(AssetPath.HudPath);
-            hud.GetComponentInChildren<LootCountView>().Construct(_progressService.Progress.LootData);
             foreach (OpenScreenButton button in hud.GetComponentsInChildren<OpenScreenButton>())
             {
                 button.Construct(_screenService);

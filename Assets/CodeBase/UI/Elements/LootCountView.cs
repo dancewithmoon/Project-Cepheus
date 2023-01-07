@@ -1,6 +1,8 @@
 ﻿using CodeBase.Data;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.UI.Elements
 {
@@ -9,9 +11,11 @@ namespace CodeBase.UI.Elements
         [SerializeField] private TextMeshProUGUI _count;
         private LootData _lootData;
 
-        public void Construct(LootData lootData)
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
         {
-            _lootData = lootData;
+            _lootData = progressService.Progress.LootData;
+            
             _lootData.Changed += OnLootDataChanged;
             UpdateCounter();
         }
