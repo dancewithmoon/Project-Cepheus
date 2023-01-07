@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.Services;
+﻿using CodeBase.Hero;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;
@@ -22,7 +23,8 @@ namespace CodeBase.Infrastructure
             Container.Bind<ICoroutineRunner>().FromMethod(CreateCoroutineRunner).AsSingle();
             Container.Bind<LoadingCurtain>().FromInstance(_loadingCurtain).AsSingle();
             Container.Bind<SceneLoader>().AsSingle();
-            
+            Container.Bind<GameStateMachine>().AsSingle();
+
             Container.Bind<Game>().AsSingle();
         }
 

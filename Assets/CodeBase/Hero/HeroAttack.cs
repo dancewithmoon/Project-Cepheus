@@ -5,6 +5,7 @@ using CodeBase.Logic;
 using CodeBase.Services.Input;
 using CodeBase.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -28,6 +29,7 @@ namespace CodeBase.Hero
         public float Damage => _attackData.Damage;
         public float AttackPointRadius => _attackData.AttackPointRadius;
         
+        [Inject]
         public void Construct(IInputService inputService)
         {
             _inputService = inputService;

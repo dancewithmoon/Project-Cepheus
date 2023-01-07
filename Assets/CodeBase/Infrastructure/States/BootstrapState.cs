@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
+﻿using System;
+using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
@@ -9,6 +10,7 @@ using CodeBase.StaticData.Service;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -16,13 +18,15 @@ namespace CodeBase.Infrastructure.States
     {
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly DiContainer _container;
         private readonly AllServices _services;
 
-        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services)
+        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, DiContainer container)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
-            _services = services;
+            _container = container;
+            _services = AllServices.Container;
             
             RegisterServices();
         }
@@ -39,34 +43,28 @@ namespace CodeBase.Infrastructure.States
 
         private void RegisterServices()
         {
-            _services.RegisterSingle<IInputService>(GetInputService());
+            _container.Bind<IInputService>().FromMethod(GetInputService);
+            _container.Bind<IAssets>().To<ZenjectAssetProvider>().AsSingle();
+            
             _services.RegisterSingle<IRandomService>(new UnityRandomService());
-            _services.RegisterSingle<IAssets>(new AssetProvider());
             RegisterStaticData();
             
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 
             _services.RegisterSingle<IUIFactory>(
                 new UIFactory(
-                    _services.Single<IAssets>(),
+                    _container.Resolve<IAssets>(),
                     _services.Single<IStaticDataService>(),
                     _services.Single<IPersistentProgressService>()));
             
             _services.RegisterSingle<IScreenService>(new ScreenService(_services.Single<IUIFactory>()));
 
-            _services.RegisterSingle<IGameFactory>(
-                new GameFactory(
-                    _services.Single<IAssets>(),
-                    _services.Single<IStaticDataService>(),
-                    _services.Single<IRandomService>(),
-                    _services.Single<IPersistentProgressService>(), 
-                    _services.Single<IScreenService>(),
-                    _services.Single<IInputService>()));
+            _container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
 
             _services.RegisterSingle<ISaveLoadService>(
                 new SaveLoadService(
                     _services.Single<IPersistentProgressService>(), 
-                    _services.Single<IGameFactory>()));
+                    _container.Resolve<IGameFactory>()));
         }
 
         private void RegisterStaticData()

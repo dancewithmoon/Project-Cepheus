@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Services.Input;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -14,6 +15,7 @@ namespace CodeBase.Hero
         private IInputService _inputService;
         private Camera _camera;
 
+        [Inject]
         public void Construct(IInputService inputService)
         {
             _inputService = inputService;
