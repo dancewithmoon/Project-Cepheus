@@ -6,7 +6,6 @@ using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Logic;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Services.Factory;
-using Zenject;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -15,24 +14,22 @@ namespace CodeBase.Infrastructure.States
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
 
-        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, DiContainer container)
+        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IStaticDataService staticData,
+            IPersistentProgressService progress, ISaveLoadService saveLoad, IGameFactory gameFactory, IUIFactory uiFactory)
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, container),
+                [typeof(BootstrapState)] = 
+                    new BootstrapState(this, sceneLoader, staticData),
 
-                [typeof(LoadProgressState)] = new LoadProgressState(this,
-                    container.Resolve<IPersistentProgressService>(),
-                    container.Resolve<ISaveLoadService>(),
-                    container.Resolve<IStaticDataService>()),
+                [typeof(LoadProgressState)] = 
+                    new LoadProgressState(this, progress, saveLoad, staticData),
 
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain,
-                    container.Resolve<IGameFactory>(),
-                    container.Resolve<IPersistentProgressService>(),
-                    container.Resolve<IStaticDataService>(),
-                    container.Resolve<IUIFactory>()),
+                [typeof(LoadLevelState)] = 
+                    new LoadLevelState(this, sceneLoader, loadingCurtain, gameFactory, progress, staticData, uiFactory),
 
-                [typeof(GameLoopState)] = new GameLoopState(this)
+                [typeof(GameLoopState)] = 
+                    new GameLoopState(this)
             };
         }
 
