@@ -2,6 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Services.ContainerService;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
 using CodeBase.StaticData;
@@ -9,7 +10,6 @@ using CodeBase.StaticData.Service;
 using CodeBase.UI.Elements;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
 
 namespace CodeBase.Infrastructure.Factory
 {
@@ -17,14 +17,14 @@ namespace CodeBase.Infrastructure.Factory
     {
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
-        private readonly DiContainer _container;
+        private readonly ContainerService _container;
         
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
 
-        public ZenjectGameFactory(IAssets assets, IStaticDataService staticData, DiContainer container)
+        public ZenjectGameFactory(IAssets assets, IStaticDataService staticData, ContainerService container)
         {
             _assets = assets;
             _staticData = staticData;
@@ -34,7 +34,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
-            _container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
+            _container.Container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
             return _hero;
         }
 
@@ -62,7 +62,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
-            GameObject enemy = _container.InstantiatePrefab(enemyData.Prefab, parent.position, Quaternion.identity, parent);
+            GameObject enemy = _container.Container.InstantiatePrefab(enemyData.Prefab, parent.position, Quaternion.identity, parent);
             
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);

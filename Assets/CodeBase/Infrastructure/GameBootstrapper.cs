@@ -1,6 +1,8 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.ContainerService;
+using CodeBase.Infrastructure.Services.CoroutineRunner;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.States;
@@ -34,6 +36,7 @@ namespace CodeBase.Infrastructure
 
         private void BindServices()
         {
+            Container.Bind<ContainerService>().AsSingle();
             Container.Bind<ICoroutineRunner>().FromMethod(GetCoroutineRunner).AsSingle();
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<IInputService>().FromMethod(GetInputService);

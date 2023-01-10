@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.CoroutineRunner;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
