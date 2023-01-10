@@ -5,10 +5,10 @@ namespace CodeBase.Enemy
     public class RotateToHero : Aggrable
     {
         [SerializeField] private float _speed;
-        
+
         private Transform _heroTransform;
         private Vector3 _positionToLook;
-        
+
         public void Construct(Transform hero)
         {
             _heroTransform = hero;
@@ -16,10 +16,8 @@ namespace CodeBase.Enemy
 
         private void Update()
         {
-            if (IsHeroInitialized())
-            {
+            if (IsHeroInitialized()) 
                 RotateTowardsHero();
-            }
         }
 
         private void RotateTowardsHero()
@@ -37,12 +35,12 @@ namespace CodeBase.Enemy
 
         private Quaternion GetSmoothedRotation(Quaternion rotation, Vector3 positionToLook) => 
             Quaternion.Lerp(rotation, GetTargetRotation(positionToLook), GetSpeedFactor());
-        
-        private Quaternion GetTargetRotation(Vector3 positionToLook) => Quaternion.LookRotation(positionToLook);
-        
-        private float GetSpeedFactor() => _speed * Time.deltaTime;
-        
-        private bool IsHeroInitialized() => _heroTransform != null;
 
+        private Quaternion GetTargetRotation(Vector3 positionToLook) => 
+            Quaternion.LookRotation(positionToLook);
+
+        private float GetSpeedFactor() => _speed * Time.deltaTime;
+
+        private bool IsHeroInitialized() => _heroTransform != null;
     }
 }

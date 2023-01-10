@@ -5,6 +5,8 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CodeBase.Enemy
 {
@@ -12,7 +14,7 @@ namespace CodeBase.Enemy
     public class LootPiece : MonoBehaviour, ISavedProgress
     {
         private const float DelayToDestroyAfterPickup = 1.5f;
-        
+
         [SerializeField] private GameObject _skull;
         [SerializeField] private GameObject _pickUpFxPrefab;
         [SerializeField] private TextMeshPro _lootText;
@@ -20,22 +22,33 @@ namespace CodeBase.Enemy
 
         [Header("UniqueId")] 
         [SerializeField] private UniqueId _uniqueId;
-        
-        private int _targetLayer;
+
         private Loot _loot;
-        private bool _picked;
 
         private LootOnLevel _lootOnLevel;
+        private bool _picked;
 
-        public void Construct(LootOnLevel lootOnLevel)
+        private int _targetLayer;
+
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
         {
-            _lootOnLevel = lootOnLevel;
+            _lootOnLevel = progressService.Progress.WorldData.LootOnLevel;
         }
 
         public void Initialize(Loot loot)
         {
             _loot = loot;
             _targetLayer = LayerMask.NameToLayer("Player");
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (IsOnTargetLayer(other) == false)
+                return;
+
+            if (other.gameObject.TryGetComponent(out HeroLootPickUp hero)) 
+                PickUp(hero);
         }
 
         public void LoadProgress(PlayerProgress progress)
@@ -47,37 +60,24 @@ namespace CodeBase.Enemy
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            if(_picked)
+            if (_picked)
                 return;
-            
+
             if (progress.WorldData.LootOnLevel.Loots.ContainsKey(_uniqueId.Id))
-            {
                 progress.WorldData.LootOnLevel.Loots.Remove(_uniqueId.Id);
-            }
-            
-            progress.WorldData.LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData()
+
+            progress.WorldData.LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData
             {
                 Loot = _loot,
-                PositionOnLevel = new PositionOnLevel(gameObject.scene.name, transform.position.AsVectorData())
+                PositionOnLevel = new PositionOnLevel(SceneManager.GetActiveScene().name, transform.position.AsVectorData())
             });
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (IsOnTargetLayer(other) == false) 
-                return;
-
-            if (other.gameObject.TryGetComponent(out HeroLootPickUp hero))
-            {
-                PickUp(hero);
-            }
         }
 
         private void PickUp(HeroLootPickUp hero)
         {
-            if(_picked)
+            if (_picked)
                 return;
-            
+
             _picked = true;
 
             hero.PickUp(_loot);
@@ -90,15 +90,11 @@ namespace CodeBase.Enemy
             StartCoroutine(DestroyWithDelay());
         }
 
-        private void RemoveFromLootOnLevel()
-        {
+        private void RemoveFromLootOnLevel() => 
             _lootOnLevel.Loots.Remove(_uniqueId.Id);
-        }
 
-        private void HideSkull()
-        {
+        private void HideSkull() => 
             _skull.SetActive(false);
-        }
 
         private IEnumerator DestroyWithDelay()
         {
@@ -107,7 +103,8 @@ namespace CodeBase.Enemy
             Destroy(gameObject);
         }
 
-        private void PlayPickUpFx() => Instantiate(_pickUpFxPrefab, transform.position, Quaternion.identity);
+        private void PlayPickUpFx() => 
+            Instantiate(_pickUpFxPrefab, transform.position, Quaternion.identity);
 
         private void ShowText()
         {

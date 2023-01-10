@@ -7,6 +7,7 @@ namespace CodeBase.Hero
     {
         [Header("Components")]
         [SerializeField] private HeroHealth _health;
+
         [SerializeField] private HeroMove _move;
         [SerializeField] private HeroAttack _attack;
         [SerializeField] private HeroAnimator _animator;
@@ -17,6 +18,11 @@ namespace CodeBase.Hero
         private void Start()
         {
             _health.HealthChanged += OnHealthChanged;
+        }
+
+        private void OnDestroy()
+        {
+            _health.HealthChanged -= OnHealthChanged;
         }
 
         private void OnHealthChanged()
@@ -36,14 +42,7 @@ namespace CodeBase.Hero
             PlayDeathFx();
         }
 
-        private void PlayDeathFx()
-        {
+        private void PlayDeathFx() => 
             Instantiate(_deathFxPrefab, transform.position, Quaternion.identity);
-        }
-
-        private void OnDestroy()
-        {
-            _health.HealthChanged -= OnHealthChanged;
-        }
     }
 }

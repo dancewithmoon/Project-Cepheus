@@ -11,6 +11,7 @@ namespace CodeBase.Infrastructure.Factory
     {
         GameObject CreateHero(GameObject initialPoint);
         GameObject CreateHud();
+        GameObject CreateSavePoint(Vector3 at, Vector3 scale);
         GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId);
         GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent);
         LootPiece CreateLoot();

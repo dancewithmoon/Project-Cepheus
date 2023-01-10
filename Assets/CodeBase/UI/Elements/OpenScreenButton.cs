@@ -1,6 +1,7 @@
 ﻿using CodeBase.UI.Services.Screens;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CodeBase.UI.Elements
 {
@@ -11,6 +12,7 @@ namespace CodeBase.UI.Elements
         [SerializeField] private ScreenId _screenId;
         private IScreenService _screenService;
 
+        [Inject]
         public void Construct(IScreenService screenService)
         {
             _screenService = screenService;

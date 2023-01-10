@@ -7,5 +7,6 @@
         public const string Loot = "Loot/Loot";
         public const string SpawnerPath = "Enemies/EnemySpawner";
         public const string UIRootPath = "UI/UIRoot";
+        public const string SaveTrigger = "Misc/SaveTrigger";
     }
 }

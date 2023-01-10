@@ -3,6 +3,8 @@ using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Logic;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
@@ -12,7 +14,6 @@ using CodeBase.UI.Elements;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
 using UnityEngine.AI;
-using Object = UnityEngine.Object;
 
 namespace CodeBase.Infrastructure.Factory
 {
@@ -24,13 +25,14 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IPersistentProgressService _progressService;
         private readonly IScreenService _screenService;
         private readonly IInputService _inputService;
+        private readonly ISaveLoadService _saveLoadService;
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
 
         public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
-            IPersistentProgressService progressService, IScreenService screenService, IInputService inputService)
+            IPersistentProgressService progressService, IScreenService screenService, IInputService inputService, ISaveLoadService saveLoadService)
         {
             _assets = assets;
             _staticData = staticData;
@@ -38,12 +40,13 @@ namespace CodeBase.Infrastructure.Factory
             _progressService = progressService;
             _screenService = screenService;
             _inputService = inputService;
+            _saveLoadService = saveLoadService;
         }
 
         public GameObject CreateHero(GameObject initialPoint)
         {
             _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
-            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService.Progress.LootData);
+            _hero.GetComponent<HeroLootPickUp>().Construct(_progressService);
             _hero.GetComponent<HeroMove>().Construct(_inputService);
             _hero.GetComponent<HeroAttack>().Construct(_inputService);
             return _hero;
@@ -52,12 +55,21 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateHud()
         {
             GameObject hud = InstantiateRegistered(AssetPath.HudPath);
-            hud.GetComponentInChildren<LootCountView>().Construct(_progressService.Progress.LootData);
+            hud.GetComponentInChildren<ActorUI>().Construct(_hero.GetComponent<HeroHealth>());
+            hud.GetComponentInChildren<LootCountView>().Construct(_progressService);
             foreach (OpenScreenButton button in hud.GetComponentsInChildren<OpenScreenButton>())
             {
                 button.Construct(_screenService);
             }
             return hud;
+        }
+
+        public GameObject CreateSavePoint(Vector3 at, Vector3 scale)
+        {
+            SaveTrigger saveTrigger = InstantiateRegistered(AssetPath.SaveTrigger, at).GetComponent<SaveTrigger>();
+            saveTrigger.Construct(_saveLoadService);
+            saveTrigger.transform.localScale = scale;
+            return saveTrigger.gameObject;
         }
 
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
@@ -77,11 +89,11 @@ namespace CodeBase.Infrastructure.Factory
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
-            enemyAttack.Construct(_hero.transform);
+            enemyAttack.HeroTransform = _hero.transform;
             enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
             
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
-            enemy.GetComponent<AgentMoveToHero>().Construct(_hero.transform);
+            enemy.GetComponent<AgentMoveToHero>().HeroTransform = _hero.transform;
             
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
@@ -95,7 +107,7 @@ namespace CodeBase.Infrastructure.Factory
         public LootPiece CreateLoot()
         {
             LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
-            lootPiece.Construct(_progressService.Progress.WorldData.LootOnLevel);
+            lootPiece.Construct(_progressService);
             return lootPiece;
         }
 

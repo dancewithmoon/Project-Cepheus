@@ -1,93 +1,33 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
-using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Infrastructure.Services.SaveLoad;
-using CodeBase.Services.Input;
-using CodeBase.Services.Randomizer;
-using CodeBase.StaticData.Service;
-using CodeBase.UI.Services.Factory;
-using CodeBase.UI.Services.Screens;
-using UnityEngine;
+﻿using CodeBase.StaticData.Service;
 
 namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
-        private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
-        private readonly AllServices _services;
+        private readonly GameStateMachine _stateMachine;
+        private readonly IStaticDataService _staticData;
 
-        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services)
+        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, IStaticDataService staticData)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
-            _services = services;
-            
-            RegisterServices();
+            _staticData = staticData;
         }
 
         public void Enter()
         {
+            _staticData.Load();
             _sceneLoader.Load(Scenes.Initial, EnterLoadLevel);
-        }
-
-        private void EnterLoadLevel()
-        {
-            _stateMachine.Enter<LoadProgressState>();
-        }
-
-        private void RegisterServices()
-        {
-            _services.RegisterSingle<IInputService>(GetInputService());
-            _services.RegisterSingle<IRandomService>(new UnityRandomService());
-            _services.RegisterSingle<IAssets>(new AssetProvider());
-            RegisterStaticData();
-            
-            _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-
-            _services.RegisterSingle<IUIFactory>(
-                new UIFactory(
-                    _services.Single<IAssets>(),
-                    _services.Single<IStaticDataService>(),
-                    _services.Single<IPersistentProgressService>()));
-            
-            _services.RegisterSingle<IScreenService>(new ScreenService(_services.Single<IUIFactory>()));
-
-            _services.RegisterSingle<IGameFactory>(
-                new GameFactory(
-                    _services.Single<IAssets>(),
-                    _services.Single<IStaticDataService>(),
-                    _services.Single<IRandomService>(),
-                    _services.Single<IPersistentProgressService>(), 
-                    _services.Single<IScreenService>(),
-                    _services.Single<IInputService>()));
-
-            _services.RegisterSingle<ISaveLoadService>(
-                new SaveLoadService(
-                    _services.Single<IPersistentProgressService>(), 
-                    _services.Single<IGameFactory>()));
-        }
-
-        private void RegisterStaticData()
-        {
-            IStaticDataService staticData = new StaticDataService();
-            staticData.Load();
-            _services.RegisterSingle<IStaticDataService>(staticData);
         }
 
         public void Exit()
         {
         }
 
-        private static IInputService GetInputService()
+        private void EnterLoadLevel()
         {
-            if (Application.isEditor)
-            {
-                return new StandaloneInputService();
-            }
-
-            return new MobileInputService();
+            _stateMachine.Enter<LoadProgressState>();
         }
     }
 }

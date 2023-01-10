@@ -6,9 +6,9 @@ namespace CodeBase.Logic
     {
         float Current { get; }
         float Max { get; }
-        
+
         event Action HealthChanged;
-        
+
         void ApplyDamage(float damage);
     }
 }

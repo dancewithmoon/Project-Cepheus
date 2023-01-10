@@ -4,20 +4,22 @@ using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.StaticData;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic.Spawner
 {
     public class EnemySpawner : MonoBehaviour, ISavedProgress
     {
         [SerializeField] public bool _slain;
-
+        private IGameFactory _gameFactory;
+        
         private string _id;
         private EnemyTypeId _enemyTypeId;
-        
-        private IGameFactory _gameFactory;
+
         private EnemyDeath _enemyDeath;
 
-        public void Construct(GameFactory gameFactory)
+        [Inject]
+        public void Construct(IGameFactory gameFactory)
         {
             _gameFactory = gameFactory;
         }
@@ -45,6 +47,14 @@ namespace CodeBase.Logic.Spawner
             _slain = true;
         }
 
+        private void OnDestroy()
+        {
+            if (_enemyDeath != null)
+            {
+                _enemyDeath.Happened -= OnEnemyDeathHappened;
+            }
+        }
+
         public void LoadProgress(PlayerProgress progress)
         {
             if (progress.EnemiesData.KilledEnemies.Contains(_id))
@@ -61,14 +71,6 @@ namespace CodeBase.Logic.Spawner
             if (_slain)
             {
                 progress.EnemiesData.KilledEnemies.Add(_id);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (_enemyDeath != null)
-            {
-                _enemyDeath.Happened -= OnEnemyDeathHappened;
             }
         }
     }

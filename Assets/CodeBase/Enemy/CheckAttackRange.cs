@@ -1,6 +1,5 @@
 ﻿using CodeBase.Logic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.Enemy
 {
@@ -13,8 +12,14 @@ namespace CodeBase.Enemy
         {
             _triggerObserver.TriggerEnter += TriggerEnter;
             _triggerObserver.TriggerExit += TriggerExit;
-            
+
             _enemyAttack.DisableAttack();
+        }
+
+        private void OnDestroy()
+        {
+            _triggerObserver.TriggerEnter -= TriggerEnter;
+            _triggerObserver.TriggerExit -= TriggerExit;
         }
 
         private void TriggerEnter(Collider obj)
@@ -25,12 +30,6 @@ namespace CodeBase.Enemy
         private void TriggerExit(Collider obj)
         {
             _enemyAttack.DisableAttack();
-        }
-
-        private void OnDestroy()
-        {
-            _triggerObserver.TriggerEnter -= TriggerEnter;
-            _triggerObserver.TriggerExit -= TriggerExit;
         }
     }
 }

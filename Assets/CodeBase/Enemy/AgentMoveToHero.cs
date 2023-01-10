@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 namespace CodeBase.Enemy
 {
@@ -9,12 +10,7 @@ namespace CodeBase.Enemy
         
         [SerializeField] private NavMeshAgent _agent;
 
-        private Transform _heroTransform;
-
-        public void Construct(Transform hero)
-        {
-            _heroTransform = hero;
-        }
+        [Inject(Id = "hero")] public Transform HeroTransform { get; set; }
 
         private void Update()
         {
@@ -24,14 +20,14 @@ namespace CodeBase.Enemy
             }
         }
 
-        private bool IsHeroInitialized() => _heroTransform != null;
+        private bool IsHeroInitialized() => HeroTransform != null;
 
         private bool IsAwayFromHero() => 
-            Vector3.Distance(_agent.transform.position, _heroTransform.position) >= MinimalDistance;
+            Vector3.Distance(_agent.transform.position, HeroTransform.position) >= MinimalDistance;
 
         private void MoveToHero()
         {
-            _agent.destination = _heroTransform.position;
+            _agent.destination = HeroTransform.position;
         }
     }
 }

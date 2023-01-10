@@ -1,9 +1,9 @@
 namespace CodeBase.Logic.Animations
 {
-  public interface IAnimationStateReader
-  {
-    void EnteredState(int stateHash);
-    void ExitedState(int stateHash);
-    AnimatorState State { get; }
-  }
+    public interface IAnimationStateReader
+    {
+        AnimatorState State { get; }
+        void EnteredState(int stateHash);
+        void ExitedState(int stateHash);
+    }
 }

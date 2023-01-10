@@ -3,6 +3,7 @@ using System.Linq;
 using CodeBase.Logic;
 using CodeBase.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Enemy
 {
@@ -11,25 +12,20 @@ namespace CodeBase.Enemy
     {
         [SerializeField] private EnemyAnimator _animator;
 
-        private float _damage;
         private float _attackPointRadius;
-        private float _effectiveDistance;
         private float _cooldown;
-        private Transform _heroTransform;
+
+        private float _damage;
+        private float _effectiveDistance;
+        
+        private bool _isAttackEnabled;
+        private bool _isAttacking;
 
         private LayerMask _layerMask;
-        
-        private bool _isAttacking;
-        private bool _isAttackEnabled;
 
         private readonly Collider[] _hits = new Collider[1];
-
-        public void Construct(Transform hero)
-        {
-            _heroTransform = hero;
-
-            _layerMask = LayerMask.GetMask("Player");
-        }
+        
+        [Inject(Id = "hero")] public Transform HeroTransform { get; set; }
 
         public void Initialize(float damage, float attackPointRadius, float effectiveDistance, float cooldown)
         {
@@ -37,13 +33,15 @@ namespace CodeBase.Enemy
             _attackPointRadius = attackPointRadius;
             _effectiveDistance = effectiveDistance;
             _cooldown = cooldown;
-            
+
+            _layerMask = LayerMask.GetMask("Player");
+
             StartCoroutine(AttackLoop());
         }
-        
+
         private IEnumerator AttackLoop()
         {
-            var cooldown = new WaitForSeconds(_cooldown);
+            WaitForSeconds cooldown = new WaitForSeconds(_cooldown);
             while (this)
             {
                 yield return new WaitUntil(IsAttackEnabled);
@@ -66,8 +64,8 @@ namespace CodeBase.Enemy
         private void StartAttack()
         {
             _isAttacking = true;
-            
-            transform.LookAt(_heroTransform);
+
+            transform.LookAt(HeroTransform);
             _animator.PlayAttack();
         }
 

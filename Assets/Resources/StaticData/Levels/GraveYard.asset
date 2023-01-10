@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelKey: Main
   _enemySpawners:
+  - Id: Main_41347a1a-24d7-4df6-af50-e4e78e77b449
+    EnemyTypeId: 10
+    Position: {x: -0.89, y: 0, z: -7.16}
   - Id: Main_8edb6894-ef27-4db8-9439-c0b2365b1442
     EnemyTypeId: 0
     Position: {x: 4.86, y: 0, z: -6.81}
   - Id: Main_dce0a194-c156-4238-a9b9-75b3bc0fd3ff
     EnemyTypeId: 0
     Position: {x: -8.22, y: 0, z: -7.16}
-  - Id: Main_41347a1a-24d7-4df6-af50-e4e78e77b449
-    EnemyTypeId: 10
-    Position: {x: -0.89, y: 0, z: -7.16}
+  _savePoints:
+  - Id: Main_ea0ca82b-c216-4b12-9c71-6ce97c379bae
+    Position: {x: 3.02, y: 0.72, z: -15}
+    Scale: {x: 1, y: 1, z: 2}

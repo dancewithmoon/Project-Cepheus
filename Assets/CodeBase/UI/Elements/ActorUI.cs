@@ -8,6 +8,12 @@ namespace CodeBase.UI.Elements
         [SerializeField] private HealthBarView _healthBar;
         private IHealth _health;
 
+        protected virtual void OnDestroy()
+        {
+            if (_health != null) 
+                _health.HealthChanged -= OnHealthChanged;
+        }
+
         public void Construct(IHealth health)
         {
             _health = health;
@@ -17,14 +23,6 @@ namespace CodeBase.UI.Elements
         private void OnHealthChanged()
         {
             _healthBar.SetValue(_health.Current, _health.Max);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (_health != null)
-            {
-                _health.HealthChanged -= OnHealthChanged;
-            }
         }
     }
 }

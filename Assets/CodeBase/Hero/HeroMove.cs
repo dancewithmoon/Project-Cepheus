@@ -1,9 +1,9 @@
 ﻿using CodeBase.Data;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Services.Input;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -14,13 +14,10 @@ namespace CodeBase.Hero
         private IInputService _inputService;
         private Camera _camera;
 
+        [Inject]
         public void Construct(IInputService inputService)
         {
             _inputService = inputService;
-        }
-
-        private void Start()
-        {
             _camera = Camera.main;
         }
 
@@ -38,7 +35,7 @@ namespace CodeBase.Hero
             }
 
             movementVector += Physics.gravity;
-            
+
             _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
         }
 
@@ -48,16 +45,17 @@ namespace CodeBase.Hero
                 return;
 
             Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
-            
-            if(savedPosition == null)
+
+            if (savedPosition == null)
                 return;
-            
-            Warp(to: savedPosition.AsUnityVector());
+
+            Warp(savedPosition.AsUnityVector());
         }
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            progress.WorldData.PositionOnLevel = new PositionOnLevel(GetCurrentLevelName(), transform.position.AsVectorData());
+            progress.WorldData.PositionOnLevel =
+                new PositionOnLevel(GetCurrentLevelName(), transform.position.AsVectorData());
         }
 
         private void Warp(Vector3 to)
@@ -67,6 +65,7 @@ namespace CodeBase.Hero
             _characterController.enabled = true;
         }
 
-        private string GetCurrentLevelName() => SceneManager.GetActiveScene().name;
+        private string GetCurrentLevelName() => 
+            SceneManager.GetActiveScene().name;
     }
 }
