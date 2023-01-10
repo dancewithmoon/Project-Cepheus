@@ -29,6 +29,9 @@ namespace Editor
                 
                 FieldInfo enemySpawners = typeof(LevelStaticData).GetField("_enemySpawners", BindingFlags.NonPublic | BindingFlags.Instance);
                 enemySpawners.SetValue(levelData, CollectSpawners());
+                
+                FieldInfo savePoints = typeof(LevelStaticData).GetField("_savePoints", BindingFlags.NonPublic | BindingFlags.Instance);
+                savePoints.SetValue(levelData, CollectSavePoints());
             }
             
             EditorUtility.SetDirty(target);
@@ -42,6 +45,17 @@ namespace Editor
                         x.GetComponent<UniqueId>().Id,
                         x.EnemyTypeId,
                         x.transform.position))
+                .ToList();
+        }
+        
+        private List<SavePointData> CollectSavePoints()
+        {
+            return FindObjectsOfType<SavePointMarker>()
+                .Select(x =>
+                    new SavePointData(
+                        x.GetComponent<UniqueId>().Id,
+                        x.transform.position,
+                        x.transform.localScale))
                 .ToList();
         }
     }

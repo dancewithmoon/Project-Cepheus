@@ -72,19 +72,28 @@ namespace CodeBase.Infrastructure.States
 
         private void InitGameWorld()
         {
-            InitSpawners();
+            LevelStaticData levelData = _staticData.GetLevel(_sceneName);
+            InitSpawners(levelData.EnemySpawners);
+            InitSavePoints(levelData.SavePoints);
             InitLoot();
             GameObject hero = InitHero();
             InitHud();
             CameraFollow(hero);
         }
 
-        private void InitSpawners()
+        private void InitSpawners(IEnumerable<EnemySpawnerData> enemySpawners)
         {
-            LevelStaticData levelData = _staticData.GetLevel(_sceneName);
-            foreach (EnemySpawnerData spawnerData in levelData.EnemySpawners)
+            foreach (EnemySpawnerData spawnerData in enemySpawners)
             {
                 _gameFactory.CreateEnemySpawner(spawnerData.Position, spawnerData.Id, spawnerData.EnemyTypeId);
+            }
+        }
+
+        private void InitSavePoints(IEnumerable<SavePointData> savePoints)
+        {
+            foreach (SavePointData savePointData in savePoints)
+            {
+                _gameFactory.CreateSavePoint(savePointData.Position, savePointData.Scale);
             }
         }
 

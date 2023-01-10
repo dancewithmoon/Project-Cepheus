@@ -44,6 +44,13 @@ namespace CodeBase.Infrastructure.Factory
             hud.GetComponentInChildren<ActorUI>().Construct(_hero.GetComponent<HeroHealth>());
             return hud;
         }
+        
+        public GameObject CreateSavePoint(Vector3 at, Vector3 scale)
+        {
+            GameObject saveTrigger = InstantiateRegistered(AssetPath.SaveTrigger, at);
+            saveTrigger.transform.localScale = scale;
+            return saveTrigger;
+        }
 
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {

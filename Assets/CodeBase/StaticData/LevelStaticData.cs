@@ -8,9 +8,11 @@ namespace CodeBase.StaticData
     {
         [SerializeField] private string _levelKey;
         [SerializeField] private List<EnemySpawnerData> _enemySpawners;
+        [SerializeField] private List<SavePointData> _savePoints;
 
         public string LevelKey => _levelKey;
 
         public IReadOnlyList<EnemySpawnerData> EnemySpawners => _enemySpawners;
+        public IReadOnlyList<SavePointData> SavePoints => _savePoints;
     }
 }

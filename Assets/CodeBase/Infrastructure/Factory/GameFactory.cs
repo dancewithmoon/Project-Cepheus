@@ -3,6 +3,8 @@ using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Logic;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
@@ -23,13 +25,14 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IPersistentProgressService _progressService;
         private readonly IScreenService _screenService;
         private readonly IInputService _inputService;
+        private readonly ISaveLoadService _saveLoadService;
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
 
         public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
-            IPersistentProgressService progressService, IScreenService screenService, IInputService inputService)
+            IPersistentProgressService progressService, IScreenService screenService, IInputService inputService, ISaveLoadService saveLoadService)
         {
             _assets = assets;
             _staticData = staticData;
@@ -37,6 +40,7 @@ namespace CodeBase.Infrastructure.Factory
             _progressService = progressService;
             _screenService = screenService;
             _inputService = inputService;
+            _saveLoadService = saveLoadService;
         }
 
         public GameObject CreateHero(GameObject initialPoint)
@@ -58,6 +62,14 @@ namespace CodeBase.Infrastructure.Factory
                 button.Construct(_screenService);
             }
             return hud;
+        }
+
+        public GameObject CreateSavePoint(Vector3 at, Vector3 scale)
+        {
+            SaveTrigger saveTrigger = InstantiateRegistered(AssetPath.SaveTrigger, at).GetComponent<SaveTrigger>();
+            saveTrigger.Construct(_saveLoadService);
+            saveTrigger.transform.localScale = scale;
+            return saveTrigger.gameObject;
         }
 
         public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
