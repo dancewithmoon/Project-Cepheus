@@ -1,4 +1,5 @@
-﻿using CodeBase.Data;
+﻿using System;
+using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using CodeBase.Services.Input;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace CodeBase.Hero
 {
-    [RequireComponent(typeof(HeroAnimator), typeof(CharacterController))]
+    [RequireComponent(typeof(HeroAnimator), typeof(HeroAnimationEventHandler), typeof(CharacterController))]
     public class HeroAttack : MonoBehaviour, ISavedProgressReader
     {
         private const int MaxCountOfTargets = 3;
@@ -17,6 +18,7 @@ namespace CodeBase.Hero
 
         [Header("Components")] 
         [SerializeField] private HeroAnimator _animator;
+        [SerializeField] private HeroAnimationEventHandler _animationEvents;
         
         private AttackData _attackData;
         private IInputService _inputService;
@@ -33,6 +35,8 @@ namespace CodeBase.Hero
             _inputService = inputService;
 
             _layerMask = 1 << LayerMask.NameToLayer("Hittable");
+
+            _animationEvents.Attacked += ApplyAttack;
         }
 
         private void Update()
@@ -40,8 +44,8 @@ namespace CodeBase.Hero
             if (_inputService.IsAttackButtonUp() && _animator.IsAttacking == false) 
                 _animator.PlayAttack();
         }
-        
-        private void OnAttack()
+
+        private void ApplyAttack()
         {
             if (Hit() > 0)
             {
@@ -55,8 +59,7 @@ namespace CodeBase.Hero
                 }
             }
         }
-        
-        //animation event
+
         public void LoadProgress(PlayerProgress progress)
         {
             _attackData = progress.AttackData.Clone();

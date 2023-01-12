@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 7891607819445276714}
   - component: {fileID: 7178051121293873561}
   - component: {fileID: 8297222111070707886}
+  - component: {fileID: 8978687518912778193}
   m_Layer: 0
   m_Name: BaseEnemy
   m_TagString: Untagged
@@ -155,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 3211743820009197298}
+  _animationEvents: {fileID: 8978687518912778193}
 --- !u!114 &6615073110860454101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +214,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 4216839802584516816}
+--- !u!114 &8978687518912778193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500939411536426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b35863b262441d7ab022bd2c56bcd38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &400971670073977043
 GameObject:
   m_ObjectHideFlags: 0

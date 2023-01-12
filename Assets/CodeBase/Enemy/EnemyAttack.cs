@@ -7,11 +7,12 @@ using Zenject;
 
 namespace CodeBase.Enemy
 {
-    [RequireComponent(typeof(EnemyAnimator))]
+    [RequireComponent(typeof(EnemyAnimator), typeof(EnemyAnimationEventHandler))]
     public class EnemyAttack : MonoBehaviour
     {
         [SerializeField] private EnemyAnimator _animator;
-
+        [SerializeField] private EnemyAnimationEventHandler _animationEvents;
+        
         private float _attackPointRadius;
         private float _cooldown;
 
@@ -35,6 +36,8 @@ namespace CodeBase.Enemy
             _cooldown = cooldown;
 
             _layerMask = LayerMask.GetMask("Player");
+            _animationEvents.Attacked += ApplyAttack;
+            _animationEvents.AttackEnded += StopAttack;
 
             StartCoroutine(AttackLoop());
         }
@@ -68,9 +71,8 @@ namespace CodeBase.Enemy
             transform.LookAt(HeroTransform);
             _animator.PlayAttack();
         }
-
-        //animation event
-        private void OnAttack()
+        
+        private void ApplyAttack()
         {
             if (Hit(out Collider hit))
             {
@@ -79,8 +81,7 @@ namespace CodeBase.Enemy
             }
         }
 
-        //animation event
-        private void OnAttackEnded()
+        private void StopAttack()
         {
             _isAttacking = false;
         }
