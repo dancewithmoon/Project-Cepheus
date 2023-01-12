@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using CodeBase.Logic;
+using CodeBase.Logic.Animations;
 using CodeBase.Utils;
 using UnityEngine;
 using Zenject;
@@ -12,20 +13,20 @@ namespace CodeBase.Enemy
     {
         [SerializeField] private EnemyAnimator _animator;
         [SerializeField] private EnemyAnimationEventHandler _animationEvents;
-        
+
         private float _attackPointRadius;
         private float _cooldown;
 
         private float _damage;
         private float _effectiveDistance;
-        
+
         private bool _isAttackEnabled;
         private bool _isAttacking;
 
         private LayerMask _layerMask;
 
         private readonly Collider[] _hits = new Collider[1];
-        
+
         [Inject(Id = "hero")] public Transform HeroTransform { get; set; }
 
         public void Initialize(float damage, float attackPointRadius, float effectiveDistance, float cooldown)
@@ -36,8 +37,10 @@ namespace CodeBase.Enemy
             _cooldown = cooldown;
 
             _layerMask = LayerMask.GetMask("Player");
+
             _animationEvents.Attacked += ApplyAttack;
             _animationEvents.AttackEnded += StopAttack;
+            _animator.StateExited += OnAnimatorStateExit;
 
             StartCoroutine(AttackLoop());
         }
@@ -71,7 +74,7 @@ namespace CodeBase.Enemy
             transform.LookAt(HeroTransform);
             _animator.PlayAttack();
         }
-        
+
         private void ApplyAttack()
         {
             if (Hit(out Collider hit))
@@ -79,6 +82,14 @@ namespace CodeBase.Enemy
                 PhysicsDebug.DrawDebug(GetAttackPoint(), _attackPointRadius, 1);
                 hit.transform.GetComponent<IHealth>().ApplyDamage(_damage);
             }
+        }
+
+        private void OnAnimatorStateExit(AnimatorState state)
+        {
+            if (state != AnimatorState.Attack)
+                return;
+         
+            StopAttack();
         }
 
         private void StopAttack()
@@ -99,7 +110,7 @@ namespace CodeBase.Enemy
             attackPoint.y += 0.5f;
             return attackPoint;
         }
-        
+
         private bool IsAttacking() => _isAttacking;
         private bool IsAttackEnabled() => _isAttackEnabled;
     }
