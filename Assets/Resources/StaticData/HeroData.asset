@@ -15,3 +15,4 @@ MonoBehaviour:
   _hp: 50
   _damage: 5
   _attackPointRadius: 0.7
+  _prefab: {fileID: 176288, guid: 181862a89f60d7a459002f9870860ad4, type: 3}

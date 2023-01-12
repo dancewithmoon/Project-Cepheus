@@ -45,7 +45,7 @@ namespace CodeBase.Infrastructure.Factory
 
         public GameObject CreateHero(GameObject initialPoint)
         {
-            _hero = InstantiateRegistered(AssetPath.HeroPath, initialPoint.transform.position);
+            _hero = InstantiateRegistered(_staticData.GetHero().Prefab, initialPoint.transform.position);
             _hero.GetComponent<HeroLootPickUp>().Construct(_progressService);
             _hero.GetComponent<HeroMove>().Construct(_inputService);
             _hero.GetComponent<HeroAttack>().Construct(_inputService);
@@ -129,6 +129,13 @@ namespace CodeBase.Infrastructure.Factory
         private GameObject InstantiateRegistered(string path, Vector3 at)
         {
             GameObject gameObject = _assets.Instantiate(path, at);
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        }
+        
+        private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
+        {
+            GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
