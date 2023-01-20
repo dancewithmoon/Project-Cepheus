@@ -1,5 +1,6 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Instantiating;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.ContainerService;
 using CodeBase.Infrastructure.Services.CoroutineRunner;
@@ -39,6 +40,7 @@ namespace CodeBase.Infrastructure
             Container.Bind<ContainerService>().AsSingle();
             Container.Bind<ICoroutineRunner>().FromMethod(GetCoroutineRunner).AsSingle();
             Container.Bind<SceneLoader>().AsSingle();
+            Container.Bind<IInstantiateService>().To<ZenjectInstantiateService>().AsSingle();
             Container.Bind<IInputService>().FromMethod(GetInputService);
             Container.Bind<IAssets>().To<ZenjectAssetProvider>().AsSingle();
             Container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
