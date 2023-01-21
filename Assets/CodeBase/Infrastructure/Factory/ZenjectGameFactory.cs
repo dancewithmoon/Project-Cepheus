@@ -2,6 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Instantiating;
 using CodeBase.Infrastructure.Services.ContainerService;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic.Spawner;
@@ -16,6 +17,7 @@ namespace CodeBase.Infrastructure.Factory
     public class ZenjectGameFactory : IGameFactory
     {
         private readonly IAssets _assets;
+        private readonly IInstantiateService _instantiateService;
         private readonly IStaticDataService _staticData;
         private readonly ContainerService _container;
         
@@ -24,9 +26,10 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject _hero;
 
-        public ZenjectGameFactory(IAssets assets, IStaticDataService staticData, ContainerService container)
+        public ZenjectGameFactory(IAssets assets, IInstantiateService instantiateService, IStaticDataService staticData, ContainerService container)
         {
             _assets = assets;
+            _instantiateService = instantiateService;
             _staticData = staticData;
             _container = container;
         }
@@ -62,7 +65,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
-            GameObject enemy = _container.Container.InstantiatePrefab(enemyData.Prefab, parent.position, Quaternion.identity, parent);
+            GameObject enemy = _instantiateService.Instantiate(enemyData.Prefab, parent.position, parent);
             
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
@@ -88,32 +91,22 @@ namespace CodeBase.Infrastructure.Factory
             ProgressWriters.Clear();
         }
 
-        private void Register(ISavedProgressReader progressReader)
+        private GameObject InstantiateRegistered(string path) => 
+            InstantiateRegistered(_assets.Load(path));
+
+        private GameObject InstantiateRegistered(string path, Vector3 at) => 
+            InstantiateRegistered(_assets.Load(path), at);
+
+        private GameObject InstantiateRegistered(GameObject prefab)
         {
-            if (progressReader is ISavedProgress progressWriter)
-            {
-                ProgressWriters.Add(progressWriter);
-            }
-            ProgressReaders.Add(progressReader);
-        }
-        
-        private GameObject InstantiateRegistered(string path)
-        {
-            GameObject gameObject = _assets.Instantiate(path);
+            GameObject gameObject = _instantiateService.Instantiate(prefab);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
-        
-        private GameObject InstantiateRegistered(string path, Vector3 at)
-        {
-            GameObject gameObject = _assets.Instantiate(path, at);
-            RegisterProgressWatchers(gameObject);
-            return gameObject;
-        }
-        
+
         private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
         {
-            GameObject gameObject = _container.Container.InstantiatePrefab(prefab, at, Quaternion.identity, null);
+            GameObject gameObject = _instantiateService.Instantiate(prefab, at);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
@@ -124,6 +117,15 @@ namespace CodeBase.Infrastructure.Factory
             {
                 Register(progressReader);
             }
+        }
+
+        private void Register(ISavedProgressReader progressReader)
+        {
+            if (progressReader is ISavedProgress progressWriter)
+            {
+                ProgressWriters.Add(progressWriter);
+            }
+            ProgressReaders.Add(progressReader);
         }
     }
 }

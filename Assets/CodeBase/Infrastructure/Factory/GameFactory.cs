@@ -2,6 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Infrastructure.Instantiating;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Logic;
@@ -20,6 +21,7 @@ namespace CodeBase.Infrastructure.Factory
     public class GameFactory : IGameFactory
     {
         private readonly IAssets _assets;
+        private readonly IInstantiateService _instantiateService;
         private readonly IStaticDataService _staticData;
         private readonly IRandomService _randomService;
         private readonly IPersistentProgressService _progressService;
@@ -31,10 +33,11 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject _hero;
 
-        public GameFactory(IAssets assets, IStaticDataService staticData, IRandomService randomService,
+        public GameFactory(IAssets assets, IInstantiateService instantiateService, IStaticDataService staticData, IRandomService randomService,
             IPersistentProgressService progressService, IScreenService screenService, IInputService inputService, ISaveLoadService saveLoadService)
         {
             _assets = assets;
+            _instantiateService = instantiateService;
             _staticData = staticData;
             _randomService = randomService;
             _progressService = progressService;
@@ -83,7 +86,7 @@ namespace CodeBase.Infrastructure.Factory
         public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
-            GameObject enemy = Object.Instantiate(enemyData.Prefab, parent.position, Quaternion.identity, parent);
+            GameObject enemy = _instantiateService.Instantiate(enemyData.Prefab, parent.position, parent);
             
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
@@ -128,21 +131,21 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject InstantiateRegistered(string path, Vector3 at)
         {
-            GameObject gameObject = _assets.Instantiate(path, at);
+            GameObject gameObject = _instantiateService.Instantiate(_assets.Load(path), at);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
         
         private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
         {
-            GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
+            GameObject gameObject = _instantiateService.Instantiate(prefab, at);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
 
         private GameObject InstantiateRegistered(string path)
         {
-            GameObject gameObject = _assets.Instantiate(path);
+            GameObject gameObject = _instantiateService.Instantiate(_assets.Load(path));
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
