@@ -780,8 +780,13 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Build: 1
+    Build: 0
+    Collab: 0
+    Game Performance: 0
+    Purchasing: 0
+    UDP: 0
     UNet: 1
+    Unity Ads: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -795,11 +800,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 679d389d-2ccb-4383-bf53-ed47851e305d
+  cloudProjectId: bc5c13fc-5fea-44cb-9e57-5f8f64945c26
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: KnowledgeIsPower
-  organizationId: kate-3755722
+  projectName: Project Cepheus
+  organizationId: imelon2013
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0
