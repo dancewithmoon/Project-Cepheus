@@ -20,5 +20,8 @@ namespace CodeBase.Infrastructure.Instantiating
 
         public GameObject Instantiate(GameObject prefab, Vector3 at, Transform parent) => 
             _container.Container.InstantiatePrefab(prefab, at, Quaternion.identity, parent);
+
+        public GameObject Instantiate(GameObject prefab, Transform parent) => 
+            _container.Container.InstantiatePrefab(prefab, parent);
     }
 }

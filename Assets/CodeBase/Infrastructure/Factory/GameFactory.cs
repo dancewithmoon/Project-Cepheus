@@ -131,7 +131,7 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject InstantiateRegistered(string path, Vector3 at)
         {
-            GameObject gameObject = _assets.Instantiate(path, at);
+            GameObject gameObject = _instantiateService.Instantiate(_assets.Load(path), at);
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
@@ -145,7 +145,7 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject InstantiateRegistered(string path)
         {
-            GameObject gameObject = _assets.Instantiate(path);
+            GameObject gameObject = _instantiateService.Instantiate(_assets.Load(path));
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }

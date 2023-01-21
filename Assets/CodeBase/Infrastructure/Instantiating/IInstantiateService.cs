@@ -7,5 +7,6 @@ namespace CodeBase.Infrastructure.Instantiating
         GameObject Instantiate(GameObject prefab);
         GameObject Instantiate(GameObject prefab, Vector3 at);
         GameObject Instantiate(GameObject prefab, Vector3 at, Transform parent);
+        GameObject Instantiate(GameObject prefab, Transform parent);
     }
 }
