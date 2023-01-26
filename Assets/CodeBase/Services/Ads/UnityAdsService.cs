@@ -9,11 +9,11 @@ namespace CodeBase.Services.Ads
     public class UnityAdsService : IAdsService, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
     {
         private readonly UnityAdsIds _adsIds;
-
-        private bool _isRewardedLoaded;
+        
         private Action _onRewardedCompleted;
 
-        private event Action RewardedVideoLoaded;
+        public bool IsRewardedLoaded { get; private set; }
+        public event Action RewardedVideoLoaded;
 
         public UnityAdsService(IStaticDataService staticData)
         {
@@ -22,20 +22,20 @@ namespace CodeBase.Services.Ads
             Advertisement.Initialize(_adsIds.GameId, unityAdsStaticData.IsTestMode, this);
         }
 
-        public void LoadRewarded() =>
-            Advertisement.Load(_adsIds.RewardedId, this);
-
         public void ShowRewarded(Action onRewardedCompleted)
         {
-            if(_isRewardedLoaded == false)
+            if(IsRewardedLoaded == false)
                 return;
             
             _onRewardedCompleted = onRewardedCompleted;
             Advertisement.Show(_adsIds.RewardedId, this);
         }
 
-        public void OnInitializationComplete() =>
+        public void OnInitializationComplete()
+        {
             Debug.Log("Unity Ads successfully initialized!");
+            LoadRewarded();
+        }
 
         public void OnInitializationFailed(UnityAdsInitializationError error, string message) =>
             Debug.LogError($"Unity Ads initialization failed!. Error: {error}, message: {message}");
@@ -46,7 +46,7 @@ namespace CodeBase.Services.Ads
 
             if (placementId == _adsIds.RewardedId)
             {
-                _isRewardedLoaded = true;
+                IsRewardedLoaded = true;
                 RewardedVideoLoaded?.Invoke();
             }
         }
@@ -80,6 +80,10 @@ namespace CodeBase.Services.Ads
                 default:
                     throw new ArgumentOutOfRangeException(nameof(showCompletionState), showCompletionState, null);
             }
+            LoadRewarded();
         }
+
+        private void LoadRewarded() =>
+            Advertisement.Load(_adsIds.RewardedId, this);
     }
 }
