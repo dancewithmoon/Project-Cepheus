@@ -29,16 +29,16 @@ namespace CodeBase.UI.Screens
         private void Start()
         {
             Initialize();
-            SubscribeOnUpdates();
+            Subscribe();
         }
 
         private void OnDestroy()
         {
-            UnsubscribeOnUpdates();
+            Cleanup();
         }
 
         protected virtual void Initialize(){}
-        protected virtual void SubscribeOnUpdates(){}
-        protected virtual void UnsubscribeOnUpdates(){}
+        protected virtual void Subscribe(){}
+        protected virtual void Cleanup(){}
     }
 }

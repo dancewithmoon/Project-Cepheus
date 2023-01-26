@@ -14,5 +14,11 @@ namespace CodeBase.Data
             Count += loot.Value;
             Changed?.Invoke();
         }
+
+        public void Add(int loot)
+        {
+            Count += loot;
+            Changed?.Invoke();
+        }
     }
 }

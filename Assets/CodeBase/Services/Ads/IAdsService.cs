@@ -5,7 +5,9 @@ namespace CodeBase.Services.Ads
 {
     public interface IAdsService : IService
     {
-        void LoadRewarded();
+        bool IsRewardedLoaded { get; }
+        event Action RewardedVideoLoaded;
+        
         void ShowRewarded(Action onRewardedCompleted);
     }
 }
