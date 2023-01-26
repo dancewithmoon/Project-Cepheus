@@ -7,6 +7,7 @@ using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
+using CodeBase.Services.Ads;
 using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
 using CodeBase.StaticData.Service;
@@ -44,11 +45,15 @@ namespace CodeBase.Infrastructure
             Container.Bind<IAssets>().To<ResourcesAssets>().AsSingle();
             Container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
             Container.Bind<IRandomService>().To<UnityRandomService>().AsSingle();
+            
             Container.Bind<IStaticDataService>().To<StaticDataService>().AsSingle();
+            Container.Resolve<IStaticDataService>().Load();
+
             Container.Bind<IUIFactory>().To<ZenjectUIFactory>().AsSingle();
             Container.Bind<IScreenService>().To<ScreenService>().AsSingle();
             Container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
             Container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
+            Container.Bind<IAdsService>().To<UnityAdsService>().AsSingle();
         }
         
         public override void Start()

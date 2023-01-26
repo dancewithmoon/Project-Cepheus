@@ -20,7 +20,7 @@ namespace CodeBase.Infrastructure.States
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = 
-                    new BootstrapState(this, sceneLoader, staticData),
+                    new BootstrapState(this, sceneLoader),
 
                 [typeof(LoadProgressState)] = 
                     new LoadProgressState(this, progress, saveLoad, staticData),
