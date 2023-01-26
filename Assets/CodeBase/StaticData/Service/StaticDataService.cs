@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CodeBase.StaticData.Ads;
 using CodeBase.UI.Screens;
 using CodeBase.UI.Services.Screens;
 using UnityEngine;
@@ -12,12 +13,14 @@ namespace CodeBase.StaticData.Service
         private const string EnemiesPath = "StaticData/Enemies";
         private const string LevelsPath = "StaticData/Levels";
         private const string ScreensPath = "StaticData/Screens";
+        private const string UnityAdsPath = "StaticData/Ads/UnityAds";
 
         private HeroDefaultStaticData _hero;
         private Dictionary<string, LevelStaticData> _levels;
         private Dictionary<ScreenId, BaseScreen> _screens;
         private Dictionary<EnemyTypeId, EnemyStaticData> _enemies;
-
+        private UnityAdsStaticData _unityAds;
+        
         public void Load()
         {
             _hero = Resources.Load<HeroDefaultStaticData>(HeroPath);
@@ -29,6 +32,8 @@ namespace CodeBase.StaticData.Service
                 .ToDictionary(x => x.LevelKey, x => x);
 
             _screens = new Dictionary<ScreenId, BaseScreen>(Resources.Load<ScreenStaticData>(ScreensPath).Screens);
+
+            _unityAds = Resources.Load<UnityAdsStaticData>(UnityAdsPath);
         }
 
         public HeroDefaultStaticData GetHero() => _hero;
@@ -47,5 +52,7 @@ namespace CodeBase.StaticData.Service
             _screens.TryGetValue(screenId, out BaseScreen screen)
                 ? screen
                 : null;
+
+        public UnityAdsStaticData GetUnityAdsData() => _unityAds;
     }
 }
