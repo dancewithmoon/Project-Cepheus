@@ -1,6 +1,4 @@
-﻿using CodeBase.StaticData.Service;
-
-namespace CodeBase.Infrastructure.States
+﻿namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
