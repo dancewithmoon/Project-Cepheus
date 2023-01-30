@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using CodeBase.StaticData;
 using CodeBase.StaticData.Ads;
 using UnityEditor;
+using UnityEditor.Advertisements;
 using UnityEngine;
 
 namespace Editor
@@ -24,13 +24,13 @@ namespace Editor
                 FieldInfo androidIds = typeof(UnityAdsStaticData).GetField("_androidIds", BindingFlags.NonPublic | BindingFlags.Instance);
                 androidIds.SetValue(levelData, new UnityAdsIds()
                 {
-                    GameId = UnityEditor.Advertisements.AdvertisementSettings.GetGameId(RuntimePlatform.Android)
+                    GameId = AdvertisementSettings.GetGameId(RuntimePlatform.Android)
                 });
                 
                 FieldInfo iosIds = typeof(UnityAdsStaticData).GetField("_iosIds", BindingFlags.NonPublic | BindingFlags.Instance);
                 iosIds.SetValue(levelData, new UnityAdsIds()
                 {
-                    GameId = UnityEditor.Advertisements.AdvertisementSettings.GetGameId(RuntimePlatform.IPhonePlayer)
+                    GameId = AdvertisementSettings.GetGameId(RuntimePlatform.IPhonePlayer)
                 });
             }   
             
