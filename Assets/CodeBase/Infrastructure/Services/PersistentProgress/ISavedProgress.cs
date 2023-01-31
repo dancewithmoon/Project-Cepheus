@@ -1,14 +1,12 @@
-﻿using CodeBase.Data;
-
-namespace CodeBase.Infrastructure.Services.PersistentProgress
+﻿namespace CodeBase.Infrastructure.Services.PersistentProgress
 {
     public interface ISavedProgressReader
     {
-        void LoadProgress(PlayerProgress progress);
+        void LoadProgress();
     }
 
     public interface ISavedProgress : ISavedProgressReader
     {
-        void UpdateProgress(PlayerProgress progress);
+        void UpdateProgress();
     }
 }

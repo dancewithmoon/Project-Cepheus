@@ -62,7 +62,7 @@ namespace CodeBase.Infrastructure.States
 
         private void InformProgressReaders()
         {
-            _gameFactory.ProgressReaders.ForEach(progressReader => progressReader.LoadProgress(_progress.Progress));
+            _gameFactory.ProgressReaders.ForEach(progressReader => progressReader.LoadProgress());
         }
 
         private void InitUIRoot()
@@ -110,7 +110,7 @@ namespace CodeBase.Infrastructure.States
         }
 
         private GameObject InitHero() => 
-            _gameFactory.CreateHero(GameObject.FindWithTag(InitialPointTag));
+            _gameFactory.CreateHero();
 
         private void InitHud() => 
             _gameFactory.CreateHud();

@@ -34,9 +34,9 @@ namespace CodeBase.Infrastructure.Factory
             _container = container;
         }
 
-        public GameObject CreateHero(GameObject initialPoint)
+        public GameObject CreateHero()
         {
-            _hero = InstantiateRegistered(_staticData.GetHero().Prefab, initialPoint.transform.position);
+            _hero = InstantiateRegistered(_staticData.GetHero().Prefab);
             _container.Container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
             return _hero;
         }

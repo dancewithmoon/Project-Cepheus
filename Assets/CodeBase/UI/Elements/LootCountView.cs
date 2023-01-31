@@ -9,27 +9,26 @@ namespace CodeBase.UI.Elements
     public class LootCountView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _count;
-        private LootData _lootData;
+        private IReadonlyProgressService _progressService;
 
+        private IReadonlyLootData LootReadonly => _progressService.ProgressReadonly.LootReadonly; 
+        
         [Inject]
-        public void Construct(IPersistentProgressService progressService)
+        public void Construct(IReadonlyProgressService progressService)
         {
-            _lootData = progressService.Progress.LootData;
-
-            _lootData.Changed += OnLootDataChanged;
+            _progressService = progressService;
+            LootReadonly.Changed += OnLootDataChanged;
             UpdateCounter();
         }
 
         private void OnDestroy()
         {
-            _lootData.Changed -= OnLootDataChanged;
+            LootReadonly.Changed -= OnLootDataChanged;
         }
 
         private void OnLootDataChanged() => UpdateCounter();
 
-        private void UpdateCounter()
-        {
-            _count.text = _lootData.Count.ToString();
-        }
+        private void UpdateCounter() => 
+            _count.text = LootReadonly.CountReadonly.ToString();
     }
 }

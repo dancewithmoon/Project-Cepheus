@@ -12,16 +12,20 @@ namespace CodeBase.Logic.Spawner
     {
         [SerializeField] public bool _slain;
         private IGameFactory _gameFactory;
-        
+        private IPersistentProgressService _progressService;
+
         private string _id;
         private EnemyTypeId _enemyTypeId;
 
         private EnemyDeath _enemyDeath;
 
+        private EnemiesData EnemiesData => _progressService.Progress.EnemiesData;
+        
         [Inject]
-        public void Construct(IGameFactory gameFactory)
+        public void Construct(IGameFactory gameFactory, IPersistentProgressService progressService)
         {
             _gameFactory = gameFactory;
+            _progressService = progressService;
         }
 
         public void Initialize(string id, EnemyTypeId enemyType)
@@ -37,6 +41,25 @@ namespace CodeBase.Logic.Spawner
             _enemyDeath.Happened += OnEnemyDeathHappened;
         }
 
+        public void LoadProgress()
+        {
+            if (EnemiesData.KilledEnemies.Contains(_id))
+            {
+                _slain = true;
+                return;
+            }
+
+            Spawn();
+        }
+
+        public void UpdateProgress()
+        {
+            if (_slain)
+            {
+                EnemiesData.KilledEnemies.Add(_id);
+            }
+        }
+        
         private void OnEnemyDeathHappened()
         {
             if (_enemyDeath != null)
@@ -52,25 +75,6 @@ namespace CodeBase.Logic.Spawner
             if (_enemyDeath != null)
             {
                 _enemyDeath.Happened -= OnEnemyDeathHappened;
-            }
-        }
-
-        public void LoadProgress(PlayerProgress progress)
-        {
-            if (progress.EnemiesData.KilledEnemies.Contains(_id))
-            {
-                _slain = true;
-                return;
-            }
-
-            Spawn();
-        }
-
-        public void UpdateProgress(PlayerProgress progress)
-        {
-            if (_slain)
-            {
-                progress.EnemiesData.KilledEnemies.Add(_id);
             }
         }
     }

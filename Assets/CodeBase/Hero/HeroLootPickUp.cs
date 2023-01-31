@@ -5,29 +5,19 @@ using Zenject;
 
 namespace CodeBase.Hero
 {
-    public class HeroLootPickUp : MonoBehaviour, ISavedProgress
+    public class HeroLootPickUp : MonoBehaviour
     {
-        private LootData _lootData;
+        private IPersistentProgressService _progressService;
 
         [Inject]
         public void Construct(IPersistentProgressService progressService)
         {
-            _lootData = progressService.Progress.LootData;
+            _progressService = progressService;
         }
         
         public void PickUp(Loot loot)
         {
-            _lootData.Collect(loot);
-        }
-
-        public void LoadProgress(PlayerProgress progress)
-        {
-            _lootData.Count = progress.LootData.Count;
-        }
-
-        public void UpdateProgress(PlayerProgress progress)
-        {
-            progress.LootData.Count = _lootData.Count;
+            _progressService.Progress.LootData.Collect(loot);
         }
     }
 }

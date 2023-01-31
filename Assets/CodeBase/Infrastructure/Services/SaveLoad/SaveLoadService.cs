@@ -20,8 +20,8 @@ namespace CodeBase.Infrastructure.Services.SaveLoad
 
         public void SaveProgress()
         {
-            _gameFactory.ProgressWriters.ForEach(progressWriter =>
-                progressWriter.UpdateProgress(_progressService.Progress));
+            _gameFactory.ProgressWriters.ForEach(
+                progressWriter => progressWriter.UpdateProgress());
 
             PlayerPrefs.SetString(ProgressKey, _progressService.Progress.ToJson());
         }
