@@ -21,6 +21,7 @@ namespace CodeBase.Hero
         
         private AttackData _attackData;
         private IInputService _inputService;
+        private IReadonlyProgressService _progressService;
         
         private static int _layerMask;
         private readonly Collider[] _hits = new Collider[MaxCountOfTargets];
@@ -29,10 +30,11 @@ namespace CodeBase.Hero
         public float AttackPointRadius => _attackData.AttackPointRadius;
 
         [Inject]
-        public void Construct(IInputService inputService)
+        public void Construct(IInputService inputService, IReadonlyProgressService progressService)
         {
             _inputService = inputService;
-
+            _progressService = progressService;
+            
             _layerMask = 1 << LayerMask.NameToLayer("Hittable");
 
             _animationEvents.Attacked += ApplyAttack;
@@ -59,10 +61,8 @@ namespace CodeBase.Hero
             }
         }
 
-        public void LoadProgress(PlayerProgress progress)
-        {
-            _attackData = progress.AttackData.Clone();
-        }
+        public void LoadProgress() => 
+            _attackData = _progressService.ProgressReadonly.AttackReadonly;
 
         private int Hit() => 
             Physics.OverlapSphereNonAlloc(GetAttackPoint(), AttackPointRadius, _hits, _layerMask);

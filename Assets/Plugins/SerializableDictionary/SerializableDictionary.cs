@@ -17,7 +17,8 @@ public abstract class SerializableDictionaryBase
 }
 
 [Serializable]
-public abstract class SerializableDictionaryBase<TKey, TValue, TValueStorage> : SerializableDictionaryBase, IDictionary<TKey, TValue>, IDictionary, ISerializationCallbackReceiver, IDeserializationCallback, ISerializable
+public abstract class SerializableDictionaryBase<TKey, TValue, TValueStorage> : SerializableDictionaryBase, IDictionary<TKey, TValue>, 
+	IDictionary, IReadonlySerializableDictionary<TKey, TValue>, ISerializationCallbackReceiver, IDeserializationCallback, ISerializable
 {
 	Dictionary<TKey, TValue> m_dict;
 	[SerializeField]
@@ -91,6 +92,11 @@ public abstract class SerializableDictionaryBase<TKey, TValue, TValueStorage> : 
 		set { ((IDictionary<TKey, TValue>)m_dict)[key] = value; }
 	}
 
+	public TValue GetValue(TKey key)
+	{
+		return ((IDictionary<TKey, TValue>)m_dict)[key];
+	}
+	
 	public void Add(TKey key, TValue value)
 	{
 		((IDictionary<TKey, TValue>)m_dict).Add(key, value);
@@ -256,4 +262,12 @@ public class SerializableDictionary<TKey, TValue, TValueStorage> : SerializableD
 		storage[i] = new TValueStorage();
 		storage[i].data = value;
 	}
+}
+
+public interface IReadonlySerializableDictionary<TKey, TValue>
+{
+	TValue GetValue(TKey key);
+	bool TryGetValue(TKey key, out TValue value);
+	bool Contains(KeyValuePair<TKey, TValue> item);
+	bool ContainsKey(TKey key);
 }

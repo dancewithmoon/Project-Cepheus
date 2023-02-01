@@ -8,6 +8,8 @@ namespace CodeBase.Infrastructure.States
 {
     public class LoadProgressState : IState
     {
+        private const string MainScene = "Main";
+        
         private readonly GameStateMachine _stateMachine;
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadService;
@@ -40,15 +42,17 @@ namespace CodeBase.Infrastructure.States
 
         private PlayerProgress InitNewProgress()
         {
-            PlayerProgress progress = new PlayerProgress("Main");
+            PlayerProgress progress = new PlayerProgress(MainScene);
 
             HeroDefaultStaticData heroDefaultData = _staticDataService.GetHero();
 
+            progress.WorldData.PositionOnLevel.Position = heroDefaultData.GetInitialPoint(MainScene).AsVectorData();
+            
             progress.AttackData.Damage = heroDefaultData.Damage;
             progress.AttackData.AttackPointRadius = heroDefaultData.AttackPointRadius;
 
-            progress.HeroHealthData.MaxHp = heroDefaultData.Hp;
-            progress.HeroHealthData.ResetHp();
+            progress.HealthData.MaxHp = heroDefaultData.Hp;
+            progress.HealthData.ResetHp();
             return progress;
         }
     }

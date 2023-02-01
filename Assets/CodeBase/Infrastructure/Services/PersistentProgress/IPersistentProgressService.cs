@@ -6,4 +6,9 @@ namespace CodeBase.Infrastructure.Services.PersistentProgress
     {
         PlayerProgress Progress { get; set; }
     }
+
+    public interface IReadonlyProgressService : IService
+    {
+        IReadOnlyPlayerProgress ProgressReadonly { get; }
+    }
 }

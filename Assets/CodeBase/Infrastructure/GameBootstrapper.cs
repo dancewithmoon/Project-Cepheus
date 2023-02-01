@@ -43,7 +43,11 @@ namespace CodeBase.Infrastructure
             Container.Bind<IInstantiateService>().To<ZenjectInstantiateService>().AsSingle();
             Container.Bind<IInputService>().FromMethod(GetInputService);
             Container.Bind<IAssets>().To<ResourcesAssets>().AsSingle();
-            Container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
+
+            PersistentProgressService progressService = new PersistentProgressService();
+            Container.Bind<IPersistentProgressService>().FromInstance(progressService).AsSingle();
+            Container.Bind<IReadonlyProgressService>().FromInstance(progressService).AsSingle();
+            
             Container.Bind<IRandomService>().To<UnityRandomService>().AsSingle();
             
             Container.Bind<IStaticDataService>().To<StaticDataService>().AsSingle();

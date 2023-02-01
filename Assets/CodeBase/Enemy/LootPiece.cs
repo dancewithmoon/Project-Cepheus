@@ -25,15 +25,17 @@ namespace CodeBase.Enemy
 
         private Loot _loot;
 
-        private LootOnLevel _lootOnLevel;
+        private IPersistentProgressService _progressService;
         private bool _picked;
 
         private int _targetLayer;
 
+        private LootOnLevel LootOnLevel => _progressService.Progress.WorldData.LootOnLevel;
+        
         [Inject]
         public void Construct(IPersistentProgressService progressService)
         {
-            _lootOnLevel = progressService.Progress.WorldData.LootOnLevel;
+            _progressService = progressService;
         }
 
         public void Initialize(Loot loot)
@@ -51,22 +53,22 @@ namespace CodeBase.Enemy
                 PickUp(hero);
         }
 
-        public void LoadProgress(PlayerProgress progress)
+        public void LoadProgress()
         {
-            LootPieceData lootPieceData = _lootOnLevel.Loots[_uniqueId.Id];
+            LootPieceData lootPieceData = LootOnLevel.Loots[_uniqueId.Id];
             transform.position = lootPieceData.PositionOnLevel.Position.AsUnityVector();
             Initialize(lootPieceData.Loot);
         }
 
-        public void UpdateProgress(PlayerProgress progress)
+        public void UpdateProgress()
         {
             if (_picked)
                 return;
 
-            if (progress.WorldData.LootOnLevel.Loots.ContainsKey(_uniqueId.Id))
-                progress.WorldData.LootOnLevel.Loots.Remove(_uniqueId.Id);
+            if (LootOnLevel.Loots.ContainsKey(_uniqueId.Id))
+                LootOnLevel.Loots.Remove(_uniqueId.Id);
 
-            progress.WorldData.LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData
+            LootOnLevel.Loots.Add(_uniqueId.Id, new LootPieceData
             {
                 Loot = _loot,
                 PositionOnLevel = new PositionOnLevel(SceneManager.GetActiveScene().name, transform.position.AsVectorData())
@@ -91,7 +93,7 @@ namespace CodeBase.Enemy
         }
 
         private void RemoveFromLootOnLevel() => 
-            _lootOnLevel.Loots.Remove(_uniqueId.Id);
+            LootOnLevel.Loots.Remove(_uniqueId.Id);
 
         private void HideSkull() => 
             _skull.SetActive(false);

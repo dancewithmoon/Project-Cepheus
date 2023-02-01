@@ -3,6 +3,7 @@ using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -10,6 +11,7 @@ namespace CodeBase.Hero
     public class HeroHealth : MonoBehaviour, ISavedProgress, IHealth
     {
         [SerializeField] private HeroAnimator _animator;
+        private IPersistentProgressService _progressService;
         private HealthData _health;
 
         public event Action HealthChanged;
@@ -33,6 +35,12 @@ namespace CodeBase.Hero
             set => _health.MaxHp = value;
         }
 
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
+        {
+            _progressService = progressService;
+        }
+        
         public void ApplyDamage(float damage)
         {
             if (enabled == false)
@@ -42,16 +50,16 @@ namespace CodeBase.Hero
             _animator.PlayHit();
         }
 
-        public void LoadProgress(PlayerProgress progress)
+        public void LoadProgress()
         {
-            _health = progress.HeroHealthData.Clone();
+            _health = _progressService.Progress.HealthData;
             HealthChanged?.Invoke();
         }
 
-        public void UpdateProgress(PlayerProgress progress)
+        public void UpdateProgress()
         {
-            progress.HeroHealthData.CurrentHp = Current;
-            progress.HeroHealthData.MaxHp = Max;
+            _progressService.Progress.HealthData.CurrentHp = Current;
+            _progressService.Progress.HealthData.MaxHp = Max;
         }
     }
 }

@@ -12,12 +12,17 @@ namespace CodeBase.Hero
         [SerializeField] private float _movementSpeed = 4.0f;
         [SerializeField] private CharacterController _characterController;
         private IInputService _inputService;
+        private IPersistentProgressService _progressService;
         private Camera _camera;
 
+        private PositionOnLevel PositionOnLevel => _progressService.Progress.WorldData.PositionOnLevel;
+        
         [Inject]
-        public void Construct(IInputService inputService)
+        public void Construct(IInputService inputService, IPersistentProgressService progressService)
         {
             _inputService = inputService;
+            _progressService = progressService;
+            
             _camera = Camera.main;
         }
 
@@ -39,23 +44,20 @@ namespace CodeBase.Hero
             _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
         }
 
-        public void LoadProgress(PlayerProgress progress)
+        public void LoadProgress()
         {
-            if (GetCurrentLevelName() != progress.WorldData.PositionOnLevel.Level)
+            if (GetCurrentLevelName() != PositionOnLevel.Level)
                 return;
 
-            Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
-
-            if (savedPosition == null)
-                return;
+            Vector3Data savedPosition = PositionOnLevel.Position;
 
             Warp(savedPosition.AsUnityVector());
         }
 
-        public void UpdateProgress(PlayerProgress progress)
+        public void UpdateProgress()
         {
-            progress.WorldData.PositionOnLevel =
-                new PositionOnLevel(GetCurrentLevelName(), transform.position.AsVectorData());
+            PositionOnLevel.Level = GetCurrentLevelName();
+            PositionOnLevel.Position = transform.position.AsVectorData();
         }
 
         private void Warp(Vector3 to)

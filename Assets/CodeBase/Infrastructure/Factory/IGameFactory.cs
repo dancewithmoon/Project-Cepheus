@@ -9,7 +9,7 @@ namespace CodeBase.Infrastructure.Factory
 {
     public interface IGameFactory : IService
     {
-        GameObject CreateHero(GameObject initialPoint);
+        GameObject CreateHero();
         GameObject CreateHud();
         GameObject CreateSavePoint(Vector3 at, Vector3 scale);
         GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId);

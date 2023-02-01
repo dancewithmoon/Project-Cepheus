@@ -3,7 +3,7 @@
 namespace CodeBase.Data
 {
     [Serializable]
-    public class HealthData
+    public struct HealthData
     {
         public float CurrentHp;
         public float MaxHp;
@@ -12,12 +12,5 @@ namespace CodeBase.Data
         {
             CurrentHp = MaxHp;
         }
-
-        public HealthData Clone() =>
-            new HealthData
-            {
-                CurrentHp = CurrentHp,
-                MaxHp = MaxHp
-            };
     }
 }
