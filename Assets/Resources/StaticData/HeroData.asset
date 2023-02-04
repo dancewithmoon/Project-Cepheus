@@ -15,11 +15,4 @@ MonoBehaviour:
   _hp: 50
   _damage: 5
   _attackPointRadius: 0.7
-  _initialPoints:
-    m_keys:
-    - Main
-    - Dungeon
-    m_values:
-    - {x: 9.3, y: 1.24, z: -13.93}
-    - {x: -4.6, y: 0.26, z: -18.6}
   _prefab: {fileID: 176288, guid: 181862a89f60d7a459002f9870860ad4, type: 3}

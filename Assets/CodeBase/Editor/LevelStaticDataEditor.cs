@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CodeBase.Logic;
@@ -13,6 +14,8 @@ namespace Editor
     [CustomEditor(typeof(LevelStaticData))]
     public class LevelStaticDataEditor : UnityEditor.Editor
     {
+        private const string InitialPointTag = "InitialPoint";
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -32,6 +35,9 @@ namespace Editor
                 
                 FieldInfo savePoints = typeof(LevelStaticData).GetField("_savePoints", BindingFlags.NonPublic | BindingFlags.Instance);
                 savePoints.SetValue(levelData, CollectSavePoints());
+                
+                FieldInfo initialHeroPoint = typeof(LevelStaticData).GetField("_initialHeroPoint", BindingFlags.NonPublic | BindingFlags.Instance);
+                initialHeroPoint.SetValue(levelData, GetInitialPointForActiveScene());
             }
             
             EditorUtility.SetDirty(target);
@@ -57,6 +63,15 @@ namespace Editor
                         x.transform.position,
                         x.transform.localScale))
                 .ToList();
+        }
+        
+        private Vector3 GetInitialPointForActiveScene()
+        {
+            GameObject initialPoint = GameObject.FindWithTag(InitialPointTag);
+            if (initialPoint == null)
+                throw new NullReferenceException("Initial Point wasn't found on active scene!");
+
+            return initialPoint.transform.position;
         }
     }
 }

@@ -46,8 +46,6 @@ namespace CodeBase.Infrastructure.States
 
             HeroDefaultStaticData heroDefaultData = _staticDataService.GetHero();
 
-            progress.WorldData.PositionOnLevel.Position = heroDefaultData.GetInitialPoint(MainScene).AsVectorData();
-            
             progress.AttackData.Damage = heroDefaultData.Damage;
             progress.AttackData.AttackPointRadius = heroDefaultData.AttackPointRadius;
 

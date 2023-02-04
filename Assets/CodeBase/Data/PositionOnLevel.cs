@@ -8,7 +8,7 @@ namespace CodeBase.Data
         public Vector3Data Position;
         public string Level;
 
-        public Vector3Data PositionReadonly => Position;
+        public IVector3DataReadonly PositionReadonly => Position;
         public string LevelReadonly => Level;
         
         public PositionOnLevel(string level, Vector3Data position)
@@ -25,7 +25,7 @@ namespace CodeBase.Data
 
     public interface IReadonlyPositionOnLevel
     {
-        public Vector3Data PositionReadonly { get; }
+        public IVector3DataReadonly PositionReadonly { get; }
         public string LevelReadonly { get; }
     }
 }

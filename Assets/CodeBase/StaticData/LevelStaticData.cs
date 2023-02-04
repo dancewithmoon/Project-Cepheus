@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeBase.StaticData
 {
@@ -9,10 +11,11 @@ namespace CodeBase.StaticData
         [SerializeField] private string _levelKey;
         [SerializeField] private List<EnemySpawnerData> _enemySpawners;
         [SerializeField] private List<SavePointData> _savePoints;
-
+        [SerializeField] private Vector3 _initialHeroPoint;
+        
         public string LevelKey => _levelKey;
-
         public IReadOnlyList<EnemySpawnerData> EnemySpawners => _enemySpawners;
         public IReadOnlyList<SavePointData> SavePoints => _savePoints;
+        public Vector3 InitialHeroPoint => _initialHeroPoint;
     }
 }

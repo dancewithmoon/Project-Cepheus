@@ -23,6 +23,7 @@ namespace CodeBase.Infrastructure.States
         private readonly IUIFactory _uiFactory;
 
         private string _sceneName;
+        private LevelStaticData _levelData;
 
         public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
             IGameFactory gameFactory, IPersistentProgressService progress, IStaticDataService staticData, IUIFactory uiFactory)
@@ -70,9 +71,9 @@ namespace CodeBase.Infrastructure.States
 
         private void InitGameWorld()
         {
-            LevelStaticData levelData = _staticData.GetLevel(_sceneName);
-            InitSpawners(levelData.EnemySpawners);
-            InitSavePoints(levelData.SavePoints);
+            _levelData = _staticData.GetLevel(_sceneName);
+            InitSpawners(_levelData.EnemySpawners);
+            InitSavePoints(_levelData.SavePoints);
             InitLoot();
             GameObject hero = InitHero();
             InitHud();
@@ -107,8 +108,14 @@ namespace CodeBase.Infrastructure.States
             }
         }
 
-        private GameObject InitHero() => 
-            _gameFactory.CreateHero();
+        private GameObject InitHero()
+        {
+            if (_progress.Progress.WorldData.PositionOnLevel.Position == null)
+            {
+                _progress.Progress.WorldData.PositionOnLevel.Position = _levelData.InitialHeroPoint.AsVectorData();
+            }
+            return _gameFactory.CreateHero();
+        }
 
         private void InitHud() => 
             _gameFactory.CreateHud();
