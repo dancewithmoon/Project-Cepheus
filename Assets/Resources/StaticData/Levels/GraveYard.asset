@@ -27,3 +27,4 @@ MonoBehaviour:
   - Id: Main_ea0ca82b-c216-4b12-9c71-6ce97c379bae
     Position: {x: 3.02, y: 0.72, z: -15}
     Scale: {x: 1, y: 1, z: 2}
+  _initialHeroPoint: {x: 9.3, y: 1.24, z: -13.93}
