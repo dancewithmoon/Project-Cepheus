@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: Dungeon
   m_EditorClassIdentifier: 
   _levelKey: Dungeon
-  _enemySpawners: []
-  _savePoints: []
+  _enemySpawners:
+  - Id: Dungeon_6ffdcaa2-fda1-4c1d-96aa-88c6ac8bf3f8
+    EnemyTypeId: 0
+    Position: {x: -4.2933955, y: 0.45, z: 1.22}
+  _savePoints:
+  - Id: Dungeon_858d18ee-013a-4e8e-9659-576a8b4973cf
+    Position: {x: -4.47, y: 1.01, z: 14.4}
+    Scale: {x: 1, y: 1, z: 1}
   _initialHeroPoint: {x: -4.6, y: 0.26, z: -18.6}
