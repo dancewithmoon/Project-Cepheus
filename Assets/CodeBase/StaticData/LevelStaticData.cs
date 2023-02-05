@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using CodeBase.Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.StaticData
 {
