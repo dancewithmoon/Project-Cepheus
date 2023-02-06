@@ -4,9 +4,9 @@ namespace CodeBase.Infrastructure
 {
     public class Game
     {
-        public GameStateMachine StateMachine { get; }
+        public IGameStateMachine StateMachine { get; }
 
-        public Game(GameStateMachine stateMachine)
+        public Game(IGameStateMachine stateMachine)
         {
             StateMachine = stateMachine;
         }

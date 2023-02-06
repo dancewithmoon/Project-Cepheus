@@ -10,12 +10,12 @@ namespace CodeBase.Infrastructure.States
     {
         private const string MainScene = "Main";
         
-        private readonly GameStateMachine _stateMachine;
+        private readonly IGameStateMachine _stateMachine;
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadService;
         private readonly IStaticDataService _staticDataService;
 
-        public LoadProgressState(GameStateMachine stateMachine, IPersistentProgressService progressService,
+        public LoadProgressState(IGameStateMachine stateMachine, IPersistentProgressService progressService,
             ISaveLoadService saveLoadService, IStaticDataService staticDataService)
         {
             _stateMachine = stateMachine;

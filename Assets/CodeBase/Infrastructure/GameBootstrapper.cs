@@ -30,7 +30,7 @@ namespace CodeBase.Infrastructure
             BindServices();
 
             Container.Bind<LoadingCurtain>().FromInstance(_loadingCurtain).AsSingle();
-            Container.Bind<GameStateMachine>().AsSingle();
+            Container.Bind<IGameStateMachine>().To<GameStateMachine>().AsSingle();
             
             Container.Bind<Game>().AsSingle();
         }
