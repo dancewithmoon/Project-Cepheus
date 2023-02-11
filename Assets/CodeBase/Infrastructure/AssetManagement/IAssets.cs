@@ -6,6 +6,6 @@ namespace CodeBase.Infrastructure.AssetManagement
 {
     public interface IAssets : IService
     {
-        Task<GameObject> Load(object source);
+        Task<T> Load<T>(object source) where T : Object;
     }
 }

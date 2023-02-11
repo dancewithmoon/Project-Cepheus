@@ -6,14 +6,14 @@ namespace CodeBase.Infrastructure.AssetManagement
 {
     public class AddressableAssets : IAssets
     {
-        public async Task<GameObject> Load(object source)
+        public async Task<T> Load<T>(object source) where T : Object
         {
             if (source is string path)
             {
-                return await Task.FromResult(Resources.Load<GameObject>(path));
+                return await Task.FromResult(Resources.Load<T>(path));
             }
 
-            return await Addressables.LoadAssetAsync<GameObject>(source).Task;
+            return await Addressables.LoadAssetAsync<T>(source).Task;
         }
     }
 }

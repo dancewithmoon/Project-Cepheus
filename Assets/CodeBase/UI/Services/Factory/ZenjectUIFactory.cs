@@ -25,7 +25,7 @@ namespace CodeBase.UI.Services.Factory
 
         public async void CreateUIRoot()
         {
-            GameObject rootPrefab = await _assets.Load(AssetPath.UIRootPath);
+            GameObject rootPrefab = await _assets.Load<GameObject>(AssetPath.UIRootPath);
             _uiRoot = _instantiateService.Instantiate(rootPrefab).transform;
         }
 

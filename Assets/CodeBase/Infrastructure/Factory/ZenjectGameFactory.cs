@@ -37,7 +37,7 @@ namespace CodeBase.Infrastructure.Factory
 
         public async Task<GameObject> CreateHero()
         {
-            GameObject heroPrefab = await _assets.Load(_staticData.GetHero().PrefabReference);
+            GameObject heroPrefab = await _assets.Load<GameObject>(_staticData.GetHero().PrefabReference);
             _hero = InstantiateRegistered(heroPrefab);
             _container.Container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
             return _hero;
@@ -69,7 +69,7 @@ namespace CodeBase.Infrastructure.Factory
         {
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
 
-            GameObject prefab = await _assets.Load(enemyData.PrefabReference);
+            GameObject prefab = await _assets.Load<GameObject>(enemyData.PrefabReference);
             
             GameObject enemy = _instantiateService.Instantiate(prefab, parent.position, parent);
             
@@ -102,13 +102,13 @@ namespace CodeBase.Infrastructure.Factory
 
         private async Task<GameObject> InstantiateRegistered(string path)
         {
-            GameObject asset = await _assets.Load(path);
+            GameObject asset = await _assets.Load<GameObject>(path);
             return InstantiateRegistered(asset);
         }
 
         private async Task<GameObject> InstantiateRegistered(string path, Vector3 at)
         {
-            GameObject asset = await _assets.Load(path);
+            GameObject asset = await _assets.Load<GameObject>(path);
             return InstantiateRegistered(asset, at);
         }
 
