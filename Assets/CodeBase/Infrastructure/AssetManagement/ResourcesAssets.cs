@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.AssetManagement
 {
     public class ResourcesAssets : IAssets
     {
-        public GameObject Load(string path) => 
-            Resources.Load<GameObject>(path);
-
-        public void Load(string path, Action<GameObject> onLoaded)
+        public Task<GameObject> Load(object source)
         {
-            GameObject prefab = Resources.Load<GameObject>(path);
-            onLoaded?.Invoke(prefab);
+            if (source is string path)
+            {
+                return Task.FromResult(Resources.Load<GameObject>(path));
+            }
+            if (source is GameObject gameObject)
+            {
+                return Task.FromResult(gameObject);
+            }
+
+            throw new Exception("Source Type mismatch!");
         }
     }
 }

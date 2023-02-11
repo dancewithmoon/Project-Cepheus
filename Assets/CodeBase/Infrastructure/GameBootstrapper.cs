@@ -42,7 +42,7 @@ namespace CodeBase.Infrastructure
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<IInstantiateService>().To<ZenjectInstantiateService>().AsSingle();
             Container.Bind<IInputService>().FromMethod(GetInputService);
-            Container.Bind<IAssets>().To<ResourcesAssets>().AsSingle();
+            Container.Bind<IAssets>().To<AddressableAssets>().AsSingle();
 
             PersistentProgressService progressService = new PersistentProgressService();
             Container.Bind<IPersistentProgressService>().FromInstance(progressService).AsSingle();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.CameraLogic;
 using CodeBase.Data;
 using CodeBase.Enemy;
@@ -51,10 +52,10 @@ namespace CodeBase.Infrastructure.States
             _loadingCurtain.Hide();
         }
 
-        private void OnLoaded()
+        private async void OnLoaded()
         {
             InitUIRoot();
-            InitGameWorld();
+            await InitGameWorld();
             InformProgressReaders();
             _stateMachine.Enter<GameLoopState>();
         }
@@ -69,14 +70,14 @@ namespace CodeBase.Infrastructure.States
             _uiFactory.CreateUIRoot();
         }
 
-        private void InitGameWorld()
+        private async Task InitGameWorld()
         {
             _levelData = _staticData.GetLevel(_sceneName);
             InitSpawners(_levelData.EnemySpawners);
             InitSavePoints(_levelData.SavePoints);
             InitLoot();
-            GameObject hero = InitHero();
             InitHud();
+            GameObject hero = await InitHero();
             CameraFollow(hero);
         }
 
@@ -96,25 +97,25 @@ namespace CodeBase.Infrastructure.States
             }
         }
 
-        private void InitLoot()
+        private async void InitLoot()
         {
             foreach (KeyValuePair<string,LootPieceData> loot in _progress.Progress.WorldData.LootOnLevel.Loots)
             {
                 if(loot.Value.PositionOnLevel.Level != _sceneName)
                     continue;
 
-                LootPiece lootPiece = _gameFactory.CreateLoot();
+                LootPiece lootPiece = await _gameFactory.CreateLoot();
                 lootPiece.GetComponent<UniqueId>().Id = loot.Key;
             }
         }
 
-        private GameObject InitHero()
+        private async Task<GameObject> InitHero()
         {
             if (_progress.Progress.WorldData.PositionOnLevel.Position == null)
             {
                 _progress.Progress.WorldData.PositionOnLevel.Position = _levelData.InitialHeroPoint.AsVectorData();
             }
-            return _gameFactory.CreateHero();
+            return await _gameFactory.CreateHero();
         }
 
         private void InitHud() => 

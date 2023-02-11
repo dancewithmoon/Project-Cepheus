@@ -23,9 +23,10 @@ namespace CodeBase.UI.Services.Factory
             _ads = ads;
         }
 
-        public void CreateUIRoot()
+        public async void CreateUIRoot()
         {
-            _uiRoot = _instantiateService.Instantiate(_assets.Load(AssetPath.UIRootPath)).transform;
+            GameObject rootPrefab = await _assets.Load(AssetPath.UIRootPath);
+            _uiRoot = _instantiateService.Instantiate(rootPrefab).transform;
         }
 
         public void CreateShop() =>

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CodeBase.StaticData
 {
@@ -28,7 +29,7 @@ namespace CodeBase.StaticData
         [SerializeField] private int _minLoot;
         [SerializeField] private int _maxLoot;
 
-        [SerializeField] private GameObject _prefab;
+        [SerializeField] private AssetReference _prefabReference;
 
         public EnemyTypeId EnemyType => _enemyType;
         public float MovementSpeed => _movementSpeed;
@@ -41,6 +42,6 @@ namespace CodeBase.StaticData
 
         public int MaxLoot => _maxLoot;
 
-        public GameObject Prefab => _prefab;
+        public AssetReference PrefabReference => _prefabReference;
     }
 }

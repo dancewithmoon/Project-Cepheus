@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CodeBase.StaticData
 {
@@ -14,11 +15,11 @@ namespace CodeBase.StaticData
         [Range(0.5f, 1)] 
         [SerializeField] private float _attackPointRadius = 0.7f;
 
-        [SerializeField] private GameObject _prefab;
+        [SerializeField] private AssetReference _prefabReference;
 
         public float Hp => _hp;
         public float Damage => _damage;
         public float AttackPointRadius => _attackPointRadius;
-        public GameObject Prefab => _prefab;
+        public AssetReference PrefabReference => _prefabReference;
     }
 }

@@ -41,9 +41,9 @@ namespace CodeBase.Enemy
         
         private void OnDeathHappened() => SpawnLoot();
 
-        private void SpawnLoot()
+        private async void SpawnLoot()
         {
-            LootPiece lootPiece = _factory.CreateLoot();
+            LootPiece lootPiece = await _factory.CreateLoot();
             lootPiece.GetComponent<UniqueId>().Generate();
             lootPiece.transform.position = transform.position;
 

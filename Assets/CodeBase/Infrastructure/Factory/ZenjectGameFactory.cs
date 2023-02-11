@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
@@ -34,56 +35,64 @@ namespace CodeBase.Infrastructure.Factory
             _container = container;
         }
 
-        public GameObject CreateHero()
+        public async Task<GameObject> CreateHero()
         {
-            _hero = InstantiateRegistered(_staticData.GetHero().Prefab);
+            GameObject heroPrefab = await _assets.Load(_staticData.GetHero().PrefabReference);
+            _hero = InstantiateRegistered(heroPrefab);
             _container.Container.Bind<Transform>().WithId("hero").FromInstance(_hero.transform);
             return _hero;
         }
 
-        public GameObject CreateHud()
+        public async Task<GameObject> CreateHud()
         {
-            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            GameObject hud = await InstantiateRegistered(AssetPath.HudPath);
             hud.GetComponentInChildren<ActorUI>().Construct(_hero.GetComponent<HeroHealth>());
             return hud;
         }
         
-        public GameObject CreateSavePoint(Vector3 at, Vector3 scale)
+        public async Task<GameObject> CreateSavePoint(Vector3 at, Vector3 scale)
         {
-            GameObject saveTrigger = InstantiateRegistered(AssetPath.SaveTrigger, at);
+            GameObject saveTrigger = await InstantiateRegistered(AssetPath.SaveTrigger, at);
             saveTrigger.transform.localScale = scale;
             return saveTrigger;
         }
 
-        public GameObject CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
+        public async Task<GameObject> CreateEnemySpawner(Vector3 at, string spawnerId, EnemyTypeId enemyTypeId)
         {
-            EnemySpawner spawner = InstantiateRegistered(AssetPath.SpawnerPath, at).GetComponent<EnemySpawner>();
+            GameObject spawnerObject = await InstantiateRegistered(AssetPath.SpawnerPath, at);
+            EnemySpawner spawner = spawnerObject.GetComponent<EnemySpawner>();
             spawner.Initialize(spawnerId, enemyTypeId);
             return spawner.gameObject;
         }
 
-        public GameObject CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
+        public async Task<GameObject> CreateEnemy(EnemyTypeId enemyTypeId, Transform parent)
         {
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
-            GameObject enemy = _instantiateService.Instantiate(enemyData.Prefab, parent.position, parent);
+
+            GameObject prefab = await _assets.Load(enemyData.PrefabReference);
+            
+            GameObject enemy = _instantiateService.Instantiate(prefab, parent.position, parent);
             
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
             enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
-            
+
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
             LootSpawner lootSpawner = enemy.GetComponentInChildren<LootSpawner>();
             lootSpawner.Initialize(enemyData.MinLoot, enemyData.MaxLoot);
-
+            
             return enemy;
         }
 
-        public LootPiece CreateLoot() => 
-            InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+        public async Task<LootPiece> CreateLoot()
+        {
+            GameObject loot = await InstantiateRegistered(AssetPath.Loot);
+            return loot.GetComponent<LootPiece>();
+        }
 
         public void Cleanup()
         {
@@ -91,11 +100,17 @@ namespace CodeBase.Infrastructure.Factory
             ProgressWriters.Clear();
         }
 
-        private GameObject InstantiateRegistered(string path) => 
-            InstantiateRegistered(_assets.Load(path));
+        private async Task<GameObject> InstantiateRegistered(string path)
+        {
+            GameObject asset = await _assets.Load(path);
+            return InstantiateRegistered(asset);
+        }
 
-        private GameObject InstantiateRegistered(string path, Vector3 at) => 
-            InstantiateRegistered(_assets.Load(path), at);
+        private async Task<GameObject> InstantiateRegistered(string path, Vector3 at)
+        {
+            GameObject asset = await _assets.Load(path);
+            return InstantiateRegistered(asset, at);
+        }
 
         private GameObject InstantiateRegistered(GameObject prefab)
         {
