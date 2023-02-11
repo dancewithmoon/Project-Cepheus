@@ -43,7 +43,7 @@ namespace CodeBase.Infrastructure.States
             _sceneName = sceneName;
             
             _loadingCurtain.Show();
-            _gameFactory.Cleanup();
+            _gameFactory.CleanUp();
             _sceneLoader.Load(sceneName, OnLoaded);
         }
 

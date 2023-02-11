@@ -10,6 +10,7 @@ namespace CodeBase.Infrastructure.Factory
 {
     public interface IGameFactory : IService
     {
+        Task WarmUp();
         Task<GameObject> CreateHero();
         Task<GameObject> CreateHud();
         Task<GameObject> CreateSavePoint(Vector3 at, Vector3 scale);
@@ -18,6 +19,6 @@ namespace CodeBase.Infrastructure.Factory
         Task<LootPiece> CreateLoot();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
-        void Cleanup();
+        void CleanUp();
     }
 }

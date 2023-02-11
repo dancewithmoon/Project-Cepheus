@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
+﻿using System.Threading.Tasks;
+using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Instantiating;
 using CodeBase.Services.Ads;
 using CodeBase.StaticData.Service;
@@ -21,6 +22,11 @@ namespace CodeBase.UI.Services.Factory
             _instantiateService = instantiateService;
             _staticData = staticData;
             _ads = ads;
+        }
+
+        public async Task WarmUp()
+        {
+            await _assets.Load<GameObject>(AssetPath.UIRootPath);
         }
 
         public async void CreateUIRoot()

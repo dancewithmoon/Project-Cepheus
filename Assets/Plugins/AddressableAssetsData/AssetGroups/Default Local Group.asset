@@ -29,6 +29,26 @@ MonoBehaviour:
     m_Address: Hero
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5d00987d5f2015048b8346c709341a1c
+    m_Address: EnemySpawner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 557014efbc841bc4693bf97607b62868
+    m_Address: SaveTrigger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d587ba2fd38b20449986c007d26d2b8a
+    m_Address: Loot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7f63450bf622d574799a70e5a4b0d23b
+    m_Address: UIRoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6395af14c6ae2d4ea00c7e97e633ad3
+    m_Address: Hud
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 73f3dadeeb5a7494f9f08638dd768d92, type: 2}
   m_SchemaSet:

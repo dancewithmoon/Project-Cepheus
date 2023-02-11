@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeBase.Enemy;
 using CodeBase.Hero;
@@ -21,18 +22,34 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IInstantiateService _instantiateService;
         private readonly IStaticDataService _staticData;
         private readonly ContainerService _container;
-        
+
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject _hero;
-
-        public ZenjectGameFactory(IAssets assets, IInstantiateService instantiateService, IStaticDataService staticData, ContainerService container)
+        
+        public ZenjectGameFactory(IAssets assets, IInstantiateService instantiateService, IStaticDataService staticData,
+            ContainerService container)
         {
             _assets = assets;
             _instantiateService = instantiateService;
             _staticData = staticData;
             _container = container;
+        }
+
+        public async Task WarmUp()
+        {
+            await _assets.Load<GameObject>(_staticData.GetHero().PrefabReference);
+            await _assets.Load<GameObject>(AssetPath.HudPath);
+            await _assets.Load<GameObject>(AssetPath.SaveTrigger);
+            await _assets.Load<GameObject>(AssetPath.SpawnerPath);
+
+            foreach (EnemyTypeId enemyType in Enum.GetValues(typeof(EnemyTypeId)))
+            {
+                await _assets.Load<GameObject>(_staticData.GetEnemy(enemyType).PrefabReference);
+            }
+
+            await _assets.Load<GameObject>(AssetPath.Loot);
         }
 
         public async Task<GameObject> CreateHero()
@@ -49,7 +66,7 @@ namespace CodeBase.Infrastructure.Factory
             hud.GetComponentInChildren<ActorUI>().Construct(_hero.GetComponent<HeroHealth>());
             return hud;
         }
-        
+
         public async Task<GameObject> CreateSavePoint(Vector3 at, Vector3 scale)
         {
             GameObject saveTrigger = await InstantiateRegistered(AssetPath.SaveTrigger, at);
@@ -70,21 +87,22 @@ namespace CodeBase.Infrastructure.Factory
             EnemyStaticData enemyData = _staticData.GetEnemy(enemyTypeId);
 
             GameObject prefab = await _assets.Load<GameObject>(enemyData.PrefabReference);
-            
+
             GameObject enemy = _instantiateService.Instantiate(prefab, parent.position, parent);
-            
+
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.Initialize(enemyData.Hp, enemyData.Hp);
 
             EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
-            enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance, enemyData.AttackCooldown);
+            enemyAttack.Initialize(enemyData.Damage, enemyData.AttackPointRadius, enemyData.EffectiveDistance,
+                enemyData.AttackCooldown);
 
             enemy.GetComponent<ActorUI>().Construct(enemyHealth);
             enemy.GetComponent<NavMeshAgent>().speed = enemyData.MovementSpeed;
 
             LootSpawner lootSpawner = enemy.GetComponentInChildren<LootSpawner>();
             lootSpawner.Initialize(enemyData.MinLoot, enemyData.MaxLoot);
-            
+
             return enemy;
         }
 
@@ -94,7 +112,7 @@ namespace CodeBase.Infrastructure.Factory
             return loot.GetComponent<LootPiece>();
         }
 
-        public void Cleanup()
+        public void CleanUp()
         {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
@@ -140,6 +158,7 @@ namespace CodeBase.Infrastructure.Factory
             {
                 ProgressWriters.Add(progressWriter);
             }
+
             ProgressReaders.Add(progressReader);
         }
     }

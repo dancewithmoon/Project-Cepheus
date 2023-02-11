@@ -1,14 +1,21 @@
-﻿namespace CodeBase.Infrastructure.States
+﻿using CodeBase.Infrastructure.Factory;
+using CodeBase.UI.Services.Factory;
+
+namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
-        private readonly SceneLoader _sceneLoader;
         private readonly IGameStateMachine _stateMachine;
-
-        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader)
+        private readonly SceneLoader _sceneLoader;
+        private readonly IGameFactory _gameFactory;
+        private readonly IUIFactory _uiFactory;
+        
+        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory, IUIFactory uiFactory)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _gameFactory = gameFactory;
+            _uiFactory = uiFactory;
         }
 
         public void Enter()
@@ -20,8 +27,10 @@
         {
         }
 
-        private void EnterLoadLevel()
+        private async void EnterLoadLevel()
         {
+            await _gameFactory.WarmUp();
+            await _uiFactory.WarmUp();
             _stateMachine.Enter<LoadProgressState>();
         }
     }
