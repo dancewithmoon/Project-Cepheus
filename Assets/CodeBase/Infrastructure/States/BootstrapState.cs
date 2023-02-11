@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CodeBase.Infrastructure.Factory;
-using CodeBase.UI.Services.Factory;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -9,16 +7,11 @@ namespace CodeBase.Infrastructure.States
     {
         private readonly IGameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
-        private readonly IGameFactory _gameFactory;
-        private readonly IUIFactory _uiFactory;
 
-        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory,
-            IUIFactory uiFactory)
+        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
-            _gameFactory = gameFactory;
-            _uiFactory = uiFactory;
         }
 
         public void Enter()
@@ -30,12 +23,8 @@ namespace CodeBase.Infrastructure.States
         {
         }
 
-        private async void EnterLoadLevel()
+        private void EnterLoadLevel()
         {
-            await Task.WhenAll(
-                _gameFactory.WarmUp(), 
-                _uiFactory.WarmUp());
-            
             _stateMachine.Enter<LoadProgressState>();
         }
     }

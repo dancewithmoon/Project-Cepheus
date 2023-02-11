@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeBase.Enemy;
 using CodeBase.Hero;
@@ -37,7 +36,7 @@ namespace CodeBase.Infrastructure.Factory
             _container = container;
         }
 
-        public async Task WarmUp()
+        public async Task WarmUp(IEnumerable<EnemyTypeId> enemyTypes)
         {
             List<Task> tasks = new List<Task>
             {
@@ -48,7 +47,7 @@ namespace CodeBase.Infrastructure.Factory
                 _assets.Load<GameObject>(AssetPath.Loot)
             };
 
-            foreach (EnemyTypeId enemyType in Enum.GetValues(typeof(EnemyTypeId)))
+            foreach (EnemyTypeId enemyType in enemyTypes)
             {
                 tasks.Add(_assets.Load<GameObject>(_staticData.GetEnemy(enemyType).PrefabReference));
             }
@@ -120,6 +119,7 @@ namespace CodeBase.Infrastructure.Factory
         {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
+            _assets.CleanUp();
         }
 
         private async Task<GameObject> InstantiateRegistered(string path)

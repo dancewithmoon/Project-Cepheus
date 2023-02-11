@@ -7,5 +7,6 @@ namespace CodeBase.Infrastructure.AssetManagement
     public interface IAssets : IService
     {
         Task<T> Load<T>(object source) where T : Object;
+        void CleanUp();
     }
 }

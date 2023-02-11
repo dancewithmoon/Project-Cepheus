@@ -28,6 +28,16 @@ namespace CodeBase.Infrastructure.AssetManagement
             };
         }
 
+        public void CleanUp()
+        {
+            _currentlyLoading.Clear();
+            foreach (AsyncOperationHandle asset in _completedCache.Values)
+            {
+                Addressables.Release(asset);
+            }
+            _completedCache.Clear();
+        }
+
         private async Task<T> LoadByPath<T>(string path) where T : Object
         {
             return await LoadAsset<T>(path, path);

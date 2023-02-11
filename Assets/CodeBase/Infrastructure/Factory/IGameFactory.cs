@@ -10,7 +10,7 @@ namespace CodeBase.Infrastructure.Factory
 {
     public interface IGameFactory : IService
     {
-        Task WarmUp();
+        Task WarmUp(IEnumerable<EnemyTypeId> enemyTypes);
         Task<GameObject> CreateHero();
         Task<GameObject> CreateHud();
         Task<GameObject> CreateSavePoint(Vector3 at, Vector3 scale);
