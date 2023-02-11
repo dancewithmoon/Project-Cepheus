@@ -39,17 +39,21 @@ namespace CodeBase.Infrastructure.Factory
 
         public async Task WarmUp()
         {
-            await _assets.Load<GameObject>(_staticData.GetHero().PrefabReference);
-            await _assets.Load<GameObject>(AssetPath.HudPath);
-            await _assets.Load<GameObject>(AssetPath.SaveTrigger);
-            await _assets.Load<GameObject>(AssetPath.SpawnerPath);
+            List<Task> tasks = new List<Task>
+            {
+                _assets.Load<GameObject>(_staticData.GetHero().PrefabReference),
+                _assets.Load<GameObject>(AssetPath.HudPath),
+                _assets.Load<GameObject>(AssetPath.SaveTrigger),
+                _assets.Load<GameObject>(AssetPath.SpawnerPath),
+                _assets.Load<GameObject>(AssetPath.Loot)
+            };
 
             foreach (EnemyTypeId enemyType in Enum.GetValues(typeof(EnemyTypeId)))
             {
-                await _assets.Load<GameObject>(_staticData.GetEnemy(enemyType).PrefabReference);
+                tasks.Add(_assets.Load<GameObject>(_staticData.GetEnemy(enemyType).PrefabReference));
             }
 
-            await _assets.Load<GameObject>(AssetPath.Loot);
+            await Task.WhenAll(tasks);
         }
 
         public async Task<GameObject> CreateHero()

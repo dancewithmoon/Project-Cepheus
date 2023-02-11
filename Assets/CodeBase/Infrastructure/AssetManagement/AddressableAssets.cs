@@ -12,7 +12,10 @@ namespace CodeBase.Infrastructure.AssetManagement
         private readonly Dictionary<string, AsyncOperationHandle> _completedCache =
             new Dictionary<string, AsyncOperationHandle>();
 
-        public AddressableAssets() => 
+        private readonly Dictionary<string, AsyncOperationHandle> _currentlyLoading =
+            new Dictionary<string, AsyncOperationHandle>();
+
+        public AddressableAssets() =>
             Addressables.InitializeAsync();
 
         public async Task<T> Load<T>(object source) where T : Object
@@ -40,8 +43,13 @@ namespace CodeBase.Infrastructure.AssetManagement
             if (_completedCache.TryGetValue(key, out AsyncOperationHandle completedHandle))
                 return completedHandle.Result as T;
 
+            if (_currentlyLoading.TryGetValue(key, out AsyncOperationHandle loadingHandle))
+                return await loadingHandle.Task as T;
+
             AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(source);
+            _currentlyLoading.Add(key, handle);
             await handle.Task;
+            _currentlyLoading.Remove(key);
             _completedCache.Add(key, handle);
             return handle.Result;
         }

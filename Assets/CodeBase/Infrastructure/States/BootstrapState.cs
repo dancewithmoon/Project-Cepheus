@@ -1,4 +1,6 @@
-﻿using CodeBase.Infrastructure.Factory;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CodeBase.Infrastructure.Factory;
 using CodeBase.UI.Services.Factory;
 
 namespace CodeBase.Infrastructure.States
@@ -9,8 +11,9 @@ namespace CodeBase.Infrastructure.States
         private readonly SceneLoader _sceneLoader;
         private readonly IGameFactory _gameFactory;
         private readonly IUIFactory _uiFactory;
-        
-        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory, IUIFactory uiFactory)
+
+        public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory,
+            IUIFactory uiFactory)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
@@ -29,8 +32,10 @@ namespace CodeBase.Infrastructure.States
 
         private async void EnterLoadLevel()
         {
-            await _gameFactory.WarmUp();
-            await _uiFactory.WarmUp();
+            await Task.WhenAll(
+                _gameFactory.WarmUp(), 
+                _uiFactory.WarmUp());
+            
             _stateMachine.Enter<LoadProgressState>();
         }
     }
