@@ -21,4 +21,8 @@ MonoBehaviour:
   _attackCooldown: 2
   _minLoot: 1
   _maxLoot: 3
-  _prefab: {fileID: 3771996580184962855, guid: c453d98743723994ba4ea3975d738545, type: 3}
+  _prefabReference:
+    m_AssetGUID: c453d98743723994ba4ea3975d738545
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

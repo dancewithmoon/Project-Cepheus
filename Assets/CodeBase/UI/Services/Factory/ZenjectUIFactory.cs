@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
+﻿using System.Threading.Tasks;
+using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Instantiating;
 using CodeBase.Services.Ads;
 using CodeBase.StaticData.Service;
@@ -23,9 +24,15 @@ namespace CodeBase.UI.Services.Factory
             _ads = ads;
         }
 
-        public void CreateUIRoot()
+        public async Task WarmUp()
         {
-            _uiRoot = _instantiateService.Instantiate(_assets.Load(AssetPath.UIRootPath)).transform;
+            await _assets.Load<GameObject>(AssetPath.UIRootPath);
+        }
+
+        public async void CreateUIRoot()
+        {
+            GameObject rootPrefab = await _assets.Load<GameObject>(AssetPath.UIRootPath);
+            _uiRoot = _instantiateService.Instantiate(rootPrefab).transform;
         }
 
         public void CreateShop() =>

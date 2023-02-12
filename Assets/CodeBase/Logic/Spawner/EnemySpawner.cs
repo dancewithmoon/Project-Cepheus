@@ -34,9 +34,9 @@ namespace CodeBase.Logic.Spawner
             _enemyTypeId = enemyType;
         }
         
-        private void Spawn()
+        private async void Spawn()
         {
-            GameObject enemy = _gameFactory.CreateEnemy(_enemyTypeId, transform);
+            GameObject enemy = await _gameFactory.CreateEnemy(_enemyTypeId, transform);
             _enemyDeath = enemy.GetComponent<EnemyDeath>();
             _enemyDeath.Happened += OnEnemyDeathHappened;
         }

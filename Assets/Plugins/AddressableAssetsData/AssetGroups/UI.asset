@@ -10,28 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: UI
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: UI
   m_Data:
     m_SerializedData: []
-  m_GUID: f7ba7e7bf90306045a4e0f5c5af7630f
+  m_GUID: 2490f877301c0854aa29eb6df6ae38a0
   m_SerializeEntries:
-  - m_GUID: 181862a89f60d7a459002f9870860ad4
-    m_Address: Hero
+  - m_GUID: 7f63450bf622d574799a70e5a4b0d23b
+    m_Address: UIRoot
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 557014efbc841bc4693bf97607b62868
-    m_Address: SaveTrigger
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: d587ba2fd38b20449986c007d26d2b8a
-    m_Address: Loot
+  - m_GUID: f6395af14c6ae2d4ea00c7e97e633ad3
+    m_Address: Hud
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 73f3dadeeb5a7494f9f08638dd768d92, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: d9ba493e11f5d774ab3f37ad05149413, type: 2}
-    - {fileID: 11400000, guid: bd1432df8f43a9344960eb6aa55cb83a, type: 2}
+    - {fileID: 11400000, guid: 2840c905364c71f4bb5a1eae786f3c21, type: 2}
+    - {fileID: 11400000, guid: 604aa71a0b2f7f74c9f1aae71998c52c, type: 2}

@@ -1,9 +1,12 @@
-﻿namespace CodeBase.Infrastructure.States
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
-        private readonly SceneLoader _sceneLoader;
         private readonly IGameStateMachine _stateMachine;
+        private readonly SceneLoader _sceneLoader;
 
         public BootstrapState(IGameStateMachine stateMachine, SceneLoader sceneLoader)
         {
