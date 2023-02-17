@@ -7,7 +7,8 @@ namespace CodeBase.Services.Ads
     {
         bool IsRewardedLoaded { get; }
         event Action RewardedVideoLoaded;
-        
+
+        void Initialize();
         void ShowRewarded(Action onRewardedCompleted);
     }
 }

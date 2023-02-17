@@ -47,12 +47,8 @@ namespace CodeBase.Infrastructure
             PersistentProgressService progressService = new PersistentProgressService();
             Container.Bind<IPersistentProgressService>().FromInstance(progressService).AsSingle();
             Container.Bind<IReadonlyProgressService>().FromInstance(progressService).AsSingle();
-            
             Container.Bind<IRandomService>().To<UnityRandomService>().AsSingle();
-            
             Container.Bind<IStaticDataService>().To<StaticDataService>().AsSingle();
-            Container.Resolve<IStaticDataService>().Load();
-
             Container.Bind<IUIFactory>().To<ZenjectUIFactory>().AsSingle();
             Container.Bind<IScreenService>().To<ScreenService>().AsSingle();
             Container.Bind<IGameFactory>().To<ZenjectGameFactory>().AsSingle();
