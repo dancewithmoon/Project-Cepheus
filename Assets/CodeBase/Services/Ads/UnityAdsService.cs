@@ -8,8 +8,9 @@ namespace CodeBase.Services.Ads
 {
     public class UnityAdsService : IAdsService, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
     {
-        private readonly UnityAdsIds _adsIds;
-        
+        private readonly IStaticDataService _staticData;
+        private UnityAdsIds _adsIds;
+
         private Action _onRewardedCompleted;
 
         public bool IsRewardedLoaded { get; private set; }
@@ -17,11 +18,16 @@ namespace CodeBase.Services.Ads
 
         public UnityAdsService(IStaticDataService staticData)
         {
-            UnityAdsStaticData unityAdsStaticData = staticData.GetUnityAdsData();
+            _staticData = staticData;
+        }
+
+        public void Initialize()
+        {
+            UnityAdsStaticData unityAdsStaticData = _staticData.GetUnityAdsData();
             _adsIds = unityAdsStaticData.GetIds();
             Advertisement.Initialize(_adsIds.GameId, unityAdsStaticData.IsTestMode, this);
         }
-
+        
         public void ShowRewarded(Action onRewardedCompleted)
         {
             if(IsRewardedLoaded == false)

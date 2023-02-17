@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using Object = UnityEngine.Object;
 
 namespace CodeBase.Infrastructure.AssetManagement
@@ -26,6 +28,14 @@ namespace CodeBase.Infrastructure.AssetManagement
                 AssetReference reference => await LoadByReference<T>(reference),
                 _ => throw new Exception("Source Type mismatch!")
             };
+        }
+
+        public async Task<IEnumerable<T>> LoadAll<T>(string path) where T : Object
+        {
+            IList<IResourceLocation> locations = await Addressables.LoadResourceLocationsAsync(path, typeof(T)).Task;
+            List<Task<T>> tasks = locations.Select(location => LoadByPath<T>(location.PrimaryKey)).ToList();
+            T[] assets = await Task.WhenAll(tasks);
+            return assets;
         }
 
         public void CleanUp()

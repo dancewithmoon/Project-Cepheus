@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: StaticData
+  m_EditorClassIdentifier: 
+  m_GroupName: StaticData
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ff953addd73574e43a88a16a9c7b4778
+  m_SerializeEntries:
+  - m_GUID: e2d5c9477503e8b46b9444b3e0237a15
+    m_Address: Assets/Content/StaticData/Screens.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 575efbb1c4982ec4c97488881ab853a7
+    m_Address: Assets/Content/StaticData/HeroData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 659f86aac9037eb419c070e315a33cb8
+    m_Address: Assets/Content/StaticData/Levels/Dungeon.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f11bc803479f0b4ba727edebcefabbf
+    m_Address: Assets/Content/StaticData/Levels/GraveYard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 586515a9882c31047a1156d034268f96
+    m_Address: Assets/Content/StaticData/Enemies/Golem.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f59dc6bb6bc99a14f9f409625d33eecc
+    m_Address: Assets/Content/StaticData/Enemies/Lich.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 30b9b00a1ad4458488ffd5e5a8c24995
+    m_Address: Assets/Content/StaticData/Ads/UnityAds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73f3dadeeb5a7494f9f08638dd768d92, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: cbdc79ba514229040a6a853c3b9fb1c5, type: 2}
+    - {fileID: 11400000, guid: 0bd92e341ec19a14c9ad4ac2acce50b9, type: 2}
