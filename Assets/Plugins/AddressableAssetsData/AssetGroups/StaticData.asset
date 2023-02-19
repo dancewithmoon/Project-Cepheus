@@ -18,31 +18,35 @@ MonoBehaviour:
   m_GUID: ff953addd73574e43a88a16a9c7b4778
   m_SerializeEntries:
   - m_GUID: e2d5c9477503e8b46b9444b3e0237a15
-    m_Address: Assets/Content/StaticData/Screens.asset
+    m_Address: Screens
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 575efbb1c4982ec4c97488881ab853a7
-    m_Address: Assets/Content/StaticData/HeroData.asset
+    m_Address: HeroData
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 659f86aac9037eb419c070e315a33cb8
-    m_Address: Assets/Content/StaticData/Levels/Dungeon.asset
+    m_Address: Dungeon
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LevelStaticData
   - m_GUID: 2f11bc803479f0b4ba727edebcefabbf
-    m_Address: Assets/Content/StaticData/Levels/GraveYard.asset
+    m_Address: GraveYard
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LevelStaticData
   - m_GUID: 586515a9882c31047a1156d034268f96
-    m_Address: Assets/Content/StaticData/Enemies/Golem.asset
+    m_Address: Golem
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - EnemyStaticData
   - m_GUID: f59dc6bb6bc99a14f9f409625d33eecc
-    m_Address: Assets/Content/StaticData/Enemies/Lich.asset
+    m_Address: Lich
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - EnemyStaticData
   - m_GUID: 30b9b00a1ad4458488ffd5e5a8c24995
-    m_Address: Assets/Content/StaticData/Ads/UnityAds.asset
+    m_Address: UnityAds
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

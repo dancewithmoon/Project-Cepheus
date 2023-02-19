@@ -41,7 +41,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 10caac14af366f14c91a002a6a54c015, type: 2}
   - {fileID: 11400000, guid: bc7f6e44d3728954ab0cb7834a0f299a, type: 2}
   - {fileID: 11400000, guid: 889a8da1c06c93f4abb014637013e84c, type: 2}
-  - {fileID: 11400000, guid: 6ff798116f6467949ab4b61e4ea99878, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -83,6 +82,8 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - LevelStaticData
+    - EnemyStaticData
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 01c1f71c976afbe4483a2f8d91795c4c, type: 2}
