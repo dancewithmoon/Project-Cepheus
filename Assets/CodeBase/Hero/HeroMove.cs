@@ -1,12 +1,13 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Services.Input;
+using CodeBase.Services.UserInput;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace CodeBase.Hero
 {
+    [RequireComponent(typeof(CharacterController))]
     public class HeroMove : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private float _movementSpeed = 4.0f;

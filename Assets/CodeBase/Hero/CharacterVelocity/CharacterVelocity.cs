@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace CodeBase.Hero
 {
-    public abstract class CharacterVelocity : MonoBehaviour
+    public class CharacterVelocity : MonoBehaviour
     {
-        public abstract Vector3 Velocity { get; }
+        [SerializeField] private NavMeshAgent _agent;
+        [SerializeField] private CharacterController _characterController;
+
+        public Vector3 Velocity =>
+            _characterController.enabled
+                ? _characterController.velocity
+                : _agent.velocity;
     }
 }

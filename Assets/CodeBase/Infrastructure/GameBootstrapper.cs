@@ -8,8 +8,8 @@ using CodeBase.Infrastructure.Services.SaveLoad;
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using CodeBase.Services.Ads;
-using CodeBase.Services.Input;
 using CodeBase.Services.Randomizer;
+using CodeBase.Services.UserInput;
 using CodeBase.StaticData.Service;
 using CodeBase.UI.Services.Factory;
 using CodeBase.UI.Services.Screens;
@@ -41,7 +41,6 @@ namespace CodeBase.Infrastructure
             Container.Bind<ICoroutineRunner>().FromMethod(GetCoroutineRunner).AsSingle();
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<IInstantiateService>().To<ZenjectInstantiateService>().AsSingle();
-            Container.Bind<IInputService>().FromMethod(GetInputService);
             Container.Bind<IAssets>().To<AddressableAssets>().AsSingle();
 
             PersistentProgressService progressService = new PersistentProgressService();
@@ -67,13 +66,6 @@ namespace CodeBase.Infrastructure
             CoroutineRunner coroutineRunner = new GameObject("CoroutineRunner").AddComponent<CoroutineRunner>();
             DontDestroyOnLoad(coroutineRunner);
             return coroutineRunner;
-        }
-        
-        private static IInputService GetInputService()
-        {
-            return Application.isEditor
-                ? (IInputService)new StandaloneInputService()
-                : new MobileInputService();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CodeBase.Infrastructure.Services.ContainerService;
+using CodeBase.Services.UserInput;
 using Zenject;
 
 namespace CodeBase.Infrastructure
@@ -10,6 +11,7 @@ namespace CodeBase.Infrastructure
         public override void InstallBindings()
         {
             ContainerService.Container = Container;
+            Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle();
         }
     }
 }
