@@ -10,7 +10,7 @@ namespace CodeBase.Hero
     [RequireComponent(typeof(HeroAnimator))]
     public class HeroHealth : MonoBehaviour, ISavedProgress, IHealth
     {
-        [SerializeField] private HeroAnimator _animator;
+        private HeroAnimator _animator;
         private IPersistentProgressService _progressService;
         private HealthData _health;
 
@@ -39,6 +39,8 @@ namespace CodeBase.Hero
         public void Construct(IPersistentProgressService progressService)
         {
             _progressService = progressService;
+
+            _animator = GetComponent<HeroAnimator>();
         }
         
         public void ApplyDamage(float damage)

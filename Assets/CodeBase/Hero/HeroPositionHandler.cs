@@ -9,9 +9,8 @@ namespace CodeBase.Hero
     [RequireComponent(typeof(CharacterController))]
     public class HeroPositionHandler : MonoBehaviour, ISavedProgress
     {
-        [SerializeField] private CharacterController _characterController;
-
         private IPersistentProgressService _progressService;
+        private CharacterController _characterController;
 
         private PositionOnLevel PositionOnLevel => _progressService.Progress.WorldData.PositionOnLevel;
 
@@ -19,6 +18,8 @@ namespace CodeBase.Hero
         private void Construct(IPersistentProgressService progressService)
         {
             _progressService = progressService;
+
+            _characterController = GetComponent<CharacterController>();
         }
         
         public void LoadProgress()

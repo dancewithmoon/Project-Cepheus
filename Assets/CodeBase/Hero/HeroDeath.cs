@@ -1,18 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeBase.Hero
 {
-    [RequireComponent(typeof(HeroHealth), typeof(HeroMove), typeof(HeroAnimator))]
+    [RequireComponent(typeof(HeroHealth), typeof(HeroAnimator))]
     public class HeroDeath : MonoBehaviour
     {
-        [Header("Components")] 
-        [SerializeField] private List<Behaviour> _disableOnDeath;
-        [SerializeField] private HeroHealth _health;
-        [SerializeField] private HeroAnimator _animator;
-
         [Header("VFX")] 
         [SerializeField] private GameObject _deathFxPrefab;
+        
+        [Header("Components")] 
+        [SerializeField] private List<Behaviour> _disableOnDeath;
+
+        private HeroHealth _health;
+        private HeroAnimator _animator;
+
+        private void Awake()
+        {
+            _health = GetComponent<HeroHealth>();
+            _animator = GetComponent<HeroAnimator>();
+        }
 
         private void Start()
         {

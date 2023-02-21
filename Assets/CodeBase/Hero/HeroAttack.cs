@@ -15,13 +15,12 @@ namespace CodeBase.Hero
         
         [SerializeField] private Transform _attackPoint;
 
-        [Header("Components")] 
-        [SerializeField] private HeroAnimator _animator;
-        [SerializeField] private HeroAnimationEventHandler _animationEvents;
-        
         private AttackData _attackData;
         private IInputService _inputService;
         private IReadonlyProgressService _progressService;
+        
+        private HeroAnimator _animator;
+        private HeroAnimationEventHandler _animationEvents;
         
         private static int _layerMask;
         private readonly Collider[] _hits = new Collider[MaxCountOfTargets];
@@ -37,6 +36,9 @@ namespace CodeBase.Hero
             
             _layerMask = 1 << LayerMask.NameToLayer("Hittable");
 
+            _animator = GetComponent<HeroAnimator>();
+            _animationEvents = GetComponent<HeroAnimationEventHandler>();
+            
             _animationEvents.Attacked += ApplyAttack;
         }
 

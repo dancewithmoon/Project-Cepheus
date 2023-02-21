@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CodeBase.Hero
 {
+    [RequireComponent(typeof(Animator), typeof(CharacterVelocity))]
     public class HeroAnimator : MonoBehaviour, IAnimationStateReader
     {
         private static readonly int MoveHash = Animator.StringToHash("Walking");
@@ -22,8 +23,14 @@ namespace CodeBase.Hero
 
         public AnimatorState State { get; private set; }
 
-        [SerializeField] private Animator _animator;
-        [SerializeField] private CharacterVelocity _characterVelocity;
+        private Animator _animator;
+        private CharacterVelocity _characterVelocity;
+
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+            _characterVelocity = GetComponent<CharacterVelocity>();
+        }
 
         private void Update()
         {

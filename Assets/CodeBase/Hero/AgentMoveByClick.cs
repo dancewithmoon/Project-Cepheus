@@ -1,4 +1,5 @@
 ﻿using CodeBase.Services.UserInput;
+using CodeBase.StaticData.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -8,20 +9,24 @@ namespace CodeBase.Hero
     [RequireComponent(typeof(NavMeshAgent))]
     public class AgentMoveByClick : MonoBehaviour
     {
-        [SerializeField] private NavMeshAgent _agent;
-
-        private CharacterController _characterController;
         private IInputService _inputService;
         private int _groundLayer;
 
+        private NavMeshAgent _agent;
+        private CharacterController _characterController;
+
         [Inject]
-        private void Construct(IInputService inputService)
+        private void Construct(IInputService inputService, IStaticDataService staticDataService)
         {
             _inputService = inputService;
             _inputService.EnvironmentClicked += OnClick;
 
-            _characterController = GetComponent<CharacterController>();
             _groundLayer = LayerMask.NameToLayer("Ground");
+            
+            _agent = GetComponent<NavMeshAgent>();
+            _agent.speed = staticDataService.GetHero().Speed;
+            
+            _characterController = GetComponent<CharacterController>();
         }
 
         private void OnDestroy()

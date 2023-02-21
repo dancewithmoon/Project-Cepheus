@@ -1,5 +1,6 @@
 ﻿using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Services.UserInput;
+using CodeBase.StaticData.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -9,19 +10,21 @@ namespace CodeBase.Hero
     [RequireComponent(typeof(CharacterController))]
     public class HeroMove : MonoBehaviour
     {
-        [SerializeField] private float _movementSpeed = 4.0f;
-        [SerializeField] private CharacterController _characterController;
+        private float _movementSpeed = 4.0f;
         private IInputService _inputService;
         private Camera _camera;
+        private CharacterController _characterController;
         private NavMeshAgent _agent;
 
         [Inject]
-        public void Construct(IInputService inputService, IPersistentProgressService progressService)
+        public void Construct(IInputService inputService, IStaticDataService staticDataService, IPersistentProgressService progressService)
         {
             _inputService = inputService;
             
             _camera = Camera.main;
+            _characterController = GetComponent<CharacterController>();
             _agent = GetComponent<NavMeshAgent>();
+            _movementSpeed = staticDataService.GetHero().Speed;
         }
 
         private void Update()
@@ -32,7 +35,7 @@ namespace CodeBase.Hero
             {
                 DisableNavMeshAgent();
                 EnableCharacterController();
-                
+
                 movementVector = _camera.transform.TransformDirection(_inputService.Axis);
                 movementVector.y = 0;
                 movementVector.Normalize();
@@ -42,7 +45,10 @@ namespace CodeBase.Hero
 
             movementVector += Physics.gravity;
 
-            _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
+            if (_characterController.enabled)
+            {
+                _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
+            }
         }
 
         private void DisableNavMeshAgent()
