@@ -84,8 +84,8 @@ namespace CodeBase.Infrastructure.States
             InitSpawners(_levelData.EnemySpawners);
             InitSavePoints(_levelData.SavePoints);
             InitLoot();
-            InitHud();
             GameObject hero = await InitHero();
+            InitHud();
             CameraFollow(hero);
         }
 
