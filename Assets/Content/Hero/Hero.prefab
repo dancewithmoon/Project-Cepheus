@@ -1462,9 +1462,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6594731495ce41c68949b7ae84d18a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _disableOnDeath:
+  - {fileID: 8827721247352350589}
+  - {fileID: 1770012379}
+  - {fileID: 4887994038015109855}
+  - {fileID: 5094759214591791592}
+  - {fileID: 4981072766634596838}
   _health: {fileID: 8827721247352350589}
-  _move: {fileID: 1770012379}
-  _attack: {fileID: 5094759214591791592}
   _animator: {fileID: 1941000699}
   _deathFxPrefab: {fileID: 100006, guid: 36d56f8f51ffa7e4789ed57488d171cf, type: 3}
 --- !u!114 &5094759214591791592

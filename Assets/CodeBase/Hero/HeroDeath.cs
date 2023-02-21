@@ -1,15 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CodeBase.Hero
 {
     [RequireComponent(typeof(HeroHealth), typeof(HeroMove), typeof(HeroAnimator))]
     public class HeroDeath : MonoBehaviour
     {
-        [Header("Components")]
+        [Header("Components")] 
+        [SerializeField] private List<Behaviour> _disableOnDeath;
         [SerializeField] private HeroHealth _health;
-
-        [SerializeField] private HeroMove _move;
-        [SerializeField] private HeroAttack _attack;
         [SerializeField] private HeroAnimator _animator;
 
         [Header("VFX")] 
@@ -35,9 +34,8 @@ namespace CodeBase.Hero
 
         private void Die()
         {
+            _disableOnDeath.ForEach(component => component.enabled = false);
             _health.enabled = false;
-            _move.enabled = false;
-            _attack.enabled = false;
             _animator.PlayDeath();
             PlayDeathFx();
         }

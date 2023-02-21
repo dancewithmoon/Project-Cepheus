@@ -33,6 +33,9 @@ namespace CodeBase.Hero
         {
             bool IsClickedOnGround() => obj.layer == _groundLayer;
 
+            if(enabled == false)
+                return;
+            
             if (IsClickedOnGround() == false)
                 return;
 
