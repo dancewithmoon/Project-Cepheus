@@ -2,6 +2,7 @@
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Services.UserInput;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -15,6 +16,7 @@ namespace CodeBase.Hero
         private IInputService _inputService;
         private IPersistentProgressService _progressService;
         private Camera _camera;
+        private NavMeshAgent _agent;
 
         private PositionOnLevel PositionOnLevel => _progressService.Progress.WorldData.PositionOnLevel;
         
@@ -25,6 +27,7 @@ namespace CodeBase.Hero
             _progressService = progressService;
             
             _camera = Camera.main;
+            _agent = GetComponent<NavMeshAgent>();
         }
 
         private void Update()
@@ -33,6 +36,9 @@ namespace CodeBase.Hero
 
             if (_inputService.Axis.sqrMagnitude > Constants.Epsilon)
             {
+                DisableNavMeshAgent();
+                EnableCharacterController();
+                
                 movementVector = _camera.transform.TransformDirection(_inputService.Axis);
                 movementVector.y = 0;
                 movementVector.Normalize();
@@ -43,6 +49,19 @@ namespace CodeBase.Hero
             movementVector += Physics.gravity;
 
             _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
+        }
+
+        private void DisableNavMeshAgent()
+        {
+            if(_agent == null)
+                return;
+
+            _agent.enabled = false;
+        }
+
+        private void EnableCharacterController()
+        {
+            _characterController.enabled = true;
         }
 
         public void LoadProgress()
