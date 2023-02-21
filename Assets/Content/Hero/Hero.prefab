@@ -1277,6 +1277,8 @@ GameObject:
   - component: {fileID: 415700}
   - component: {fileID: 9588594}
   - component: {fileID: 1941000699}
+  - component: {fileID: 787927812241657374}
+  - component: {fileID: 2295310924353256864}
   - component: {fileID: 1770012380}
   - component: {fileID: 1770012379}
   - component: {fileID: 2849016883997960956}
@@ -1286,6 +1288,8 @@ GameObject:
   - component: {fileID: 5094759214591791592}
   - component: {fileID: 1064647711185579040}
   - component: {fileID: 1017758263657038755}
+  - component: {fileID: 4887994038015109855}
+  - component: {fileID: 4981072766634596838}
   m_Layer: 12
   m_Name: Hero
   m_TagString: Player
@@ -1344,6 +1348,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 9588594}
+  _characterVelocity: {fileID: 2295310924353256864}
+--- !u!114 &787927812241657374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac4bf7654e9446d865f2eb720d6a525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterController: {fileID: 1770012380}
+--- !u!114 &2295310924353256864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d946c7041542d8bf0cdf68bcba3ba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _agent: {fileID: 4887994038015109855}
   _characterController: {fileID: 1770012380}
 --- !u!143 &1770012380
 CharacterController:
@@ -1431,9 +1462,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6594731495ce41c68949b7ae84d18a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _disableOnDeath:
+  - {fileID: 8827721247352350589}
+  - {fileID: 1770012379}
+  - {fileID: 4887994038015109855}
+  - {fileID: 5094759214591791592}
+  - {fileID: 4981072766634596838}
   _health: {fileID: 8827721247352350589}
-  _move: {fileID: 1770012379}
-  _attack: {fileID: 5094759214591791592}
   _animator: {fileID: 1941000699}
   _deathFxPrefab: {fileID: 100006, guid: 36d56f8f51ffa7e4789ed57488d171cf, type: 3}
 --- !u!114 &5094759214591791592
@@ -1475,6 +1510,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df0a16f07844ffeb7bbae50b2e350ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &4887994038015109855
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.1
+  m_Speed: 3
+  m_Acceleration: 15
+  avoidancePriority: 50
+  m_AngularSpeed: 1600
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &4981072766634596838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6986d8acc68d40eca04334b93774e01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _agent: {fileID: 4887994038015109855}
 --- !u!1 &178646
 GameObject:
   m_ObjectHideFlags: 0

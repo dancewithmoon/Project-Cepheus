@@ -1,6 +1,7 @@
+using CodeBase.Infrastructure.Services.CoroutineRunner;
 using UnityEngine;
 
-namespace CodeBase.Services.Input
+namespace CodeBase.Services.UserInput
 {
     public class StandaloneInputService : InputService
     {
@@ -17,7 +18,11 @@ namespace CodeBase.Services.Input
             }
         }
 
+        public StandaloneInputService(ICoroutineRunner coroutineRunner) : base(coroutineRunner)
+        {
+        }
+
         private static Vector2 UnityAxis() => 
-            new Vector2(UnityEngine.Input.GetAxis(Horizontal), UnityEngine.Input.GetAxis(Vertical));
+            new Vector2(Input.GetAxis(Horizontal), Input.GetAxis(Vertical));
     }
 }

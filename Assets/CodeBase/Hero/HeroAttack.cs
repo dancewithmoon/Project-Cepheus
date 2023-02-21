@@ -1,14 +1,14 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using CodeBase.Logic;
-using CodeBase.Services.Input;
+using CodeBase.Services.UserInput;
 using CodeBase.Utils;
 using UnityEngine;
 using Zenject;
 
 namespace CodeBase.Hero
 {
-    [RequireComponent(typeof(HeroAnimator), typeof(HeroAnimationEventHandler), typeof(CharacterController))]
+    [RequireComponent(typeof(HeroAnimator), typeof(HeroAnimationEventHandler))]
     public class HeroAttack : MonoBehaviour, ISavedProgressReader
     {
         private const int MaxCountOfTargets = 3;

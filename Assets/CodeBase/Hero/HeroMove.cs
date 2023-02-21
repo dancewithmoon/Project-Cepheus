@@ -1,29 +1,27 @@
-﻿using CodeBase.Data;
-using CodeBase.Infrastructure.Services.PersistentProgress;
-using CodeBase.Services.Input;
+﻿using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Services.UserInput;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 using Zenject;
 
 namespace CodeBase.Hero
 {
-    public class HeroMove : MonoBehaviour, ISavedProgress
+    [RequireComponent(typeof(CharacterController))]
+    public class HeroMove : MonoBehaviour
     {
         [SerializeField] private float _movementSpeed = 4.0f;
         [SerializeField] private CharacterController _characterController;
         private IInputService _inputService;
-        private IPersistentProgressService _progressService;
         private Camera _camera;
+        private NavMeshAgent _agent;
 
-        private PositionOnLevel PositionOnLevel => _progressService.Progress.WorldData.PositionOnLevel;
-        
         [Inject]
         public void Construct(IInputService inputService, IPersistentProgressService progressService)
         {
             _inputService = inputService;
-            _progressService = progressService;
             
             _camera = Camera.main;
+            _agent = GetComponent<NavMeshAgent>();
         }
 
         private void Update()
@@ -32,6 +30,9 @@ namespace CodeBase.Hero
 
             if (_inputService.Axis.sqrMagnitude > Constants.Epsilon)
             {
+                DisableNavMeshAgent();
+                EnableCharacterController();
+                
                 movementVector = _camera.transform.TransformDirection(_inputService.Axis);
                 movementVector.y = 0;
                 movementVector.Normalize();
@@ -44,30 +45,17 @@ namespace CodeBase.Hero
             _characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
         }
 
-        public void LoadProgress()
+        private void DisableNavMeshAgent()
         {
-            if (GetCurrentLevelName() != PositionOnLevel.Level)
+            if(_agent == null)
                 return;
 
-            Vector3Data savedPosition = PositionOnLevel.Position;
-
-            Warp(savedPosition.AsUnityVector());
+            _agent.enabled = false;
         }
 
-        public void UpdateProgress()
+        private void EnableCharacterController()
         {
-            PositionOnLevel.Level = GetCurrentLevelName();
-            PositionOnLevel.Position = transform.position.AsVectorData();
-        }
-
-        private void Warp(Vector3 to)
-        {
-            _characterController.enabled = false;
-            transform.position = to.AddY(_characterController.height);
             _characterController.enabled = true;
         }
-
-        private string GetCurrentLevelName() => 
-            SceneManager.GetActiveScene().name;
     }
 }
